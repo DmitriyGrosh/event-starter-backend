@@ -24,6 +24,7 @@ model User {
   ownedEvents        Event[]             @relation("EventOwner")
   eventSubscriptions EventSubscription[]
   ticketPurchases    TicketPurchase[]
+  notifications      Notification[]
 
   @@map("users")
 }
@@ -121,4 +122,19 @@ model EventTag {
 
   @@id([eventId, tagId])
   @@map("event_tags")
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  type      String
+  title     String
+  message   String
+  metadata  Json?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([createdAt])
 }
