@@ -38,6 +38,11 @@ export type Ticket = $Result.DefaultSelection<Prisma.$TicketPayload>
  * 
  */
 export type TicketPurchase = $Result.DefaultSelection<Prisma.$TicketPurchasePayload>
+/**
+ * Model TicketTransfer
+ * 
+ */
+export type TicketTransfer = $Result.DefaultSelection<Prisma.$TicketTransferPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -213,6 +218,16 @@ export class PrismaClient<
     * ```
     */
   get ticketPurchase(): Prisma.TicketPurchaseDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.ticketTransfer`: Exposes CRUD operations for the **TicketTransfer** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TicketTransfers
+    * const ticketTransfers = await prisma.ticketTransfer.findMany()
+    * ```
+    */
+  get ticketTransfer(): Prisma.TicketTransferDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -657,7 +672,8 @@ export namespace Prisma {
     Event: 'Event',
     EventSubscription: 'EventSubscription',
     Ticket: 'Ticket',
-    TicketPurchase: 'TicketPurchase'
+    TicketPurchase: 'TicketPurchase',
+    TicketTransfer: 'TicketTransfer'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -676,7 +692,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "event" | "eventSubscription" | "ticket" | "ticketPurchase"
+      modelProps: "user" | "event" | "eventSubscription" | "ticket" | "ticketPurchase" | "ticketTransfer"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1050,6 +1066,80 @@ export namespace Prisma {
           }
         }
       }
+      TicketTransfer: {
+        payload: Prisma.$TicketTransferPayload<ExtArgs>
+        fields: Prisma.TicketTransferFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TicketTransferFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TicketTransferPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TicketTransferFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TicketTransferPayload>
+          }
+          findFirst: {
+            args: Prisma.TicketTransferFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TicketTransferPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TicketTransferFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TicketTransferPayload>
+          }
+          findMany: {
+            args: Prisma.TicketTransferFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TicketTransferPayload>[]
+          }
+          create: {
+            args: Prisma.TicketTransferCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TicketTransferPayload>
+          }
+          createMany: {
+            args: Prisma.TicketTransferCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TicketTransferCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TicketTransferPayload>[]
+          }
+          delete: {
+            args: Prisma.TicketTransferDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TicketTransferPayload>
+          }
+          update: {
+            args: Prisma.TicketTransferUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TicketTransferPayload>
+          }
+          deleteMany: {
+            args: Prisma.TicketTransferDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TicketTransferUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TicketTransferUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TicketTransferPayload>[]
+          }
+          upsert: {
+            args: Prisma.TicketTransferUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TicketTransferPayload>
+          }
+          aggregate: {
+            args: Prisma.TicketTransferAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTicketTransfer>
+          }
+          groupBy: {
+            args: Prisma.TicketTransferGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TicketTransferGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TicketTransferCountArgs<ExtArgs>
+            result: $Utils.Optional<TicketTransferCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1139,6 +1229,7 @@ export namespace Prisma {
     eventSubscription?: EventSubscriptionOmit
     ticket?: TicketOmit
     ticketPurchase?: TicketPurchaseOmit
+    ticketTransfer?: TicketTransferOmit
   }
 
   /* Types for Logging */
@@ -1345,6 +1436,46 @@ export namespace Prisma {
    */
   export type TicketCountOutputTypeCountPurchasesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TicketPurchaseWhereInput
+  }
+
+
+  /**
+   * Count Type TicketPurchaseCountOutputType
+   */
+
+  export type TicketPurchaseCountOutputType = {
+    transfersFrom: number
+    transfersTo: number
+  }
+
+  export type TicketPurchaseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    transfersFrom?: boolean | TicketPurchaseCountOutputTypeCountTransfersFromArgs
+    transfersTo?: boolean | TicketPurchaseCountOutputTypeCountTransfersToArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * TicketPurchaseCountOutputType without action
+   */
+  export type TicketPurchaseCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TicketPurchaseCountOutputType
+     */
+    select?: TicketPurchaseCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * TicketPurchaseCountOutputType without action
+   */
+  export type TicketPurchaseCountOutputTypeCountTransfersFromArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TicketTransferWhereInput
+  }
+
+  /**
+   * TicketPurchaseCountOutputType without action
+   */
+  export type TicketPurchaseCountOutputTypeCountTransfersToArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TicketTransferWhereInput
   }
 
 
@@ -6200,6 +6331,9 @@ export namespace Prisma {
     updatedAt?: boolean
     ticket?: boolean | TicketDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    transfersFrom?: boolean | TicketPurchase$transfersFromArgs<ExtArgs>
+    transfersTo?: boolean | TicketPurchase$transfersToArgs<ExtArgs>
+    _count?: boolean | TicketPurchaseCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["ticketPurchase"]>
 
   export type TicketPurchaseSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6243,6 +6377,9 @@ export namespace Prisma {
   export type TicketPurchaseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     ticket?: boolean | TicketDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    transfersFrom?: boolean | TicketPurchase$transfersFromArgs<ExtArgs>
+    transfersTo?: boolean | TicketPurchase$transfersToArgs<ExtArgs>
+    _count?: boolean | TicketPurchaseCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TicketPurchaseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     ticket?: boolean | TicketDefaultArgs<ExtArgs>
@@ -6258,6 +6395,8 @@ export namespace Prisma {
     objects: {
       ticket: Prisma.$TicketPayload<ExtArgs>
       user: Prisma.$UserPayload<ExtArgs>
+      transfersFrom: Prisma.$TicketTransferPayload<ExtArgs>[]
+      transfersTo: Prisma.$TicketTransferPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -6664,6 +6803,8 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     ticket<T extends TicketDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TicketDefaultArgs<ExtArgs>>): Prisma__TicketClient<$Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    transfersFrom<T extends TicketPurchase$transfersFromArgs<ExtArgs> = {}>(args?: Subset<T, TicketPurchase$transfersFromArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TicketTransferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    transfersTo<T extends TicketPurchase$transfersToArgs<ExtArgs> = {}>(args?: Subset<T, TicketPurchase$transfersToArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TicketTransferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7097,6 +7238,54 @@ export namespace Prisma {
   }
 
   /**
+   * TicketPurchase.transfersFrom
+   */
+  export type TicketPurchase$transfersFromArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TicketTransfer
+     */
+    select?: TicketTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TicketTransfer
+     */
+    omit?: TicketTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TicketTransferInclude<ExtArgs> | null
+    where?: TicketTransferWhereInput
+    orderBy?: TicketTransferOrderByWithRelationInput | TicketTransferOrderByWithRelationInput[]
+    cursor?: TicketTransferWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TicketTransferScalarFieldEnum | TicketTransferScalarFieldEnum[]
+  }
+
+  /**
+   * TicketPurchase.transfersTo
+   */
+  export type TicketPurchase$transfersToArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TicketTransfer
+     */
+    select?: TicketTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TicketTransfer
+     */
+    omit?: TicketTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TicketTransferInclude<ExtArgs> | null
+    where?: TicketTransferWhereInput
+    orderBy?: TicketTransferOrderByWithRelationInput | TicketTransferOrderByWithRelationInput[]
+    cursor?: TicketTransferWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TicketTransferScalarFieldEnum | TicketTransferScalarFieldEnum[]
+  }
+
+  /**
    * TicketPurchase without action
    */
   export type TicketPurchaseDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7112,6 +7301,1144 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: TicketPurchaseInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model TicketTransfer
+   */
+
+  export type AggregateTicketTransfer = {
+    _count: TicketTransferCountAggregateOutputType | null
+    _avg: TicketTransferAvgAggregateOutputType | null
+    _sum: TicketTransferSumAggregateOutputType | null
+    _min: TicketTransferMinAggregateOutputType | null
+    _max: TicketTransferMaxAggregateOutputType | null
+  }
+
+  export type TicketTransferAvgAggregateOutputType = {
+    id: number | null
+    fromPurchaseId: number | null
+    toPurchaseId: number | null
+    quantity: number | null
+  }
+
+  export type TicketTransferSumAggregateOutputType = {
+    id: number | null
+    fromPurchaseId: number | null
+    toPurchaseId: number | null
+    quantity: number | null
+  }
+
+  export type TicketTransferMinAggregateOutputType = {
+    id: number | null
+    fromPurchaseId: number | null
+    toPurchaseId: number | null
+    quantity: number | null
+    status: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TicketTransferMaxAggregateOutputType = {
+    id: number | null
+    fromPurchaseId: number | null
+    toPurchaseId: number | null
+    quantity: number | null
+    status: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TicketTransferCountAggregateOutputType = {
+    id: number
+    fromPurchaseId: number
+    toPurchaseId: number
+    quantity: number
+    status: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type TicketTransferAvgAggregateInputType = {
+    id?: true
+    fromPurchaseId?: true
+    toPurchaseId?: true
+    quantity?: true
+  }
+
+  export type TicketTransferSumAggregateInputType = {
+    id?: true
+    fromPurchaseId?: true
+    toPurchaseId?: true
+    quantity?: true
+  }
+
+  export type TicketTransferMinAggregateInputType = {
+    id?: true
+    fromPurchaseId?: true
+    toPurchaseId?: true
+    quantity?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TicketTransferMaxAggregateInputType = {
+    id?: true
+    fromPurchaseId?: true
+    toPurchaseId?: true
+    quantity?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TicketTransferCountAggregateInputType = {
+    id?: true
+    fromPurchaseId?: true
+    toPurchaseId?: true
+    quantity?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type TicketTransferAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TicketTransfer to aggregate.
+     */
+    where?: TicketTransferWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TicketTransfers to fetch.
+     */
+    orderBy?: TicketTransferOrderByWithRelationInput | TicketTransferOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TicketTransferWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TicketTransfers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TicketTransfers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TicketTransfers
+    **/
+    _count?: true | TicketTransferCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TicketTransferAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TicketTransferSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TicketTransferMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TicketTransferMaxAggregateInputType
+  }
+
+  export type GetTicketTransferAggregateType<T extends TicketTransferAggregateArgs> = {
+        [P in keyof T & keyof AggregateTicketTransfer]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTicketTransfer[P]>
+      : GetScalarType<T[P], AggregateTicketTransfer[P]>
+  }
+
+
+
+
+  export type TicketTransferGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TicketTransferWhereInput
+    orderBy?: TicketTransferOrderByWithAggregationInput | TicketTransferOrderByWithAggregationInput[]
+    by: TicketTransferScalarFieldEnum[] | TicketTransferScalarFieldEnum
+    having?: TicketTransferScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TicketTransferCountAggregateInputType | true
+    _avg?: TicketTransferAvgAggregateInputType
+    _sum?: TicketTransferSumAggregateInputType
+    _min?: TicketTransferMinAggregateInputType
+    _max?: TicketTransferMaxAggregateInputType
+  }
+
+  export type TicketTransferGroupByOutputType = {
+    id: number
+    fromPurchaseId: number
+    toPurchaseId: number
+    quantity: number
+    status: string
+    createdAt: Date
+    updatedAt: Date
+    _count: TicketTransferCountAggregateOutputType | null
+    _avg: TicketTransferAvgAggregateOutputType | null
+    _sum: TicketTransferSumAggregateOutputType | null
+    _min: TicketTransferMinAggregateOutputType | null
+    _max: TicketTransferMaxAggregateOutputType | null
+  }
+
+  type GetTicketTransferGroupByPayload<T extends TicketTransferGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TicketTransferGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TicketTransferGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TicketTransferGroupByOutputType[P]>
+            : GetScalarType<T[P], TicketTransferGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TicketTransferSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    fromPurchaseId?: boolean
+    toPurchaseId?: boolean
+    quantity?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    fromPurchase?: boolean | TicketPurchaseDefaultArgs<ExtArgs>
+    toPurchase?: boolean | TicketPurchaseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["ticketTransfer"]>
+
+  export type TicketTransferSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    fromPurchaseId?: boolean
+    toPurchaseId?: boolean
+    quantity?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    fromPurchase?: boolean | TicketPurchaseDefaultArgs<ExtArgs>
+    toPurchase?: boolean | TicketPurchaseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["ticketTransfer"]>
+
+  export type TicketTransferSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    fromPurchaseId?: boolean
+    toPurchaseId?: boolean
+    quantity?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    fromPurchase?: boolean | TicketPurchaseDefaultArgs<ExtArgs>
+    toPurchase?: boolean | TicketPurchaseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["ticketTransfer"]>
+
+  export type TicketTransferSelectScalar = {
+    id?: boolean
+    fromPurchaseId?: boolean
+    toPurchaseId?: boolean
+    quantity?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type TicketTransferOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fromPurchaseId" | "toPurchaseId" | "quantity" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["ticketTransfer"]>
+  export type TicketTransferInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    fromPurchase?: boolean | TicketPurchaseDefaultArgs<ExtArgs>
+    toPurchase?: boolean | TicketPurchaseDefaultArgs<ExtArgs>
+  }
+  export type TicketTransferIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    fromPurchase?: boolean | TicketPurchaseDefaultArgs<ExtArgs>
+    toPurchase?: boolean | TicketPurchaseDefaultArgs<ExtArgs>
+  }
+  export type TicketTransferIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    fromPurchase?: boolean | TicketPurchaseDefaultArgs<ExtArgs>
+    toPurchase?: boolean | TicketPurchaseDefaultArgs<ExtArgs>
+  }
+
+  export type $TicketTransferPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TicketTransfer"
+    objects: {
+      fromPurchase: Prisma.$TicketPurchasePayload<ExtArgs>
+      toPurchase: Prisma.$TicketPurchasePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      fromPurchaseId: number
+      toPurchaseId: number
+      quantity: number
+      status: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["ticketTransfer"]>
+    composites: {}
+  }
+
+  type TicketTransferGetPayload<S extends boolean | null | undefined | TicketTransferDefaultArgs> = $Result.GetResult<Prisma.$TicketTransferPayload, S>
+
+  type TicketTransferCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TicketTransferFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TicketTransferCountAggregateInputType | true
+    }
+
+  export interface TicketTransferDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TicketTransfer'], meta: { name: 'TicketTransfer' } }
+    /**
+     * Find zero or one TicketTransfer that matches the filter.
+     * @param {TicketTransferFindUniqueArgs} args - Arguments to find a TicketTransfer
+     * @example
+     * // Get one TicketTransfer
+     * const ticketTransfer = await prisma.ticketTransfer.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TicketTransferFindUniqueArgs>(args: SelectSubset<T, TicketTransferFindUniqueArgs<ExtArgs>>): Prisma__TicketTransferClient<$Result.GetResult<Prisma.$TicketTransferPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TicketTransfer that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TicketTransferFindUniqueOrThrowArgs} args - Arguments to find a TicketTransfer
+     * @example
+     * // Get one TicketTransfer
+     * const ticketTransfer = await prisma.ticketTransfer.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TicketTransferFindUniqueOrThrowArgs>(args: SelectSubset<T, TicketTransferFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TicketTransferClient<$Result.GetResult<Prisma.$TicketTransferPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TicketTransfer that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TicketTransferFindFirstArgs} args - Arguments to find a TicketTransfer
+     * @example
+     * // Get one TicketTransfer
+     * const ticketTransfer = await prisma.ticketTransfer.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TicketTransferFindFirstArgs>(args?: SelectSubset<T, TicketTransferFindFirstArgs<ExtArgs>>): Prisma__TicketTransferClient<$Result.GetResult<Prisma.$TicketTransferPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TicketTransfer that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TicketTransferFindFirstOrThrowArgs} args - Arguments to find a TicketTransfer
+     * @example
+     * // Get one TicketTransfer
+     * const ticketTransfer = await prisma.ticketTransfer.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TicketTransferFindFirstOrThrowArgs>(args?: SelectSubset<T, TicketTransferFindFirstOrThrowArgs<ExtArgs>>): Prisma__TicketTransferClient<$Result.GetResult<Prisma.$TicketTransferPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TicketTransfers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TicketTransferFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TicketTransfers
+     * const ticketTransfers = await prisma.ticketTransfer.findMany()
+     * 
+     * // Get first 10 TicketTransfers
+     * const ticketTransfers = await prisma.ticketTransfer.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const ticketTransferWithIdOnly = await prisma.ticketTransfer.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TicketTransferFindManyArgs>(args?: SelectSubset<T, TicketTransferFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TicketTransferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TicketTransfer.
+     * @param {TicketTransferCreateArgs} args - Arguments to create a TicketTransfer.
+     * @example
+     * // Create one TicketTransfer
+     * const TicketTransfer = await prisma.ticketTransfer.create({
+     *   data: {
+     *     // ... data to create a TicketTransfer
+     *   }
+     * })
+     * 
+     */
+    create<T extends TicketTransferCreateArgs>(args: SelectSubset<T, TicketTransferCreateArgs<ExtArgs>>): Prisma__TicketTransferClient<$Result.GetResult<Prisma.$TicketTransferPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TicketTransfers.
+     * @param {TicketTransferCreateManyArgs} args - Arguments to create many TicketTransfers.
+     * @example
+     * // Create many TicketTransfers
+     * const ticketTransfer = await prisma.ticketTransfer.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TicketTransferCreateManyArgs>(args?: SelectSubset<T, TicketTransferCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TicketTransfers and returns the data saved in the database.
+     * @param {TicketTransferCreateManyAndReturnArgs} args - Arguments to create many TicketTransfers.
+     * @example
+     * // Create many TicketTransfers
+     * const ticketTransfer = await prisma.ticketTransfer.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TicketTransfers and only return the `id`
+     * const ticketTransferWithIdOnly = await prisma.ticketTransfer.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TicketTransferCreateManyAndReturnArgs>(args?: SelectSubset<T, TicketTransferCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TicketTransferPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TicketTransfer.
+     * @param {TicketTransferDeleteArgs} args - Arguments to delete one TicketTransfer.
+     * @example
+     * // Delete one TicketTransfer
+     * const TicketTransfer = await prisma.ticketTransfer.delete({
+     *   where: {
+     *     // ... filter to delete one TicketTransfer
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TicketTransferDeleteArgs>(args: SelectSubset<T, TicketTransferDeleteArgs<ExtArgs>>): Prisma__TicketTransferClient<$Result.GetResult<Prisma.$TicketTransferPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TicketTransfer.
+     * @param {TicketTransferUpdateArgs} args - Arguments to update one TicketTransfer.
+     * @example
+     * // Update one TicketTransfer
+     * const ticketTransfer = await prisma.ticketTransfer.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TicketTransferUpdateArgs>(args: SelectSubset<T, TicketTransferUpdateArgs<ExtArgs>>): Prisma__TicketTransferClient<$Result.GetResult<Prisma.$TicketTransferPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TicketTransfers.
+     * @param {TicketTransferDeleteManyArgs} args - Arguments to filter TicketTransfers to delete.
+     * @example
+     * // Delete a few TicketTransfers
+     * const { count } = await prisma.ticketTransfer.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TicketTransferDeleteManyArgs>(args?: SelectSubset<T, TicketTransferDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TicketTransfers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TicketTransferUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TicketTransfers
+     * const ticketTransfer = await prisma.ticketTransfer.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TicketTransferUpdateManyArgs>(args: SelectSubset<T, TicketTransferUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TicketTransfers and returns the data updated in the database.
+     * @param {TicketTransferUpdateManyAndReturnArgs} args - Arguments to update many TicketTransfers.
+     * @example
+     * // Update many TicketTransfers
+     * const ticketTransfer = await prisma.ticketTransfer.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TicketTransfers and only return the `id`
+     * const ticketTransferWithIdOnly = await prisma.ticketTransfer.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TicketTransferUpdateManyAndReturnArgs>(args: SelectSubset<T, TicketTransferUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TicketTransferPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TicketTransfer.
+     * @param {TicketTransferUpsertArgs} args - Arguments to update or create a TicketTransfer.
+     * @example
+     * // Update or create a TicketTransfer
+     * const ticketTransfer = await prisma.ticketTransfer.upsert({
+     *   create: {
+     *     // ... data to create a TicketTransfer
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TicketTransfer we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TicketTransferUpsertArgs>(args: SelectSubset<T, TicketTransferUpsertArgs<ExtArgs>>): Prisma__TicketTransferClient<$Result.GetResult<Prisma.$TicketTransferPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TicketTransfers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TicketTransferCountArgs} args - Arguments to filter TicketTransfers to count.
+     * @example
+     * // Count the number of TicketTransfers
+     * const count = await prisma.ticketTransfer.count({
+     *   where: {
+     *     // ... the filter for the TicketTransfers we want to count
+     *   }
+     * })
+    **/
+    count<T extends TicketTransferCountArgs>(
+      args?: Subset<T, TicketTransferCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TicketTransferCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TicketTransfer.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TicketTransferAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TicketTransferAggregateArgs>(args: Subset<T, TicketTransferAggregateArgs>): Prisma.PrismaPromise<GetTicketTransferAggregateType<T>>
+
+    /**
+     * Group by TicketTransfer.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TicketTransferGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TicketTransferGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TicketTransferGroupByArgs['orderBy'] }
+        : { orderBy?: TicketTransferGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TicketTransferGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTicketTransferGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TicketTransfer model
+   */
+  readonly fields: TicketTransferFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TicketTransfer.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TicketTransferClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    fromPurchase<T extends TicketPurchaseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TicketPurchaseDefaultArgs<ExtArgs>>): Prisma__TicketPurchaseClient<$Result.GetResult<Prisma.$TicketPurchasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    toPurchase<T extends TicketPurchaseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TicketPurchaseDefaultArgs<ExtArgs>>): Prisma__TicketPurchaseClient<$Result.GetResult<Prisma.$TicketPurchasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TicketTransfer model
+   */
+  interface TicketTransferFieldRefs {
+    readonly id: FieldRef<"TicketTransfer", 'Int'>
+    readonly fromPurchaseId: FieldRef<"TicketTransfer", 'Int'>
+    readonly toPurchaseId: FieldRef<"TicketTransfer", 'Int'>
+    readonly quantity: FieldRef<"TicketTransfer", 'Int'>
+    readonly status: FieldRef<"TicketTransfer", 'String'>
+    readonly createdAt: FieldRef<"TicketTransfer", 'DateTime'>
+    readonly updatedAt: FieldRef<"TicketTransfer", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TicketTransfer findUnique
+   */
+  export type TicketTransferFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TicketTransfer
+     */
+    select?: TicketTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TicketTransfer
+     */
+    omit?: TicketTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TicketTransferInclude<ExtArgs> | null
+    /**
+     * Filter, which TicketTransfer to fetch.
+     */
+    where: TicketTransferWhereUniqueInput
+  }
+
+  /**
+   * TicketTransfer findUniqueOrThrow
+   */
+  export type TicketTransferFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TicketTransfer
+     */
+    select?: TicketTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TicketTransfer
+     */
+    omit?: TicketTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TicketTransferInclude<ExtArgs> | null
+    /**
+     * Filter, which TicketTransfer to fetch.
+     */
+    where: TicketTransferWhereUniqueInput
+  }
+
+  /**
+   * TicketTransfer findFirst
+   */
+  export type TicketTransferFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TicketTransfer
+     */
+    select?: TicketTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TicketTransfer
+     */
+    omit?: TicketTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TicketTransferInclude<ExtArgs> | null
+    /**
+     * Filter, which TicketTransfer to fetch.
+     */
+    where?: TicketTransferWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TicketTransfers to fetch.
+     */
+    orderBy?: TicketTransferOrderByWithRelationInput | TicketTransferOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TicketTransfers.
+     */
+    cursor?: TicketTransferWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TicketTransfers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TicketTransfers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TicketTransfers.
+     */
+    distinct?: TicketTransferScalarFieldEnum | TicketTransferScalarFieldEnum[]
+  }
+
+  /**
+   * TicketTransfer findFirstOrThrow
+   */
+  export type TicketTransferFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TicketTransfer
+     */
+    select?: TicketTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TicketTransfer
+     */
+    omit?: TicketTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TicketTransferInclude<ExtArgs> | null
+    /**
+     * Filter, which TicketTransfer to fetch.
+     */
+    where?: TicketTransferWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TicketTransfers to fetch.
+     */
+    orderBy?: TicketTransferOrderByWithRelationInput | TicketTransferOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TicketTransfers.
+     */
+    cursor?: TicketTransferWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TicketTransfers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TicketTransfers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TicketTransfers.
+     */
+    distinct?: TicketTransferScalarFieldEnum | TicketTransferScalarFieldEnum[]
+  }
+
+  /**
+   * TicketTransfer findMany
+   */
+  export type TicketTransferFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TicketTransfer
+     */
+    select?: TicketTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TicketTransfer
+     */
+    omit?: TicketTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TicketTransferInclude<ExtArgs> | null
+    /**
+     * Filter, which TicketTransfers to fetch.
+     */
+    where?: TicketTransferWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TicketTransfers to fetch.
+     */
+    orderBy?: TicketTransferOrderByWithRelationInput | TicketTransferOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TicketTransfers.
+     */
+    cursor?: TicketTransferWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TicketTransfers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TicketTransfers.
+     */
+    skip?: number
+    distinct?: TicketTransferScalarFieldEnum | TicketTransferScalarFieldEnum[]
+  }
+
+  /**
+   * TicketTransfer create
+   */
+  export type TicketTransferCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TicketTransfer
+     */
+    select?: TicketTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TicketTransfer
+     */
+    omit?: TicketTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TicketTransferInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TicketTransfer.
+     */
+    data: XOR<TicketTransferCreateInput, TicketTransferUncheckedCreateInput>
+  }
+
+  /**
+   * TicketTransfer createMany
+   */
+  export type TicketTransferCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TicketTransfers.
+     */
+    data: TicketTransferCreateManyInput | TicketTransferCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TicketTransfer createManyAndReturn
+   */
+  export type TicketTransferCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TicketTransfer
+     */
+    select?: TicketTransferSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TicketTransfer
+     */
+    omit?: TicketTransferOmit<ExtArgs> | null
+    /**
+     * The data used to create many TicketTransfers.
+     */
+    data: TicketTransferCreateManyInput | TicketTransferCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TicketTransferIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TicketTransfer update
+   */
+  export type TicketTransferUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TicketTransfer
+     */
+    select?: TicketTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TicketTransfer
+     */
+    omit?: TicketTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TicketTransferInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TicketTransfer.
+     */
+    data: XOR<TicketTransferUpdateInput, TicketTransferUncheckedUpdateInput>
+    /**
+     * Choose, which TicketTransfer to update.
+     */
+    where: TicketTransferWhereUniqueInput
+  }
+
+  /**
+   * TicketTransfer updateMany
+   */
+  export type TicketTransferUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TicketTransfers.
+     */
+    data: XOR<TicketTransferUpdateManyMutationInput, TicketTransferUncheckedUpdateManyInput>
+    /**
+     * Filter which TicketTransfers to update
+     */
+    where?: TicketTransferWhereInput
+    /**
+     * Limit how many TicketTransfers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TicketTransfer updateManyAndReturn
+   */
+  export type TicketTransferUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TicketTransfer
+     */
+    select?: TicketTransferSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TicketTransfer
+     */
+    omit?: TicketTransferOmit<ExtArgs> | null
+    /**
+     * The data used to update TicketTransfers.
+     */
+    data: XOR<TicketTransferUpdateManyMutationInput, TicketTransferUncheckedUpdateManyInput>
+    /**
+     * Filter which TicketTransfers to update
+     */
+    where?: TicketTransferWhereInput
+    /**
+     * Limit how many TicketTransfers to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TicketTransferIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TicketTransfer upsert
+   */
+  export type TicketTransferUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TicketTransfer
+     */
+    select?: TicketTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TicketTransfer
+     */
+    omit?: TicketTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TicketTransferInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TicketTransfer to update in case it exists.
+     */
+    where: TicketTransferWhereUniqueInput
+    /**
+     * In case the TicketTransfer found by the `where` argument doesn't exist, create a new TicketTransfer with this data.
+     */
+    create: XOR<TicketTransferCreateInput, TicketTransferUncheckedCreateInput>
+    /**
+     * In case the TicketTransfer was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TicketTransferUpdateInput, TicketTransferUncheckedUpdateInput>
+  }
+
+  /**
+   * TicketTransfer delete
+   */
+  export type TicketTransferDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TicketTransfer
+     */
+    select?: TicketTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TicketTransfer
+     */
+    omit?: TicketTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TicketTransferInclude<ExtArgs> | null
+    /**
+     * Filter which TicketTransfer to delete.
+     */
+    where: TicketTransferWhereUniqueInput
+  }
+
+  /**
+   * TicketTransfer deleteMany
+   */
+  export type TicketTransferDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TicketTransfers to delete
+     */
+    where?: TicketTransferWhereInput
+    /**
+     * Limit how many TicketTransfers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TicketTransfer without action
+   */
+  export type TicketTransferDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TicketTransfer
+     */
+    select?: TicketTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TicketTransfer
+     */
+    omit?: TicketTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TicketTransferInclude<ExtArgs> | null
   }
 
 
@@ -7189,6 +8516,19 @@ export namespace Prisma {
   };
 
   export type TicketPurchaseScalarFieldEnum = (typeof TicketPurchaseScalarFieldEnum)[keyof typeof TicketPurchaseScalarFieldEnum]
+
+
+  export const TicketTransferScalarFieldEnum: {
+    id: 'id',
+    fromPurchaseId: 'fromPurchaseId',
+    toPurchaseId: 'toPurchaseId',
+    quantity: 'quantity',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type TicketTransferScalarFieldEnum = (typeof TicketTransferScalarFieldEnum)[keyof typeof TicketTransferScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -7574,6 +8914,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"TicketPurchase"> | Date | string
     ticket?: XOR<TicketScalarRelationFilter, TicketWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    transfersFrom?: TicketTransferListRelationFilter
+    transfersTo?: TicketTransferListRelationFilter
   }
 
   export type TicketPurchaseOrderByWithRelationInput = {
@@ -7587,6 +8929,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     ticket?: TicketOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
+    transfersFrom?: TicketTransferOrderByRelationAggregateInput
+    transfersTo?: TicketTransferOrderByRelationAggregateInput
   }
 
   export type TicketPurchaseWhereUniqueInput = Prisma.AtLeast<{
@@ -7603,6 +8947,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"TicketPurchase"> | Date | string
     ticket?: XOR<TicketScalarRelationFilter, TicketWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    transfersFrom?: TicketTransferListRelationFilter
+    transfersTo?: TicketTransferListRelationFilter
   }, "id">
 
   export type TicketPurchaseOrderByWithAggregationInput = {
@@ -7633,6 +8979,76 @@ export namespace Prisma {
     userId?: IntWithAggregatesFilter<"TicketPurchase"> | number
     createdAt?: DateTimeWithAggregatesFilter<"TicketPurchase"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"TicketPurchase"> | Date | string
+  }
+
+  export type TicketTransferWhereInput = {
+    AND?: TicketTransferWhereInput | TicketTransferWhereInput[]
+    OR?: TicketTransferWhereInput[]
+    NOT?: TicketTransferWhereInput | TicketTransferWhereInput[]
+    id?: IntFilter<"TicketTransfer"> | number
+    fromPurchaseId?: IntFilter<"TicketTransfer"> | number
+    toPurchaseId?: IntFilter<"TicketTransfer"> | number
+    quantity?: IntFilter<"TicketTransfer"> | number
+    status?: StringFilter<"TicketTransfer"> | string
+    createdAt?: DateTimeFilter<"TicketTransfer"> | Date | string
+    updatedAt?: DateTimeFilter<"TicketTransfer"> | Date | string
+    fromPurchase?: XOR<TicketPurchaseScalarRelationFilter, TicketPurchaseWhereInput>
+    toPurchase?: XOR<TicketPurchaseScalarRelationFilter, TicketPurchaseWhereInput>
+  }
+
+  export type TicketTransferOrderByWithRelationInput = {
+    id?: SortOrder
+    fromPurchaseId?: SortOrder
+    toPurchaseId?: SortOrder
+    quantity?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    fromPurchase?: TicketPurchaseOrderByWithRelationInput
+    toPurchase?: TicketPurchaseOrderByWithRelationInput
+  }
+
+  export type TicketTransferWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: TicketTransferWhereInput | TicketTransferWhereInput[]
+    OR?: TicketTransferWhereInput[]
+    NOT?: TicketTransferWhereInput | TicketTransferWhereInput[]
+    fromPurchaseId?: IntFilter<"TicketTransfer"> | number
+    toPurchaseId?: IntFilter<"TicketTransfer"> | number
+    quantity?: IntFilter<"TicketTransfer"> | number
+    status?: StringFilter<"TicketTransfer"> | string
+    createdAt?: DateTimeFilter<"TicketTransfer"> | Date | string
+    updatedAt?: DateTimeFilter<"TicketTransfer"> | Date | string
+    fromPurchase?: XOR<TicketPurchaseScalarRelationFilter, TicketPurchaseWhereInput>
+    toPurchase?: XOR<TicketPurchaseScalarRelationFilter, TicketPurchaseWhereInput>
+  }, "id">
+
+  export type TicketTransferOrderByWithAggregationInput = {
+    id?: SortOrder
+    fromPurchaseId?: SortOrder
+    toPurchaseId?: SortOrder
+    quantity?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: TicketTransferCountOrderByAggregateInput
+    _avg?: TicketTransferAvgOrderByAggregateInput
+    _max?: TicketTransferMaxOrderByAggregateInput
+    _min?: TicketTransferMinOrderByAggregateInput
+    _sum?: TicketTransferSumOrderByAggregateInput
+  }
+
+  export type TicketTransferScalarWhereWithAggregatesInput = {
+    AND?: TicketTransferScalarWhereWithAggregatesInput | TicketTransferScalarWhereWithAggregatesInput[]
+    OR?: TicketTransferScalarWhereWithAggregatesInput[]
+    NOT?: TicketTransferScalarWhereWithAggregatesInput | TicketTransferScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"TicketTransfer"> | number
+    fromPurchaseId?: IntWithAggregatesFilter<"TicketTransfer"> | number
+    toPurchaseId?: IntWithAggregatesFilter<"TicketTransfer"> | number
+    quantity?: IntWithAggregatesFilter<"TicketTransfer"> | number
+    status?: StringWithAggregatesFilter<"TicketTransfer"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"TicketTransfer"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"TicketTransfer"> | Date | string
   }
 
   export type UserCreateInput = {
@@ -7903,6 +9319,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     ticket: TicketCreateNestedOneWithoutPurchasesInput
     user: UserCreateNestedOneWithoutTicketPurchasesInput
+    transfersFrom?: TicketTransferCreateNestedManyWithoutFromPurchaseInput
+    transfersTo?: TicketTransferCreateNestedManyWithoutToPurchaseInput
   }
 
   export type TicketPurchaseUncheckedCreateInput = {
@@ -7914,6 +9332,8 @@ export namespace Prisma {
     userId: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    transfersFrom?: TicketTransferUncheckedCreateNestedManyWithoutFromPurchaseInput
+    transfersTo?: TicketTransferUncheckedCreateNestedManyWithoutToPurchaseInput
   }
 
   export type TicketPurchaseUpdateInput = {
@@ -7924,6 +9344,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ticket?: TicketUpdateOneRequiredWithoutPurchasesNestedInput
     user?: UserUpdateOneRequiredWithoutTicketPurchasesNestedInput
+    transfersFrom?: TicketTransferUpdateManyWithoutFromPurchaseNestedInput
+    transfersTo?: TicketTransferUpdateManyWithoutToPurchaseNestedInput
   }
 
   export type TicketPurchaseUncheckedUpdateInput = {
@@ -7935,6 +9357,8 @@ export namespace Prisma {
     userId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    transfersFrom?: TicketTransferUncheckedUpdateManyWithoutFromPurchaseNestedInput
+    transfersTo?: TicketTransferUncheckedUpdateManyWithoutToPurchaseNestedInput
   }
 
   export type TicketPurchaseCreateManyInput = {
@@ -7963,6 +9387,71 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     ticketId?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TicketTransferCreateInput = {
+    quantity: number
+    status: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    fromPurchase: TicketPurchaseCreateNestedOneWithoutTransfersFromInput
+    toPurchase: TicketPurchaseCreateNestedOneWithoutTransfersToInput
+  }
+
+  export type TicketTransferUncheckedCreateInput = {
+    id?: number
+    fromPurchaseId: number
+    toPurchaseId: number
+    quantity: number
+    status: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TicketTransferUpdateInput = {
+    quantity?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fromPurchase?: TicketPurchaseUpdateOneRequiredWithoutTransfersFromNestedInput
+    toPurchase?: TicketPurchaseUpdateOneRequiredWithoutTransfersToNestedInput
+  }
+
+  export type TicketTransferUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    fromPurchaseId?: IntFieldUpdateOperationsInput | number
+    toPurchaseId?: IntFieldUpdateOperationsInput | number
+    quantity?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TicketTransferCreateManyInput = {
+    id?: number
+    fromPurchaseId: number
+    toPurchaseId: number
+    quantity: number
+    status: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TicketTransferUpdateManyMutationInput = {
+    quantity?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TicketTransferUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    fromPurchaseId?: IntFieldUpdateOperationsInput | number
+    toPurchaseId?: IntFieldUpdateOperationsInput | number
+    quantity?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -8329,6 +9818,16 @@ export namespace Prisma {
     isNot?: TicketWhereInput
   }
 
+  export type TicketTransferListRelationFilter = {
+    every?: TicketTransferWhereInput
+    some?: TicketTransferWhereInput
+    none?: TicketTransferWhereInput
+  }
+
+  export type TicketTransferOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type TicketPurchaseCountOrderByAggregateInput = {
     id?: SortOrder
     quantity?: SortOrder
@@ -8376,6 +9875,55 @@ export namespace Prisma {
     totalPaid?: SortOrder
     ticketId?: SortOrder
     userId?: SortOrder
+  }
+
+  export type TicketPurchaseScalarRelationFilter = {
+    is?: TicketPurchaseWhereInput
+    isNot?: TicketPurchaseWhereInput
+  }
+
+  export type TicketTransferCountOrderByAggregateInput = {
+    id?: SortOrder
+    fromPurchaseId?: SortOrder
+    toPurchaseId?: SortOrder
+    quantity?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TicketTransferAvgOrderByAggregateInput = {
+    id?: SortOrder
+    fromPurchaseId?: SortOrder
+    toPurchaseId?: SortOrder
+    quantity?: SortOrder
+  }
+
+  export type TicketTransferMaxOrderByAggregateInput = {
+    id?: SortOrder
+    fromPurchaseId?: SortOrder
+    toPurchaseId?: SortOrder
+    quantity?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TicketTransferMinOrderByAggregateInput = {
+    id?: SortOrder
+    fromPurchaseId?: SortOrder
+    toPurchaseId?: SortOrder
+    quantity?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TicketTransferSumOrderByAggregateInput = {
+    id?: SortOrder
+    fromPurchaseId?: SortOrder
+    toPurchaseId?: SortOrder
+    quantity?: SortOrder
   }
 
   export type EventCreateNestedManyWithoutOwnerInput = {
@@ -8726,6 +10274,34 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type TicketTransferCreateNestedManyWithoutFromPurchaseInput = {
+    create?: XOR<TicketTransferCreateWithoutFromPurchaseInput, TicketTransferUncheckedCreateWithoutFromPurchaseInput> | TicketTransferCreateWithoutFromPurchaseInput[] | TicketTransferUncheckedCreateWithoutFromPurchaseInput[]
+    connectOrCreate?: TicketTransferCreateOrConnectWithoutFromPurchaseInput | TicketTransferCreateOrConnectWithoutFromPurchaseInput[]
+    createMany?: TicketTransferCreateManyFromPurchaseInputEnvelope
+    connect?: TicketTransferWhereUniqueInput | TicketTransferWhereUniqueInput[]
+  }
+
+  export type TicketTransferCreateNestedManyWithoutToPurchaseInput = {
+    create?: XOR<TicketTransferCreateWithoutToPurchaseInput, TicketTransferUncheckedCreateWithoutToPurchaseInput> | TicketTransferCreateWithoutToPurchaseInput[] | TicketTransferUncheckedCreateWithoutToPurchaseInput[]
+    connectOrCreate?: TicketTransferCreateOrConnectWithoutToPurchaseInput | TicketTransferCreateOrConnectWithoutToPurchaseInput[]
+    createMany?: TicketTransferCreateManyToPurchaseInputEnvelope
+    connect?: TicketTransferWhereUniqueInput | TicketTransferWhereUniqueInput[]
+  }
+
+  export type TicketTransferUncheckedCreateNestedManyWithoutFromPurchaseInput = {
+    create?: XOR<TicketTransferCreateWithoutFromPurchaseInput, TicketTransferUncheckedCreateWithoutFromPurchaseInput> | TicketTransferCreateWithoutFromPurchaseInput[] | TicketTransferUncheckedCreateWithoutFromPurchaseInput[]
+    connectOrCreate?: TicketTransferCreateOrConnectWithoutFromPurchaseInput | TicketTransferCreateOrConnectWithoutFromPurchaseInput[]
+    createMany?: TicketTransferCreateManyFromPurchaseInputEnvelope
+    connect?: TicketTransferWhereUniqueInput | TicketTransferWhereUniqueInput[]
+  }
+
+  export type TicketTransferUncheckedCreateNestedManyWithoutToPurchaseInput = {
+    create?: XOR<TicketTransferCreateWithoutToPurchaseInput, TicketTransferUncheckedCreateWithoutToPurchaseInput> | TicketTransferCreateWithoutToPurchaseInput[] | TicketTransferUncheckedCreateWithoutToPurchaseInput[]
+    connectOrCreate?: TicketTransferCreateOrConnectWithoutToPurchaseInput | TicketTransferCreateOrConnectWithoutToPurchaseInput[]
+    createMany?: TicketTransferCreateManyToPurchaseInputEnvelope
+    connect?: TicketTransferWhereUniqueInput | TicketTransferWhereUniqueInput[]
+  }
+
   export type TicketUpdateOneRequiredWithoutPurchasesNestedInput = {
     create?: XOR<TicketCreateWithoutPurchasesInput, TicketUncheckedCreateWithoutPurchasesInput>
     connectOrCreate?: TicketCreateOrConnectWithoutPurchasesInput
@@ -8740,6 +10316,90 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutTicketPurchasesInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTicketPurchasesInput, UserUpdateWithoutTicketPurchasesInput>, UserUncheckedUpdateWithoutTicketPurchasesInput>
+  }
+
+  export type TicketTransferUpdateManyWithoutFromPurchaseNestedInput = {
+    create?: XOR<TicketTransferCreateWithoutFromPurchaseInput, TicketTransferUncheckedCreateWithoutFromPurchaseInput> | TicketTransferCreateWithoutFromPurchaseInput[] | TicketTransferUncheckedCreateWithoutFromPurchaseInput[]
+    connectOrCreate?: TicketTransferCreateOrConnectWithoutFromPurchaseInput | TicketTransferCreateOrConnectWithoutFromPurchaseInput[]
+    upsert?: TicketTransferUpsertWithWhereUniqueWithoutFromPurchaseInput | TicketTransferUpsertWithWhereUniqueWithoutFromPurchaseInput[]
+    createMany?: TicketTransferCreateManyFromPurchaseInputEnvelope
+    set?: TicketTransferWhereUniqueInput | TicketTransferWhereUniqueInput[]
+    disconnect?: TicketTransferWhereUniqueInput | TicketTransferWhereUniqueInput[]
+    delete?: TicketTransferWhereUniqueInput | TicketTransferWhereUniqueInput[]
+    connect?: TicketTransferWhereUniqueInput | TicketTransferWhereUniqueInput[]
+    update?: TicketTransferUpdateWithWhereUniqueWithoutFromPurchaseInput | TicketTransferUpdateWithWhereUniqueWithoutFromPurchaseInput[]
+    updateMany?: TicketTransferUpdateManyWithWhereWithoutFromPurchaseInput | TicketTransferUpdateManyWithWhereWithoutFromPurchaseInput[]
+    deleteMany?: TicketTransferScalarWhereInput | TicketTransferScalarWhereInput[]
+  }
+
+  export type TicketTransferUpdateManyWithoutToPurchaseNestedInput = {
+    create?: XOR<TicketTransferCreateWithoutToPurchaseInput, TicketTransferUncheckedCreateWithoutToPurchaseInput> | TicketTransferCreateWithoutToPurchaseInput[] | TicketTransferUncheckedCreateWithoutToPurchaseInput[]
+    connectOrCreate?: TicketTransferCreateOrConnectWithoutToPurchaseInput | TicketTransferCreateOrConnectWithoutToPurchaseInput[]
+    upsert?: TicketTransferUpsertWithWhereUniqueWithoutToPurchaseInput | TicketTransferUpsertWithWhereUniqueWithoutToPurchaseInput[]
+    createMany?: TicketTransferCreateManyToPurchaseInputEnvelope
+    set?: TicketTransferWhereUniqueInput | TicketTransferWhereUniqueInput[]
+    disconnect?: TicketTransferWhereUniqueInput | TicketTransferWhereUniqueInput[]
+    delete?: TicketTransferWhereUniqueInput | TicketTransferWhereUniqueInput[]
+    connect?: TicketTransferWhereUniqueInput | TicketTransferWhereUniqueInput[]
+    update?: TicketTransferUpdateWithWhereUniqueWithoutToPurchaseInput | TicketTransferUpdateWithWhereUniqueWithoutToPurchaseInput[]
+    updateMany?: TicketTransferUpdateManyWithWhereWithoutToPurchaseInput | TicketTransferUpdateManyWithWhereWithoutToPurchaseInput[]
+    deleteMany?: TicketTransferScalarWhereInput | TicketTransferScalarWhereInput[]
+  }
+
+  export type TicketTransferUncheckedUpdateManyWithoutFromPurchaseNestedInput = {
+    create?: XOR<TicketTransferCreateWithoutFromPurchaseInput, TicketTransferUncheckedCreateWithoutFromPurchaseInput> | TicketTransferCreateWithoutFromPurchaseInput[] | TicketTransferUncheckedCreateWithoutFromPurchaseInput[]
+    connectOrCreate?: TicketTransferCreateOrConnectWithoutFromPurchaseInput | TicketTransferCreateOrConnectWithoutFromPurchaseInput[]
+    upsert?: TicketTransferUpsertWithWhereUniqueWithoutFromPurchaseInput | TicketTransferUpsertWithWhereUniqueWithoutFromPurchaseInput[]
+    createMany?: TicketTransferCreateManyFromPurchaseInputEnvelope
+    set?: TicketTransferWhereUniqueInput | TicketTransferWhereUniqueInput[]
+    disconnect?: TicketTransferWhereUniqueInput | TicketTransferWhereUniqueInput[]
+    delete?: TicketTransferWhereUniqueInput | TicketTransferWhereUniqueInput[]
+    connect?: TicketTransferWhereUniqueInput | TicketTransferWhereUniqueInput[]
+    update?: TicketTransferUpdateWithWhereUniqueWithoutFromPurchaseInput | TicketTransferUpdateWithWhereUniqueWithoutFromPurchaseInput[]
+    updateMany?: TicketTransferUpdateManyWithWhereWithoutFromPurchaseInput | TicketTransferUpdateManyWithWhereWithoutFromPurchaseInput[]
+    deleteMany?: TicketTransferScalarWhereInput | TicketTransferScalarWhereInput[]
+  }
+
+  export type TicketTransferUncheckedUpdateManyWithoutToPurchaseNestedInput = {
+    create?: XOR<TicketTransferCreateWithoutToPurchaseInput, TicketTransferUncheckedCreateWithoutToPurchaseInput> | TicketTransferCreateWithoutToPurchaseInput[] | TicketTransferUncheckedCreateWithoutToPurchaseInput[]
+    connectOrCreate?: TicketTransferCreateOrConnectWithoutToPurchaseInput | TicketTransferCreateOrConnectWithoutToPurchaseInput[]
+    upsert?: TicketTransferUpsertWithWhereUniqueWithoutToPurchaseInput | TicketTransferUpsertWithWhereUniqueWithoutToPurchaseInput[]
+    createMany?: TicketTransferCreateManyToPurchaseInputEnvelope
+    set?: TicketTransferWhereUniqueInput | TicketTransferWhereUniqueInput[]
+    disconnect?: TicketTransferWhereUniqueInput | TicketTransferWhereUniqueInput[]
+    delete?: TicketTransferWhereUniqueInput | TicketTransferWhereUniqueInput[]
+    connect?: TicketTransferWhereUniqueInput | TicketTransferWhereUniqueInput[]
+    update?: TicketTransferUpdateWithWhereUniqueWithoutToPurchaseInput | TicketTransferUpdateWithWhereUniqueWithoutToPurchaseInput[]
+    updateMany?: TicketTransferUpdateManyWithWhereWithoutToPurchaseInput | TicketTransferUpdateManyWithWhereWithoutToPurchaseInput[]
+    deleteMany?: TicketTransferScalarWhereInput | TicketTransferScalarWhereInput[]
+  }
+
+  export type TicketPurchaseCreateNestedOneWithoutTransfersFromInput = {
+    create?: XOR<TicketPurchaseCreateWithoutTransfersFromInput, TicketPurchaseUncheckedCreateWithoutTransfersFromInput>
+    connectOrCreate?: TicketPurchaseCreateOrConnectWithoutTransfersFromInput
+    connect?: TicketPurchaseWhereUniqueInput
+  }
+
+  export type TicketPurchaseCreateNestedOneWithoutTransfersToInput = {
+    create?: XOR<TicketPurchaseCreateWithoutTransfersToInput, TicketPurchaseUncheckedCreateWithoutTransfersToInput>
+    connectOrCreate?: TicketPurchaseCreateOrConnectWithoutTransfersToInput
+    connect?: TicketPurchaseWhereUniqueInput
+  }
+
+  export type TicketPurchaseUpdateOneRequiredWithoutTransfersFromNestedInput = {
+    create?: XOR<TicketPurchaseCreateWithoutTransfersFromInput, TicketPurchaseUncheckedCreateWithoutTransfersFromInput>
+    connectOrCreate?: TicketPurchaseCreateOrConnectWithoutTransfersFromInput
+    upsert?: TicketPurchaseUpsertWithoutTransfersFromInput
+    connect?: TicketPurchaseWhereUniqueInput
+    update?: XOR<XOR<TicketPurchaseUpdateToOneWithWhereWithoutTransfersFromInput, TicketPurchaseUpdateWithoutTransfersFromInput>, TicketPurchaseUncheckedUpdateWithoutTransfersFromInput>
+  }
+
+  export type TicketPurchaseUpdateOneRequiredWithoutTransfersToNestedInput = {
+    create?: XOR<TicketPurchaseCreateWithoutTransfersToInput, TicketPurchaseUncheckedCreateWithoutTransfersToInput>
+    connectOrCreate?: TicketPurchaseCreateOrConnectWithoutTransfersToInput
+    upsert?: TicketPurchaseUpsertWithoutTransfersToInput
+    connect?: TicketPurchaseWhereUniqueInput
+    update?: XOR<XOR<TicketPurchaseUpdateToOneWithWhereWithoutTransfersToInput, TicketPurchaseUpdateWithoutTransfersToInput>, TicketPurchaseUncheckedUpdateWithoutTransfersToInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -8966,6 +10626,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     ticket: TicketCreateNestedOneWithoutPurchasesInput
+    transfersFrom?: TicketTransferCreateNestedManyWithoutFromPurchaseInput
+    transfersTo?: TicketTransferCreateNestedManyWithoutToPurchaseInput
   }
 
   export type TicketPurchaseUncheckedCreateWithoutUserInput = {
@@ -8976,6 +10638,8 @@ export namespace Prisma {
     ticketId: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    transfersFrom?: TicketTransferUncheckedCreateNestedManyWithoutFromPurchaseInput
+    transfersTo?: TicketTransferUncheckedCreateNestedManyWithoutToPurchaseInput
   }
 
   export type TicketPurchaseCreateOrConnectWithoutUserInput = {
@@ -9374,6 +11038,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutTicketPurchasesInput
+    transfersFrom?: TicketTransferCreateNestedManyWithoutFromPurchaseInput
+    transfersTo?: TicketTransferCreateNestedManyWithoutToPurchaseInput
   }
 
   export type TicketPurchaseUncheckedCreateWithoutTicketInput = {
@@ -9384,6 +11050,8 @@ export namespace Prisma {
     userId: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    transfersFrom?: TicketTransferUncheckedCreateNestedManyWithoutFromPurchaseInput
+    transfersTo?: TicketTransferUncheckedCreateNestedManyWithoutToPurchaseInput
   }
 
   export type TicketPurchaseCreateOrConnectWithoutTicketInput = {
@@ -9494,6 +11162,60 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutTicketPurchasesInput, UserUncheckedCreateWithoutTicketPurchasesInput>
   }
 
+  export type TicketTransferCreateWithoutFromPurchaseInput = {
+    quantity: number
+    status: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    toPurchase: TicketPurchaseCreateNestedOneWithoutTransfersToInput
+  }
+
+  export type TicketTransferUncheckedCreateWithoutFromPurchaseInput = {
+    id?: number
+    toPurchaseId: number
+    quantity: number
+    status: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TicketTransferCreateOrConnectWithoutFromPurchaseInput = {
+    where: TicketTransferWhereUniqueInput
+    create: XOR<TicketTransferCreateWithoutFromPurchaseInput, TicketTransferUncheckedCreateWithoutFromPurchaseInput>
+  }
+
+  export type TicketTransferCreateManyFromPurchaseInputEnvelope = {
+    data: TicketTransferCreateManyFromPurchaseInput | TicketTransferCreateManyFromPurchaseInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TicketTransferCreateWithoutToPurchaseInput = {
+    quantity: number
+    status: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    fromPurchase: TicketPurchaseCreateNestedOneWithoutTransfersFromInput
+  }
+
+  export type TicketTransferUncheckedCreateWithoutToPurchaseInput = {
+    id?: number
+    fromPurchaseId: number
+    quantity: number
+    status: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TicketTransferCreateOrConnectWithoutToPurchaseInput = {
+    where: TicketTransferWhereUniqueInput
+    create: XOR<TicketTransferCreateWithoutToPurchaseInput, TicketTransferUncheckedCreateWithoutToPurchaseInput>
+  }
+
+  export type TicketTransferCreateManyToPurchaseInputEnvelope = {
+    data: TicketTransferCreateManyToPurchaseInput | TicketTransferCreateManyToPurchaseInput[]
+    skipDuplicates?: boolean
+  }
+
   export type TicketUpsertWithoutPurchasesInput = {
     update: XOR<TicketUpdateWithoutPurchasesInput, TicketUncheckedUpdateWithoutPurchasesInput>
     create: XOR<TicketCreateWithoutPurchasesInput, TicketUncheckedCreateWithoutPurchasesInput>
@@ -9552,6 +11274,175 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ownedEvents?: EventUncheckedUpdateManyWithoutOwnerNestedInput
     eventSubscriptions?: EventSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type TicketTransferUpsertWithWhereUniqueWithoutFromPurchaseInput = {
+    where: TicketTransferWhereUniqueInput
+    update: XOR<TicketTransferUpdateWithoutFromPurchaseInput, TicketTransferUncheckedUpdateWithoutFromPurchaseInput>
+    create: XOR<TicketTransferCreateWithoutFromPurchaseInput, TicketTransferUncheckedCreateWithoutFromPurchaseInput>
+  }
+
+  export type TicketTransferUpdateWithWhereUniqueWithoutFromPurchaseInput = {
+    where: TicketTransferWhereUniqueInput
+    data: XOR<TicketTransferUpdateWithoutFromPurchaseInput, TicketTransferUncheckedUpdateWithoutFromPurchaseInput>
+  }
+
+  export type TicketTransferUpdateManyWithWhereWithoutFromPurchaseInput = {
+    where: TicketTransferScalarWhereInput
+    data: XOR<TicketTransferUpdateManyMutationInput, TicketTransferUncheckedUpdateManyWithoutFromPurchaseInput>
+  }
+
+  export type TicketTransferScalarWhereInput = {
+    AND?: TicketTransferScalarWhereInput | TicketTransferScalarWhereInput[]
+    OR?: TicketTransferScalarWhereInput[]
+    NOT?: TicketTransferScalarWhereInput | TicketTransferScalarWhereInput[]
+    id?: IntFilter<"TicketTransfer"> | number
+    fromPurchaseId?: IntFilter<"TicketTransfer"> | number
+    toPurchaseId?: IntFilter<"TicketTransfer"> | number
+    quantity?: IntFilter<"TicketTransfer"> | number
+    status?: StringFilter<"TicketTransfer"> | string
+    createdAt?: DateTimeFilter<"TicketTransfer"> | Date | string
+    updatedAt?: DateTimeFilter<"TicketTransfer"> | Date | string
+  }
+
+  export type TicketTransferUpsertWithWhereUniqueWithoutToPurchaseInput = {
+    where: TicketTransferWhereUniqueInput
+    update: XOR<TicketTransferUpdateWithoutToPurchaseInput, TicketTransferUncheckedUpdateWithoutToPurchaseInput>
+    create: XOR<TicketTransferCreateWithoutToPurchaseInput, TicketTransferUncheckedCreateWithoutToPurchaseInput>
+  }
+
+  export type TicketTransferUpdateWithWhereUniqueWithoutToPurchaseInput = {
+    where: TicketTransferWhereUniqueInput
+    data: XOR<TicketTransferUpdateWithoutToPurchaseInput, TicketTransferUncheckedUpdateWithoutToPurchaseInput>
+  }
+
+  export type TicketTransferUpdateManyWithWhereWithoutToPurchaseInput = {
+    where: TicketTransferScalarWhereInput
+    data: XOR<TicketTransferUpdateManyMutationInput, TicketTransferUncheckedUpdateManyWithoutToPurchaseInput>
+  }
+
+  export type TicketPurchaseCreateWithoutTransfersFromInput = {
+    quantity: number
+    totalPaid: Decimal | DecimalJsLike | number | string
+    status: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    ticket: TicketCreateNestedOneWithoutPurchasesInput
+    user: UserCreateNestedOneWithoutTicketPurchasesInput
+    transfersTo?: TicketTransferCreateNestedManyWithoutToPurchaseInput
+  }
+
+  export type TicketPurchaseUncheckedCreateWithoutTransfersFromInput = {
+    id?: number
+    quantity: number
+    totalPaid: Decimal | DecimalJsLike | number | string
+    status: string
+    ticketId: number
+    userId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    transfersTo?: TicketTransferUncheckedCreateNestedManyWithoutToPurchaseInput
+  }
+
+  export type TicketPurchaseCreateOrConnectWithoutTransfersFromInput = {
+    where: TicketPurchaseWhereUniqueInput
+    create: XOR<TicketPurchaseCreateWithoutTransfersFromInput, TicketPurchaseUncheckedCreateWithoutTransfersFromInput>
+  }
+
+  export type TicketPurchaseCreateWithoutTransfersToInput = {
+    quantity: number
+    totalPaid: Decimal | DecimalJsLike | number | string
+    status: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    ticket: TicketCreateNestedOneWithoutPurchasesInput
+    user: UserCreateNestedOneWithoutTicketPurchasesInput
+    transfersFrom?: TicketTransferCreateNestedManyWithoutFromPurchaseInput
+  }
+
+  export type TicketPurchaseUncheckedCreateWithoutTransfersToInput = {
+    id?: number
+    quantity: number
+    totalPaid: Decimal | DecimalJsLike | number | string
+    status: string
+    ticketId: number
+    userId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    transfersFrom?: TicketTransferUncheckedCreateNestedManyWithoutFromPurchaseInput
+  }
+
+  export type TicketPurchaseCreateOrConnectWithoutTransfersToInput = {
+    where: TicketPurchaseWhereUniqueInput
+    create: XOR<TicketPurchaseCreateWithoutTransfersToInput, TicketPurchaseUncheckedCreateWithoutTransfersToInput>
+  }
+
+  export type TicketPurchaseUpsertWithoutTransfersFromInput = {
+    update: XOR<TicketPurchaseUpdateWithoutTransfersFromInput, TicketPurchaseUncheckedUpdateWithoutTransfersFromInput>
+    create: XOR<TicketPurchaseCreateWithoutTransfersFromInput, TicketPurchaseUncheckedCreateWithoutTransfersFromInput>
+    where?: TicketPurchaseWhereInput
+  }
+
+  export type TicketPurchaseUpdateToOneWithWhereWithoutTransfersFromInput = {
+    where?: TicketPurchaseWhereInput
+    data: XOR<TicketPurchaseUpdateWithoutTransfersFromInput, TicketPurchaseUncheckedUpdateWithoutTransfersFromInput>
+  }
+
+  export type TicketPurchaseUpdateWithoutTransfersFromInput = {
+    quantity?: IntFieldUpdateOperationsInput | number
+    totalPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ticket?: TicketUpdateOneRequiredWithoutPurchasesNestedInput
+    user?: UserUpdateOneRequiredWithoutTicketPurchasesNestedInput
+    transfersTo?: TicketTransferUpdateManyWithoutToPurchaseNestedInput
+  }
+
+  export type TicketPurchaseUncheckedUpdateWithoutTransfersFromInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    quantity?: IntFieldUpdateOperationsInput | number
+    totalPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: StringFieldUpdateOperationsInput | string
+    ticketId?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    transfersTo?: TicketTransferUncheckedUpdateManyWithoutToPurchaseNestedInput
+  }
+
+  export type TicketPurchaseUpsertWithoutTransfersToInput = {
+    update: XOR<TicketPurchaseUpdateWithoutTransfersToInput, TicketPurchaseUncheckedUpdateWithoutTransfersToInput>
+    create: XOR<TicketPurchaseCreateWithoutTransfersToInput, TicketPurchaseUncheckedCreateWithoutTransfersToInput>
+    where?: TicketPurchaseWhereInput
+  }
+
+  export type TicketPurchaseUpdateToOneWithWhereWithoutTransfersToInput = {
+    where?: TicketPurchaseWhereInput
+    data: XOR<TicketPurchaseUpdateWithoutTransfersToInput, TicketPurchaseUncheckedUpdateWithoutTransfersToInput>
+  }
+
+  export type TicketPurchaseUpdateWithoutTransfersToInput = {
+    quantity?: IntFieldUpdateOperationsInput | number
+    totalPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ticket?: TicketUpdateOneRequiredWithoutPurchasesNestedInput
+    user?: UserUpdateOneRequiredWithoutTicketPurchasesNestedInput
+    transfersFrom?: TicketTransferUpdateManyWithoutFromPurchaseNestedInput
+  }
+
+  export type TicketPurchaseUncheckedUpdateWithoutTransfersToInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    quantity?: IntFieldUpdateOperationsInput | number
+    totalPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: StringFieldUpdateOperationsInput | string
+    ticketId?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    transfersFrom?: TicketTransferUncheckedUpdateManyWithoutFromPurchaseNestedInput
   }
 
   export type EventCreateManyOwnerInput = {
@@ -9637,6 +11528,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ticket?: TicketUpdateOneRequiredWithoutPurchasesNestedInput
+    transfersFrom?: TicketTransferUpdateManyWithoutFromPurchaseNestedInput
+    transfersTo?: TicketTransferUpdateManyWithoutToPurchaseNestedInput
   }
 
   export type TicketPurchaseUncheckedUpdateWithoutUserInput = {
@@ -9647,6 +11540,8 @@ export namespace Prisma {
     ticketId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    transfersFrom?: TicketTransferUncheckedUpdateManyWithoutFromPurchaseNestedInput
+    transfersTo?: TicketTransferUncheckedUpdateManyWithoutToPurchaseNestedInput
   }
 
   export type TicketPurchaseUncheckedUpdateManyWithoutUserInput = {
@@ -9736,6 +11631,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutTicketPurchasesNestedInput
+    transfersFrom?: TicketTransferUpdateManyWithoutFromPurchaseNestedInput
+    transfersTo?: TicketTransferUpdateManyWithoutToPurchaseNestedInput
   }
 
   export type TicketPurchaseUncheckedUpdateWithoutTicketInput = {
@@ -9746,6 +11643,8 @@ export namespace Prisma {
     userId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    transfersFrom?: TicketTransferUncheckedUpdateManyWithoutFromPurchaseNestedInput
+    transfersTo?: TicketTransferUncheckedUpdateManyWithoutToPurchaseNestedInput
   }
 
   export type TicketPurchaseUncheckedUpdateManyWithoutTicketInput = {
@@ -9754,6 +11653,76 @@ export namespace Prisma {
     totalPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: StringFieldUpdateOperationsInput | string
     userId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TicketTransferCreateManyFromPurchaseInput = {
+    id?: number
+    toPurchaseId: number
+    quantity: number
+    status: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TicketTransferCreateManyToPurchaseInput = {
+    id?: number
+    fromPurchaseId: number
+    quantity: number
+    status: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TicketTransferUpdateWithoutFromPurchaseInput = {
+    quantity?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    toPurchase?: TicketPurchaseUpdateOneRequiredWithoutTransfersToNestedInput
+  }
+
+  export type TicketTransferUncheckedUpdateWithoutFromPurchaseInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    toPurchaseId?: IntFieldUpdateOperationsInput | number
+    quantity?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TicketTransferUncheckedUpdateManyWithoutFromPurchaseInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    toPurchaseId?: IntFieldUpdateOperationsInput | number
+    quantity?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TicketTransferUpdateWithoutToPurchaseInput = {
+    quantity?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fromPurchase?: TicketPurchaseUpdateOneRequiredWithoutTransfersFromNestedInput
+  }
+
+  export type TicketTransferUncheckedUpdateWithoutToPurchaseInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    fromPurchaseId?: IntFieldUpdateOperationsInput | number
+    quantity?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TicketTransferUncheckedUpdateManyWithoutToPurchaseInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    fromPurchaseId?: IntFieldUpdateOperationsInput | number
+    quantity?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

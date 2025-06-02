@@ -71,16 +71,32 @@ model Ticket {
 }
 
 model TicketPurchase {
-  id        Int      @id @default(autoincrement())
-  quantity  Int // Number of tickets purchased
-  totalPaid Decimal  @db.Decimal(10, 2)
-  status    String // "PENDING", "COMPLETED", "CANCELLED", "REFUNDED"
-  ticket    Ticket   @relation(fields: [ticketId], references: [id])
-  ticketId  Int      @map("ticket_id")
-  user      User     @relation(fields: [userId], references: [id])
-  userId    Int      @map("user_id")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id            Int              @id @default(autoincrement())
+  quantity      Int // Number of tickets purchased
+  totalPaid     Decimal          @db.Decimal(10, 2)
+  status        String // "PENDING", "COMPLETED", "CANCELLED", "REFUNDED", "TRANSFERRED"
+  ticket        Ticket           @relation(fields: [ticketId], references: [id])
+  ticketId      Int              @map("ticket_id")
+  user          User             @relation(fields: [userId], references: [id])
+  userId        Int              @map("user_id")
+  createdAt     DateTime         @default(now()) @map("created_at")
+  updatedAt     DateTime         @updatedAt @map("updated_at")
+  transfersFrom TicketTransfer[] @relation("TransferFrom")
+  transfersTo   TicketTransfer[] @relation("TransferTo")
 
   @@map("ticket_purchases")
+}
+
+model TicketTransfer {
+  id             Int            @id @default(autoincrement())
+  fromPurchase   TicketPurchase @relation("TransferFrom", fields: [fromPurchaseId], references: [id])
+  fromPurchaseId Int            @map("from_purchase_id")
+  toPurchase     TicketPurchase @relation("TransferTo", fields: [toPurchaseId], references: [id])
+  toPurchaseId   Int            @map("to_purchase_id")
+  quantity       Int // Number of tickets being transferred
+  status         String // "PENDING", "COMPLETED", "CANCELLED"
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @updatedAt @map("updated_at")
+
+  @@map("ticket_transfers")
 }
