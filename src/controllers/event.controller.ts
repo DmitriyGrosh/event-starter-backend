@@ -146,6 +146,10 @@ export async function eventController(fastify: FastifyInstance) {
   // Create event
   fastify.post('/', {
     schema: {
+      tags: ['events'],
+      summary: 'Create a new event',
+      description: 'Create a new event with tickets (requires authentication)',
+      security: [{ bearerAuth: [] }],
       body: CreateEventBody,
       response: {
         201: Event
@@ -183,6 +187,10 @@ export async function eventController(fastify: FastifyInstance) {
   // Update event
   fastify.patch('/:id', {
     schema: {
+      tags: ['events'],
+      summary: 'Update an event',
+      description: 'Update an existing event (requires authentication and ownership)',
+      security: [{ bearerAuth: [] }],
       params: Type.Object({
         id: Type.Number()
       }),
@@ -217,6 +225,10 @@ export async function eventController(fastify: FastifyInstance) {
   // Delete event
   fastify.delete('/:id', {
     schema: {
+      tags: ['events'],
+      summary: 'Delete an event',
+      description: 'Delete an existing event (requires authentication and ownership)',
+      security: [{ bearerAuth: [] }],
       params: Type.Object({
         id: Type.Number()
       }),
@@ -250,6 +262,10 @@ export async function eventController(fastify: FastifyInstance) {
   // Subscribe to event
   fastify.post('/:id/subscribe', {
     schema: {
+      tags: ['events'],
+      summary: 'Subscribe to an event',
+      description: 'Subscribe the authenticated user to an event',
+      security: [{ bearerAuth: [] }],
       params: Type.Object({
         id: Type.Number()
       }),
@@ -276,6 +292,10 @@ export async function eventController(fastify: FastifyInstance) {
   // Unsubscribe from event
   fastify.delete('/:id/subscribe', {
     schema: {
+      tags: ['events'],
+      summary: 'Unsubscribe from an event',
+      description: 'Unsubscribe the authenticated user from an event',
+      security: [{ bearerAuth: [] }],
       params: Type.Object({
         id: Type.Number()
       }),

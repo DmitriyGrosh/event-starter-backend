@@ -12,6 +12,7 @@ import { errorHandler } from './middleware/error-handler'
 import { authenticate } from './middleware/auth'
 import { ticketController } from "@/controllers/ticket.controller";
 import { tagController } from "./controllers/tag.controller"
+import { publicEventController } from './controllers/public-event.controller'
 
 // Type definitions for environment variables
 declare module 'fastify' {
@@ -104,6 +105,9 @@ await fastify.register(fastifyJwt, {
 // Register error handler
 fastify.setErrorHandler(errorHandler)
 
+// Register public routes
+await fastify.register(publicEventController, { prefix: '/api/events' })
+
 // Register route modules with rate limiting for auth endpoints
 await fastify.register(async (fastify) => {
 	// Add stricter rate limiting for auth endpoints
@@ -127,7 +131,7 @@ fastify.register(async (fastify) => {
 
 	// Register protected route modules
 	await fastify.register(userController, { prefix: '/api/users' })
-	await fastify.register(eventController, { prefix: '/api/events' })
+	await fastify.register(eventController, { prefix: '/api/events/manage' })
 	await fastify.register(ticketController, { prefix: '/api/tickets' })
 	await fastify.register(tagController, { prefix: '/api/tags' })
 })
