@@ -7,10 +7,21 @@ const eventService = new EventService()
 const subscriptionService = new EventSubscriptionService()
 
 export async function eventController(fastify: FastifyInstance) {
+  const Ticket = Type.Object({
+    id: Type.Number(),
+    name: Type.String(),
+    description: Type.Optional(Type.String()),
+    price: Type.Number(),
+    quantity: Type.Number(),
+    eventId: Type.Number(),
+    createdAt: Type.String()
+  })
+
   const Event = Type.Object({
     id: Type.Number(),
     title: Type.String(),
     description: Type.Optional(Type.String()),
+    location: Type.String(),
     dateStart: Type.String(),
     dateEnd: Type.String(),
     ownerId: Type.Number(),
@@ -20,6 +31,7 @@ export async function eventController(fastify: FastifyInstance) {
       name: Type.String(),
       email: Type.String()
     }),
+    tickets: Type.Array(Ticket),
     _count: Type.Optional(Type.Object({
       subscribers: Type.Number()
     }))
@@ -29,6 +41,7 @@ export async function eventController(fastify: FastifyInstance) {
     id: Type.Number(),
     title: Type.String(),
     description: Type.Optional(Type.String()),
+    location: Type.String(),
     dateStart: Type.String(),
     dateEnd: Type.String(),
     ownerId: Type.Number(),
@@ -38,6 +51,7 @@ export async function eventController(fastify: FastifyInstance) {
       name: Type.String(),
       email: Type.String()
     }),
+    tickets: Type.Array(Ticket),
     subscribers: Type.Array(Type.Object({
       user: Type.Object({
         id: Type.Number(),
@@ -48,11 +62,20 @@ export async function eventController(fastify: FastifyInstance) {
     }))
   })
 
+  const CreateTicketBody = Type.Object({
+    name: Type.String(),
+    description: Type.Optional(Type.String()),
+    price: Type.Number(),
+    quantity: Type.Number()
+  })
+
   const CreateEventBody = Type.Object({
     title: Type.String(),
     description: Type.Optional(Type.String()),
+    location: Type.String(),
     dateStart: Type.String(),
-    dateEnd: Type.String()
+    dateEnd: Type.String(),
+    tickets: Type.Array(CreateTicketBody)
   })
 
   const UpdateEventBody = Type.Partial(CreateEventBody)
@@ -96,9 +119,26 @@ export async function eventController(fastify: FastifyInstance) {
     }
   }, async (request, reply) => {
     const { userId } = request.user as { userId: number }
+    const { tickets, ...eventData } = request.body as {
+      title: string
+      description?: string
+      location: string
+      dateStart: string
+      dateEnd: string
+      tickets: {
+        name: string
+        description?: string
+        price: number
+        quantity: number
+      }[]
+    }
+
     const data = {
-      ...request.body as any,
-      ownerId: userId
+      ...eventData,
+      ownerId: userId,
+      tickets: {
+        create: tickets
+      }
     }
 
     const event = await eventService.create(data)

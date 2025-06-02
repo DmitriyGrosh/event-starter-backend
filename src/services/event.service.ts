@@ -38,6 +38,7 @@ export class EventService {
             email: true
           }
         },
+        tickets: true,
         _count: {
           select: {
             subscribers: true
@@ -58,6 +59,7 @@ export class EventService {
             email: true
           }
         },
+        tickets: true,
         subscribers: {
           include: {
             user: {
@@ -83,9 +85,18 @@ export class EventService {
   async create(data: {
     title: string
     description?: string
+    location: string
     dateStart: string
     dateEnd: string
     ownerId: number
+    tickets: {
+      create: {
+        name: string
+        description?: string
+        price: number
+        quantity: number
+      }[]
+    }
   }) {
     return prisma.event.create({
       data,
@@ -96,6 +107,12 @@ export class EventService {
             name: true,
             email: true
           }
+        },
+        tickets: true,
+        _count: {
+          select: {
+            subscribers: true
+          }
         }
       }
     })
@@ -104,6 +121,7 @@ export class EventService {
   async update(id: number, data: Partial<{
     title: string
     description?: string
+    location: string
     dateStart: string
     dateEnd: string
   }>) {
@@ -125,6 +143,12 @@ export class EventService {
             name: true,
             email: true
           }
+        },
+        tickets: true,
+        _count: {
+          select: {
+            subscribers: true
+          }
         }
       }
     })
@@ -140,7 +164,10 @@ export class EventService {
     }
 
     return prisma.event.delete({
-      where: { id }
+      where: { id },
+      include: {
+        tickets: true
+      }
     })
   }
 }

@@ -8,6 +8,7 @@ import { eventController } from './controllers/event.controller'
 import { authController } from './controllers/auth.controller'
 import { errorHandler } from './middleware/error-handler'
 import { authenticate } from './middleware/auth'
+import {ticketController} from "@/controllers/ticket.controller";
 
 // Type definitions for environment variables
 declare module 'fastify' {
@@ -81,6 +82,7 @@ fastify.register(async (fastify) => {
 	// Register protected route modules
 	await fastify.register(userController, { prefix: '/api/users' })
 	await fastify.register(eventController, { prefix: '/api/events' })
+	await fastify.register(ticketController, { prefix: '/api/tickets' })
 })
 
 // Start server
