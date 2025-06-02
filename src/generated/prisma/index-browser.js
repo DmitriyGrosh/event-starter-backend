@@ -135,7 +135,14 @@ exports.Prisma.EventScalarFieldEnum = {
   dateStart: 'dateStart',
   dateEnd: 'dateEnd',
   createdAt: 'createdAt',
-  userId: 'userId'
+  ownerId: 'ownerId'
+};
+
+exports.Prisma.EventSubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  eventId: 'eventId',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -156,7 +163,8 @@ exports.Prisma.NullsOrder = {
 
 exports.Prisma.ModelName = {
   User: 'User',
-  Event: 'Event'
+  Event: 'Event',
+  EventSubscription: 'EventSubscription'
 };
 
 /**

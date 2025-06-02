@@ -1,9 +1,10 @@
 import { FastifyInstance } from 'fastify'
 import { Type } from '@fastify/type-provider-typebox'
 import { EventService } from '../services/event.service'
-import { Prisma } from '../generated/prisma'
+import { EventSubscriptionService } from '../services/event-subscription.service'
 
 const eventService = new EventService()
+const subscriptionService = new EventSubscriptionService()
 
 export async function eventController(fastify: FastifyInstance) {
   const Event = Type.Object({
@@ -12,64 +13,69 @@ export async function eventController(fastify: FastifyInstance) {
     description: Type.Optional(Type.String()),
     dateStart: Type.String(),
     dateEnd: Type.String(),
-    userId: Type.Number(),
+    ownerId: Type.Number(),
     createdAt: Type.String(),
-    user: Type.Object({
+    owner: Type.Object({
       id: Type.Number(),
       name: Type.String(),
-      email: Type.String(),
-      createdAt: Type.String()
-    })
+      email: Type.String()
+    }),
+    _count: Type.Optional(Type.Object({
+      subscribers: Type.Number()
+    }))
+  })
+
+  const EventWithSubscribers = Type.Object({
+    id: Type.Number(),
+    title: Type.String(),
+    description: Type.Optional(Type.String()),
+    dateStart: Type.String(),
+    dateEnd: Type.String(),
+    ownerId: Type.Number(),
+    createdAt: Type.String(),
+    owner: Type.Object({
+      id: Type.Number(),
+      name: Type.String(),
+      email: Type.String()
+    }),
+    subscribers: Type.Array(Type.Object({
+      user: Type.Object({
+        id: Type.Number(),
+        name: Type.String(),
+        email: Type.String(),
+        createdAt: Type.String()
+      })
+    }))
   })
 
   const CreateEventBody = Type.Object({
     title: Type.String(),
     description: Type.Optional(Type.String()),
     dateStart: Type.String(),
-    dateEnd: Type.String(),
-    userId: Type.Number()
+    dateEnd: Type.String()
   })
 
   const UpdateEventBody = Type.Partial(CreateEventBody)
 
-  const QueryString = Type.Object({
-    userId: Type.Optional(Type.Number()),
-    search: Type.Optional(Type.String()),
-    fromDate: Type.Optional(Type.String({ format: 'date-time' })),
-    toDate: Type.Optional(Type.String({ format: 'date-time' }))
-  })
-
-  // Get all events with filters
+  // Get all events with subscription counts
   fastify.get('/', {
     schema: {
-      querystring: QueryString,
       response: {
         200: Type.Array(Event)
       }
     }
-  }, async (request) => {
-    const query = request.query as {
-      userId?: number
-      search?: string
-      fromDate?: string
-      toDate?: string
-    }
-
-    return eventService.findAll({
-      ...query,
-      fromDate: query.fromDate ? new Date(query.fromDate) : undefined,
-      toDate: query.toDate ? new Date(query.toDate) : undefined
-    })
+  }, async () => {
+    return eventService.findAll()
   })
 
-  // Get event by ID
+  // Get event by ID with subscribers
   fastify.get('/:id', {
     schema: {
       params: Type.Object({
         id: Type.Number()
       }),
       response: {
-        200: Event,
+        200: EventWithSubscribers,
         404: Type.Object({
           message: Type.String()
         })
@@ -85,32 +91,17 @@ export async function eventController(fastify: FastifyInstance) {
     schema: {
       body: CreateEventBody,
       response: {
-        201: Event,
-        400: Type.Object({
-          message: Type.String()
-        })
+        201: Event
       }
     }
   }, async (request, reply) => {
-    const data = request.body as {
-      title: string
-      description?: string
-      dateStart: string
-      dateEnd: string
-      userId: number
+    const { userId } = request.user as { userId: number }
+    const data = {
+      ...request.body as any,
+      ownerId: userId
     }
 
-    const eventData: Prisma.EventCreateInput = {
-      title: data.title,
-      description: data.description,
-      dateStart: new Date(data.dateStart),
-      dateEnd: new Date(data.dateEnd),
-      user: {
-        connect: { id: data.userId }
-      }
-    }
-
-    const event = await eventService.create(eventData)
+    const event = await eventService.create(data)
     reply.code(201)
     return event
   })
@@ -124,6 +115,9 @@ export async function eventController(fastify: FastifyInstance) {
       body: UpdateEventBody,
       response: {
         200: Event,
+        403: Type.Object({
+          message: Type.String()
+        }),
         404: Type.Object({
           message: Type.String()
         })
@@ -131,27 +125,19 @@ export async function eventController(fastify: FastifyInstance) {
     }
   }, async (request) => {
     const { id } = request.params as { id: number }
-    const data = request.body as Partial<{
-      title: string
-      description?: string
-      dateStart: string
-      dateEnd: string
-      userId: number
-    }>
+    const { userId } = request.user as { userId: number }
+    const data = request.body as any
 
-    const eventData: Prisma.EventUpdateInput = {
-      ...(data.title && { title: data.title }),
-      ...(data.description !== undefined && { description: data.description }),
-      ...(data.dateStart && { dateStart: new Date(data.dateStart) }),
-      ...(data.dateEnd && { dateEnd: new Date(data.dateEnd) }),
-      ...(data.userId && {
-        user: {
-          connect: { id: data.userId }
-        }
-      })
+    // Check if user owns the event
+    const event = await eventService.findById(id)
+    if (!event) {
+      throw new Error('Event not found')
+    }
+    if (event.ownerId !== userId) {
+      throw new Error('Not authorized to update this event')
     }
 
-    return eventService.update(id, eventData)
+    return eventService.update(id, data)
   })
 
   // Delete event
@@ -162,6 +148,9 @@ export async function eventController(fastify: FastifyInstance) {
       }),
       response: {
         204: Type.Null(),
+        403: Type.Object({
+          message: Type.String()
+        }),
         404: Type.Object({
           message: Type.String()
         })
@@ -169,7 +158,95 @@ export async function eventController(fastify: FastifyInstance) {
     }
   }, async (request, reply) => {
     const { id } = request.params as { id: number }
+    const { userId } = request.user as { userId: number }
+
+    // Check if user owns the event
+    const event = await eventService.findById(id)
+    if (!event) {
+      throw new Error('Event not found')
+    }
+    if (event.ownerId !== userId) {
+      throw new Error('Not authorized to delete this event')
+    }
+
     await eventService.delete(id)
     reply.code(204)
   })
-} 
+
+  // Subscribe to event
+  fastify.post('/:id/subscribe', {
+    schema: {
+      params: Type.Object({
+        id: Type.Number()
+      }),
+      response: {
+        200: Type.Object({
+          message: Type.String()
+        }),
+        400: Type.Object({
+          message: Type.String()
+        }),
+        404: Type.Object({
+          message: Type.String()
+        })
+      }
+    }
+  }, async (request) => {
+    const { id } = request.params as { id: number }
+    const { userId } = request.user as { userId: number }
+
+    await subscriptionService.subscribe(userId, id)
+    return { message: 'Successfully subscribed to event' }
+  })
+
+  // Unsubscribe from event
+  fastify.delete('/:id/subscribe', {
+    schema: {
+      params: Type.Object({
+        id: Type.Number()
+      }),
+      response: {
+        200: Type.Object({
+          message: Type.String()
+        }),
+        400: Type.Object({
+          message: Type.String()
+        }),
+        404: Type.Object({
+          message: Type.String()
+        })
+      }
+    }
+  }, async (request) => {
+    const { id } = request.params as { id: number }
+    const { userId } = request.user as { userId: number }
+
+    await subscriptionService.unsubscribe(userId, id)
+    return { message: 'Successfully unsubscribed from event' }
+  })
+
+  // Get event subscribers
+  fastify.get('/:id/subscribers', {
+    schema: {
+      params: Type.Object({
+        id: Type.Number()
+      }),
+      response: {
+        200: Type.Array(Type.Object({
+          user: Type.Object({
+            id: Type.Number(),
+            name: Type.String(),
+            email: Type.String(),
+            createdAt: Type.String()
+          })
+        })),
+        404: Type.Object({
+          message: Type.String()
+        })
+      }
+    }
+  }, async (request) => {
+    const { id } = request.params as { id: number }
+    return subscriptionService.getEventSubscribers(id)
+  })
+}

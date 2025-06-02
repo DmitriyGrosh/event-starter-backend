@@ -35,16 +35,16 @@
 		"@fastify/rate-limit": "^10.3.0",
 		"@fastify/sensible": "^6.0.3",
 		"@prisma/client": "^6.8.2",
-		"@types/bcrypt": "^5.0.2",
-		"bcrypt": "^6.0.0",
 		"dotenv": "^16.5.0",
 		"fastify": "^5.3.3",
 		"pg": "^8.16.0"
 	},
 	"devDependencies": {
 		"@fastify/type-provider-typebox": "^5.1.0",
+		"@types/bcrypt": "^5.0.2",
 		"@types/node": "^22.15.21",
 		"@types/pg": "^8.15.4",
+		"bcrypt": "^6.0.0",
 		"prisma": "^6.8.2",
 		"ts-node": "^10.9.2",
 		"tsup": "^8.5.0",

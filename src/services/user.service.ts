@@ -1,11 +1,15 @@
 import prisma from '../db/client'
-import { Prisma } from '../generated/prisma'
 
 export class UserService {
   async findAll() {
     return prisma.user.findMany({
       include: {
-        events: true
+        ownedEvents: true,
+        eventSubscriptions: {
+          include: {
+            event: true
+          }
+        }
       }
     })
   }
@@ -14,7 +18,12 @@ export class UserService {
     const user = await prisma.user.findUnique({
       where: { id },
       include: {
-        events: true
+        ownedEvents: true,
+        eventSubscriptions: {
+          include: {
+            event: true
+          }
+        }
       }
     })
 
@@ -25,16 +34,29 @@ export class UserService {
     return user
   }
 
-  async create(data: Prisma.UserCreateInput) {
+  async create(data: {
+    name: string
+    email: string
+    password: string
+  }) {
     return prisma.user.create({
       data,
       include: {
-        events: true
+        ownedEvents: true,
+        eventSubscriptions: {
+          include: {
+            event: true
+          }
+        }
       }
     })
   }
 
-  async update(id: number, data: Prisma.UserUpdateInput) {
+  async update(id: number, data: Partial<{
+    name: string
+    email: string
+    password: string
+  }>) {
     const user = await prisma.user.findUnique({
       where: { id }
     })
@@ -47,7 +69,12 @@ export class UserService {
       where: { id },
       data,
       include: {
-        events: true
+        ownedEvents: true,
+        eventSubscriptions: {
+          include: {
+            event: true
+          }
+        }
       }
     })
   }
@@ -65,4 +92,4 @@ export class UserService {
       where: { id }
     })
   }
-} 
+}

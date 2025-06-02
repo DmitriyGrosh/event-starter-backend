@@ -23,6 +23,11 @@ export type User = $Result.DefaultSelection<Prisma.$UserPayload>
  * 
  */
 export type Event = $Result.DefaultSelection<Prisma.$EventPayload>
+/**
+ * Model EventSubscription
+ * 
+ */
+export type EventSubscription = $Result.DefaultSelection<Prisma.$EventSubscriptionPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -168,6 +173,16 @@ export class PrismaClient<
     * ```
     */
   get event(): Prisma.EventDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.eventSubscription`: Exposes CRUD operations for the **EventSubscription** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EventSubscriptions
+    * const eventSubscriptions = await prisma.eventSubscription.findMany()
+    * ```
+    */
+  get eventSubscription(): Prisma.EventSubscriptionDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -609,7 +624,8 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
-    Event: 'Event'
+    Event: 'Event',
+    EventSubscription: 'EventSubscription'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -628,7 +644,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "event"
+      modelProps: "user" | "event" | "eventSubscription"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -780,6 +796,80 @@ export namespace Prisma {
           }
         }
       }
+      EventSubscription: {
+        payload: Prisma.$EventSubscriptionPayload<ExtArgs>
+        fields: Prisma.EventSubscriptionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EventSubscriptionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventSubscriptionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EventSubscriptionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventSubscriptionPayload>
+          }
+          findFirst: {
+            args: Prisma.EventSubscriptionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventSubscriptionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EventSubscriptionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventSubscriptionPayload>
+          }
+          findMany: {
+            args: Prisma.EventSubscriptionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventSubscriptionPayload>[]
+          }
+          create: {
+            args: Prisma.EventSubscriptionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventSubscriptionPayload>
+          }
+          createMany: {
+            args: Prisma.EventSubscriptionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EventSubscriptionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventSubscriptionPayload>[]
+          }
+          delete: {
+            args: Prisma.EventSubscriptionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventSubscriptionPayload>
+          }
+          update: {
+            args: Prisma.EventSubscriptionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventSubscriptionPayload>
+          }
+          deleteMany: {
+            args: Prisma.EventSubscriptionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EventSubscriptionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.EventSubscriptionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventSubscriptionPayload>[]
+          }
+          upsert: {
+            args: Prisma.EventSubscriptionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventSubscriptionPayload>
+          }
+          aggregate: {
+            args: Prisma.EventSubscriptionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEventSubscription>
+          }
+          groupBy: {
+            args: Prisma.EventSubscriptionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EventSubscriptionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EventSubscriptionCountArgs<ExtArgs>
+            result: $Utils.Optional<EventSubscriptionCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -866,6 +956,7 @@ export namespace Prisma {
   export type GlobalOmitConfig = {
     user?: UserOmit
     event?: EventOmit
+    eventSubscription?: EventSubscriptionOmit
   }
 
   /* Types for Logging */
@@ -960,11 +1051,13 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    events: number
+    ownedEvents: number
+    eventSubscriptions: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    events?: boolean | UserCountOutputTypeCountEventsArgs
+    ownedEvents?: boolean | UserCountOutputTypeCountOwnedEventsArgs
+    eventSubscriptions?: boolean | UserCountOutputTypeCountEventSubscriptionsArgs
   }
 
   // Custom InputTypes
@@ -981,8 +1074,46 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountOwnedEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: EventWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountEventSubscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventSubscriptionWhereInput
+  }
+
+
+  /**
+   * Count Type EventCountOutputType
+   */
+
+  export type EventCountOutputType = {
+    subscribers: number
+  }
+
+  export type EventCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    subscribers?: boolean | EventCountOutputTypeCountSubscribersArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * EventCountOutputType without action
+   */
+  export type EventCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventCountOutputType
+     */
+    select?: EventCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * EventCountOutputType without action
+   */
+  export type EventCountOutputTypeCountSubscribersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventSubscriptionWhereInput
   }
 
 
@@ -1188,7 +1319,8 @@ export namespace Prisma {
     email?: boolean
     password?: boolean
     createdAt?: boolean
-    events?: boolean | User$eventsArgs<ExtArgs>
+    ownedEvents?: boolean | User$ownedEventsArgs<ExtArgs>
+    eventSubscriptions?: boolean | User$eventSubscriptionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1218,7 +1350,8 @@ export namespace Prisma {
 
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "createdAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    events?: boolean | User$eventsArgs<ExtArgs>
+    ownedEvents?: boolean | User$ownedEventsArgs<ExtArgs>
+    eventSubscriptions?: boolean | User$eventSubscriptionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1227,7 +1360,8 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      events: Prisma.$EventPayload<ExtArgs>[]
+      ownedEvents: Prisma.$EventPayload<ExtArgs>[]
+      eventSubscriptions: Prisma.$EventSubscriptionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -1629,7 +1763,8 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    events<T extends User$eventsArgs<ExtArgs> = {}>(args?: Subset<T, User$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ownedEvents<T extends User$ownedEventsArgs<ExtArgs> = {}>(args?: Subset<T, User$ownedEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    eventSubscriptions<T extends User$eventSubscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, User$eventSubscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventSubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2052,9 +2187,9 @@ export namespace Prisma {
   }
 
   /**
-   * User.events
+   * User.ownedEvents
    */
-  export type User$eventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$ownedEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Event
      */
@@ -2073,6 +2208,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: EventScalarFieldEnum | EventScalarFieldEnum[]
+  }
+
+  /**
+   * User.eventSubscriptions
+   */
+  export type User$eventSubscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventSubscription
+     */
+    select?: EventSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventSubscription
+     */
+    omit?: EventSubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventSubscriptionInclude<ExtArgs> | null
+    where?: EventSubscriptionWhereInput
+    orderBy?: EventSubscriptionOrderByWithRelationInput | EventSubscriptionOrderByWithRelationInput[]
+    cursor?: EventSubscriptionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EventSubscriptionScalarFieldEnum | EventSubscriptionScalarFieldEnum[]
   }
 
   /**
@@ -2108,12 +2267,12 @@ export namespace Prisma {
 
   export type EventAvgAggregateOutputType = {
     id: number | null
-    userId: number | null
+    ownerId: number | null
   }
 
   export type EventSumAggregateOutputType = {
     id: number | null
-    userId: number | null
+    ownerId: number | null
   }
 
   export type EventMinAggregateOutputType = {
@@ -2123,7 +2282,7 @@ export namespace Prisma {
     dateStart: Date | null
     dateEnd: Date | null
     createdAt: Date | null
-    userId: number | null
+    ownerId: number | null
   }
 
   export type EventMaxAggregateOutputType = {
@@ -2133,7 +2292,7 @@ export namespace Prisma {
     dateStart: Date | null
     dateEnd: Date | null
     createdAt: Date | null
-    userId: number | null
+    ownerId: number | null
   }
 
   export type EventCountAggregateOutputType = {
@@ -2143,19 +2302,19 @@ export namespace Prisma {
     dateStart: number
     dateEnd: number
     createdAt: number
-    userId: number
+    ownerId: number
     _all: number
   }
 
 
   export type EventAvgAggregateInputType = {
     id?: true
-    userId?: true
+    ownerId?: true
   }
 
   export type EventSumAggregateInputType = {
     id?: true
-    userId?: true
+    ownerId?: true
   }
 
   export type EventMinAggregateInputType = {
@@ -2165,7 +2324,7 @@ export namespace Prisma {
     dateStart?: true
     dateEnd?: true
     createdAt?: true
-    userId?: true
+    ownerId?: true
   }
 
   export type EventMaxAggregateInputType = {
@@ -2175,7 +2334,7 @@ export namespace Prisma {
     dateStart?: true
     dateEnd?: true
     createdAt?: true
-    userId?: true
+    ownerId?: true
   }
 
   export type EventCountAggregateInputType = {
@@ -2185,7 +2344,7 @@ export namespace Prisma {
     dateStart?: true
     dateEnd?: true
     createdAt?: true
-    userId?: true
+    ownerId?: true
     _all?: true
   }
 
@@ -2282,7 +2441,7 @@ export namespace Prisma {
     dateStart: Date
     dateEnd: Date
     createdAt: Date
-    userId: number
+    ownerId: number
     _count: EventCountAggregateOutputType | null
     _avg: EventAvgAggregateOutputType | null
     _sum: EventSumAggregateOutputType | null
@@ -2311,8 +2470,10 @@ export namespace Prisma {
     dateStart?: boolean
     dateEnd?: boolean
     createdAt?: boolean
-    userId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    ownerId?: boolean
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+    subscribers?: boolean | Event$subscribersArgs<ExtArgs>
+    _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
   export type EventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2322,8 +2483,8 @@ export namespace Prisma {
     dateStart?: boolean
     dateEnd?: boolean
     createdAt?: boolean
-    userId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    ownerId?: boolean
+    owner?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
   export type EventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2333,8 +2494,8 @@ export namespace Prisma {
     dateStart?: boolean
     dateEnd?: boolean
     createdAt?: boolean
-    userId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    ownerId?: boolean
+    owner?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
   export type EventSelectScalar = {
@@ -2344,24 +2505,27 @@ export namespace Prisma {
     dateStart?: boolean
     dateEnd?: boolean
     createdAt?: boolean
-    userId?: boolean
+    ownerId?: boolean
   }
 
-  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "dateStart" | "dateEnd" | "createdAt" | "userId", ExtArgs["result"]["event"]>
+  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "dateStart" | "dateEnd" | "createdAt" | "ownerId", ExtArgs["result"]["event"]>
   export type EventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+    subscribers?: boolean | Event$subscribersArgs<ExtArgs>
+    _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type EventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type EventIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $EventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Event"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
+      owner: Prisma.$UserPayload<ExtArgs>
+      subscribers: Prisma.$EventSubscriptionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -2370,7 +2534,7 @@ export namespace Prisma {
       dateStart: Date
       dateEnd: Date
       createdAt: Date
-      userId: number
+      ownerId: number
     }, ExtArgs["result"]["event"]>
     composites: {}
   }
@@ -2765,7 +2929,8 @@ export namespace Prisma {
    */
   export interface Prisma__EventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    owner<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    subscribers<T extends Event$subscribersArgs<ExtArgs> = {}>(args?: Subset<T, Event$subscribersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventSubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2801,7 +2966,7 @@ export namespace Prisma {
     readonly dateStart: FieldRef<"Event", 'DateTime'>
     readonly dateEnd: FieldRef<"Event", 'DateTime'>
     readonly createdAt: FieldRef<"Event", 'DateTime'>
-    readonly userId: FieldRef<"Event", 'Int'>
+    readonly ownerId: FieldRef<"Event", 'Int'>
   }
     
 
@@ -3198,6 +3363,30 @@ export namespace Prisma {
   }
 
   /**
+   * Event.subscribers
+   */
+  export type Event$subscribersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventSubscription
+     */
+    select?: EventSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventSubscription
+     */
+    omit?: EventSubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventSubscriptionInclude<ExtArgs> | null
+    where?: EventSubscriptionWhereInput
+    orderBy?: EventSubscriptionOrderByWithRelationInput | EventSubscriptionOrderByWithRelationInput[]
+    cursor?: EventSubscriptionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EventSubscriptionScalarFieldEnum | EventSubscriptionScalarFieldEnum[]
+  }
+
+  /**
    * Event without action
    */
   export type EventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3213,6 +3402,1101 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: EventInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EventSubscription
+   */
+
+  export type AggregateEventSubscription = {
+    _count: EventSubscriptionCountAggregateOutputType | null
+    _avg: EventSubscriptionAvgAggregateOutputType | null
+    _sum: EventSubscriptionSumAggregateOutputType | null
+    _min: EventSubscriptionMinAggregateOutputType | null
+    _max: EventSubscriptionMaxAggregateOutputType | null
+  }
+
+  export type EventSubscriptionAvgAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    eventId: number | null
+  }
+
+  export type EventSubscriptionSumAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    eventId: number | null
+  }
+
+  export type EventSubscriptionMinAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    eventId: number | null
+    createdAt: Date | null
+  }
+
+  export type EventSubscriptionMaxAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    eventId: number | null
+    createdAt: Date | null
+  }
+
+  export type EventSubscriptionCountAggregateOutputType = {
+    id: number
+    userId: number
+    eventId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type EventSubscriptionAvgAggregateInputType = {
+    id?: true
+    userId?: true
+    eventId?: true
+  }
+
+  export type EventSubscriptionSumAggregateInputType = {
+    id?: true
+    userId?: true
+    eventId?: true
+  }
+
+  export type EventSubscriptionMinAggregateInputType = {
+    id?: true
+    userId?: true
+    eventId?: true
+    createdAt?: true
+  }
+
+  export type EventSubscriptionMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    eventId?: true
+    createdAt?: true
+  }
+
+  export type EventSubscriptionCountAggregateInputType = {
+    id?: true
+    userId?: true
+    eventId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type EventSubscriptionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EventSubscription to aggregate.
+     */
+    where?: EventSubscriptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventSubscriptions to fetch.
+     */
+    orderBy?: EventSubscriptionOrderByWithRelationInput | EventSubscriptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EventSubscriptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventSubscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventSubscriptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EventSubscriptions
+    **/
+    _count?: true | EventSubscriptionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: EventSubscriptionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EventSubscriptionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EventSubscriptionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EventSubscriptionMaxAggregateInputType
+  }
+
+  export type GetEventSubscriptionAggregateType<T extends EventSubscriptionAggregateArgs> = {
+        [P in keyof T & keyof AggregateEventSubscription]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEventSubscription[P]>
+      : GetScalarType<T[P], AggregateEventSubscription[P]>
+  }
+
+
+
+
+  export type EventSubscriptionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventSubscriptionWhereInput
+    orderBy?: EventSubscriptionOrderByWithAggregationInput | EventSubscriptionOrderByWithAggregationInput[]
+    by: EventSubscriptionScalarFieldEnum[] | EventSubscriptionScalarFieldEnum
+    having?: EventSubscriptionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EventSubscriptionCountAggregateInputType | true
+    _avg?: EventSubscriptionAvgAggregateInputType
+    _sum?: EventSubscriptionSumAggregateInputType
+    _min?: EventSubscriptionMinAggregateInputType
+    _max?: EventSubscriptionMaxAggregateInputType
+  }
+
+  export type EventSubscriptionGroupByOutputType = {
+    id: number
+    userId: number
+    eventId: number
+    createdAt: Date
+    _count: EventSubscriptionCountAggregateOutputType | null
+    _avg: EventSubscriptionAvgAggregateOutputType | null
+    _sum: EventSubscriptionSumAggregateOutputType | null
+    _min: EventSubscriptionMinAggregateOutputType | null
+    _max: EventSubscriptionMaxAggregateOutputType | null
+  }
+
+  type GetEventSubscriptionGroupByPayload<T extends EventSubscriptionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EventSubscriptionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EventSubscriptionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EventSubscriptionGroupByOutputType[P]>
+            : GetScalarType<T[P], EventSubscriptionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EventSubscriptionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    eventId?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["eventSubscription"]>
+
+  export type EventSubscriptionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    eventId?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["eventSubscription"]>
+
+  export type EventSubscriptionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    eventId?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["eventSubscription"]>
+
+  export type EventSubscriptionSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    eventId?: boolean
+    createdAt?: boolean
+  }
+
+  export type EventSubscriptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "eventId" | "createdAt", ExtArgs["result"]["eventSubscription"]>
+  export type EventSubscriptionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }
+  export type EventSubscriptionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }
+  export type EventSubscriptionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }
+
+  export type $EventSubscriptionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EventSubscription"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      event: Prisma.$EventPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      userId: number
+      eventId: number
+      createdAt: Date
+    }, ExtArgs["result"]["eventSubscription"]>
+    composites: {}
+  }
+
+  type EventSubscriptionGetPayload<S extends boolean | null | undefined | EventSubscriptionDefaultArgs> = $Result.GetResult<Prisma.$EventSubscriptionPayload, S>
+
+  type EventSubscriptionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EventSubscriptionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EventSubscriptionCountAggregateInputType | true
+    }
+
+  export interface EventSubscriptionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EventSubscription'], meta: { name: 'EventSubscription' } }
+    /**
+     * Find zero or one EventSubscription that matches the filter.
+     * @param {EventSubscriptionFindUniqueArgs} args - Arguments to find a EventSubscription
+     * @example
+     * // Get one EventSubscription
+     * const eventSubscription = await prisma.eventSubscription.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EventSubscriptionFindUniqueArgs>(args: SelectSubset<T, EventSubscriptionFindUniqueArgs<ExtArgs>>): Prisma__EventSubscriptionClient<$Result.GetResult<Prisma.$EventSubscriptionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EventSubscription that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EventSubscriptionFindUniqueOrThrowArgs} args - Arguments to find a EventSubscription
+     * @example
+     * // Get one EventSubscription
+     * const eventSubscription = await prisma.eventSubscription.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EventSubscriptionFindUniqueOrThrowArgs>(args: SelectSubset<T, EventSubscriptionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EventSubscriptionClient<$Result.GetResult<Prisma.$EventSubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EventSubscription that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventSubscriptionFindFirstArgs} args - Arguments to find a EventSubscription
+     * @example
+     * // Get one EventSubscription
+     * const eventSubscription = await prisma.eventSubscription.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EventSubscriptionFindFirstArgs>(args?: SelectSubset<T, EventSubscriptionFindFirstArgs<ExtArgs>>): Prisma__EventSubscriptionClient<$Result.GetResult<Prisma.$EventSubscriptionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EventSubscription that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventSubscriptionFindFirstOrThrowArgs} args - Arguments to find a EventSubscription
+     * @example
+     * // Get one EventSubscription
+     * const eventSubscription = await prisma.eventSubscription.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EventSubscriptionFindFirstOrThrowArgs>(args?: SelectSubset<T, EventSubscriptionFindFirstOrThrowArgs<ExtArgs>>): Prisma__EventSubscriptionClient<$Result.GetResult<Prisma.$EventSubscriptionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EventSubscriptions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventSubscriptionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EventSubscriptions
+     * const eventSubscriptions = await prisma.eventSubscription.findMany()
+     * 
+     * // Get first 10 EventSubscriptions
+     * const eventSubscriptions = await prisma.eventSubscription.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const eventSubscriptionWithIdOnly = await prisma.eventSubscription.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EventSubscriptionFindManyArgs>(args?: SelectSubset<T, EventSubscriptionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventSubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EventSubscription.
+     * @param {EventSubscriptionCreateArgs} args - Arguments to create a EventSubscription.
+     * @example
+     * // Create one EventSubscription
+     * const EventSubscription = await prisma.eventSubscription.create({
+     *   data: {
+     *     // ... data to create a EventSubscription
+     *   }
+     * })
+     * 
+     */
+    create<T extends EventSubscriptionCreateArgs>(args: SelectSubset<T, EventSubscriptionCreateArgs<ExtArgs>>): Prisma__EventSubscriptionClient<$Result.GetResult<Prisma.$EventSubscriptionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EventSubscriptions.
+     * @param {EventSubscriptionCreateManyArgs} args - Arguments to create many EventSubscriptions.
+     * @example
+     * // Create many EventSubscriptions
+     * const eventSubscription = await prisma.eventSubscription.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EventSubscriptionCreateManyArgs>(args?: SelectSubset<T, EventSubscriptionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many EventSubscriptions and returns the data saved in the database.
+     * @param {EventSubscriptionCreateManyAndReturnArgs} args - Arguments to create many EventSubscriptions.
+     * @example
+     * // Create many EventSubscriptions
+     * const eventSubscription = await prisma.eventSubscription.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many EventSubscriptions and only return the `id`
+     * const eventSubscriptionWithIdOnly = await prisma.eventSubscription.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EventSubscriptionCreateManyAndReturnArgs>(args?: SelectSubset<T, EventSubscriptionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventSubscriptionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a EventSubscription.
+     * @param {EventSubscriptionDeleteArgs} args - Arguments to delete one EventSubscription.
+     * @example
+     * // Delete one EventSubscription
+     * const EventSubscription = await prisma.eventSubscription.delete({
+     *   where: {
+     *     // ... filter to delete one EventSubscription
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EventSubscriptionDeleteArgs>(args: SelectSubset<T, EventSubscriptionDeleteArgs<ExtArgs>>): Prisma__EventSubscriptionClient<$Result.GetResult<Prisma.$EventSubscriptionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EventSubscription.
+     * @param {EventSubscriptionUpdateArgs} args - Arguments to update one EventSubscription.
+     * @example
+     * // Update one EventSubscription
+     * const eventSubscription = await prisma.eventSubscription.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EventSubscriptionUpdateArgs>(args: SelectSubset<T, EventSubscriptionUpdateArgs<ExtArgs>>): Prisma__EventSubscriptionClient<$Result.GetResult<Prisma.$EventSubscriptionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EventSubscriptions.
+     * @param {EventSubscriptionDeleteManyArgs} args - Arguments to filter EventSubscriptions to delete.
+     * @example
+     * // Delete a few EventSubscriptions
+     * const { count } = await prisma.eventSubscription.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EventSubscriptionDeleteManyArgs>(args?: SelectSubset<T, EventSubscriptionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EventSubscriptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventSubscriptionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EventSubscriptions
+     * const eventSubscription = await prisma.eventSubscription.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EventSubscriptionUpdateManyArgs>(args: SelectSubset<T, EventSubscriptionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EventSubscriptions and returns the data updated in the database.
+     * @param {EventSubscriptionUpdateManyAndReturnArgs} args - Arguments to update many EventSubscriptions.
+     * @example
+     * // Update many EventSubscriptions
+     * const eventSubscription = await prisma.eventSubscription.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more EventSubscriptions and only return the `id`
+     * const eventSubscriptionWithIdOnly = await prisma.eventSubscription.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends EventSubscriptionUpdateManyAndReturnArgs>(args: SelectSubset<T, EventSubscriptionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventSubscriptionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one EventSubscription.
+     * @param {EventSubscriptionUpsertArgs} args - Arguments to update or create a EventSubscription.
+     * @example
+     * // Update or create a EventSubscription
+     * const eventSubscription = await prisma.eventSubscription.upsert({
+     *   create: {
+     *     // ... data to create a EventSubscription
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EventSubscription we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EventSubscriptionUpsertArgs>(args: SelectSubset<T, EventSubscriptionUpsertArgs<ExtArgs>>): Prisma__EventSubscriptionClient<$Result.GetResult<Prisma.$EventSubscriptionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EventSubscriptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventSubscriptionCountArgs} args - Arguments to filter EventSubscriptions to count.
+     * @example
+     * // Count the number of EventSubscriptions
+     * const count = await prisma.eventSubscription.count({
+     *   where: {
+     *     // ... the filter for the EventSubscriptions we want to count
+     *   }
+     * })
+    **/
+    count<T extends EventSubscriptionCountArgs>(
+      args?: Subset<T, EventSubscriptionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EventSubscriptionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EventSubscription.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventSubscriptionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EventSubscriptionAggregateArgs>(args: Subset<T, EventSubscriptionAggregateArgs>): Prisma.PrismaPromise<GetEventSubscriptionAggregateType<T>>
+
+    /**
+     * Group by EventSubscription.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventSubscriptionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EventSubscriptionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EventSubscriptionGroupByArgs['orderBy'] }
+        : { orderBy?: EventSubscriptionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EventSubscriptionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEventSubscriptionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EventSubscription model
+   */
+  readonly fields: EventSubscriptionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EventSubscription.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EventSubscriptionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EventSubscription model
+   */
+  interface EventSubscriptionFieldRefs {
+    readonly id: FieldRef<"EventSubscription", 'Int'>
+    readonly userId: FieldRef<"EventSubscription", 'Int'>
+    readonly eventId: FieldRef<"EventSubscription", 'Int'>
+    readonly createdAt: FieldRef<"EventSubscription", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EventSubscription findUnique
+   */
+  export type EventSubscriptionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventSubscription
+     */
+    select?: EventSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventSubscription
+     */
+    omit?: EventSubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventSubscriptionInclude<ExtArgs> | null
+    /**
+     * Filter, which EventSubscription to fetch.
+     */
+    where: EventSubscriptionWhereUniqueInput
+  }
+
+  /**
+   * EventSubscription findUniqueOrThrow
+   */
+  export type EventSubscriptionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventSubscription
+     */
+    select?: EventSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventSubscription
+     */
+    omit?: EventSubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventSubscriptionInclude<ExtArgs> | null
+    /**
+     * Filter, which EventSubscription to fetch.
+     */
+    where: EventSubscriptionWhereUniqueInput
+  }
+
+  /**
+   * EventSubscription findFirst
+   */
+  export type EventSubscriptionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventSubscription
+     */
+    select?: EventSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventSubscription
+     */
+    omit?: EventSubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventSubscriptionInclude<ExtArgs> | null
+    /**
+     * Filter, which EventSubscription to fetch.
+     */
+    where?: EventSubscriptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventSubscriptions to fetch.
+     */
+    orderBy?: EventSubscriptionOrderByWithRelationInput | EventSubscriptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EventSubscriptions.
+     */
+    cursor?: EventSubscriptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventSubscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventSubscriptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EventSubscriptions.
+     */
+    distinct?: EventSubscriptionScalarFieldEnum | EventSubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * EventSubscription findFirstOrThrow
+   */
+  export type EventSubscriptionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventSubscription
+     */
+    select?: EventSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventSubscription
+     */
+    omit?: EventSubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventSubscriptionInclude<ExtArgs> | null
+    /**
+     * Filter, which EventSubscription to fetch.
+     */
+    where?: EventSubscriptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventSubscriptions to fetch.
+     */
+    orderBy?: EventSubscriptionOrderByWithRelationInput | EventSubscriptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EventSubscriptions.
+     */
+    cursor?: EventSubscriptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventSubscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventSubscriptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EventSubscriptions.
+     */
+    distinct?: EventSubscriptionScalarFieldEnum | EventSubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * EventSubscription findMany
+   */
+  export type EventSubscriptionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventSubscription
+     */
+    select?: EventSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventSubscription
+     */
+    omit?: EventSubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventSubscriptionInclude<ExtArgs> | null
+    /**
+     * Filter, which EventSubscriptions to fetch.
+     */
+    where?: EventSubscriptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventSubscriptions to fetch.
+     */
+    orderBy?: EventSubscriptionOrderByWithRelationInput | EventSubscriptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EventSubscriptions.
+     */
+    cursor?: EventSubscriptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventSubscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventSubscriptions.
+     */
+    skip?: number
+    distinct?: EventSubscriptionScalarFieldEnum | EventSubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * EventSubscription create
+   */
+  export type EventSubscriptionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventSubscription
+     */
+    select?: EventSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventSubscription
+     */
+    omit?: EventSubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventSubscriptionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EventSubscription.
+     */
+    data: XOR<EventSubscriptionCreateInput, EventSubscriptionUncheckedCreateInput>
+  }
+
+  /**
+   * EventSubscription createMany
+   */
+  export type EventSubscriptionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EventSubscriptions.
+     */
+    data: EventSubscriptionCreateManyInput | EventSubscriptionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EventSubscription createManyAndReturn
+   */
+  export type EventSubscriptionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventSubscription
+     */
+    select?: EventSubscriptionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventSubscription
+     */
+    omit?: EventSubscriptionOmit<ExtArgs> | null
+    /**
+     * The data used to create many EventSubscriptions.
+     */
+    data: EventSubscriptionCreateManyInput | EventSubscriptionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventSubscriptionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EventSubscription update
+   */
+  export type EventSubscriptionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventSubscription
+     */
+    select?: EventSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventSubscription
+     */
+    omit?: EventSubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventSubscriptionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EventSubscription.
+     */
+    data: XOR<EventSubscriptionUpdateInput, EventSubscriptionUncheckedUpdateInput>
+    /**
+     * Choose, which EventSubscription to update.
+     */
+    where: EventSubscriptionWhereUniqueInput
+  }
+
+  /**
+   * EventSubscription updateMany
+   */
+  export type EventSubscriptionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EventSubscriptions.
+     */
+    data: XOR<EventSubscriptionUpdateManyMutationInput, EventSubscriptionUncheckedUpdateManyInput>
+    /**
+     * Filter which EventSubscriptions to update
+     */
+    where?: EventSubscriptionWhereInput
+    /**
+     * Limit how many EventSubscriptions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EventSubscription updateManyAndReturn
+   */
+  export type EventSubscriptionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventSubscription
+     */
+    select?: EventSubscriptionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventSubscription
+     */
+    omit?: EventSubscriptionOmit<ExtArgs> | null
+    /**
+     * The data used to update EventSubscriptions.
+     */
+    data: XOR<EventSubscriptionUpdateManyMutationInput, EventSubscriptionUncheckedUpdateManyInput>
+    /**
+     * Filter which EventSubscriptions to update
+     */
+    where?: EventSubscriptionWhereInput
+    /**
+     * Limit how many EventSubscriptions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventSubscriptionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EventSubscription upsert
+   */
+  export type EventSubscriptionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventSubscription
+     */
+    select?: EventSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventSubscription
+     */
+    omit?: EventSubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventSubscriptionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EventSubscription to update in case it exists.
+     */
+    where: EventSubscriptionWhereUniqueInput
+    /**
+     * In case the EventSubscription found by the `where` argument doesn't exist, create a new EventSubscription with this data.
+     */
+    create: XOR<EventSubscriptionCreateInput, EventSubscriptionUncheckedCreateInput>
+    /**
+     * In case the EventSubscription was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EventSubscriptionUpdateInput, EventSubscriptionUncheckedUpdateInput>
+  }
+
+  /**
+   * EventSubscription delete
+   */
+  export type EventSubscriptionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventSubscription
+     */
+    select?: EventSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventSubscription
+     */
+    omit?: EventSubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventSubscriptionInclude<ExtArgs> | null
+    /**
+     * Filter which EventSubscription to delete.
+     */
+    where: EventSubscriptionWhereUniqueInput
+  }
+
+  /**
+   * EventSubscription deleteMany
+   */
+  export type EventSubscriptionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EventSubscriptions to delete
+     */
+    where?: EventSubscriptionWhereInput
+    /**
+     * Limit how many EventSubscriptions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EventSubscription without action
+   */
+  export type EventSubscriptionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventSubscription
+     */
+    select?: EventSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventSubscription
+     */
+    omit?: EventSubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventSubscriptionInclude<ExtArgs> | null
   }
 
 
@@ -3248,10 +4532,20 @@ export namespace Prisma {
     dateStart: 'dateStart',
     dateEnd: 'dateEnd',
     createdAt: 'createdAt',
-    userId: 'userId'
+    ownerId: 'ownerId'
   };
 
   export type EventScalarFieldEnum = (typeof EventScalarFieldEnum)[keyof typeof EventScalarFieldEnum]
+
+
+  export const EventSubscriptionScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    eventId: 'eventId',
+    createdAt: 'createdAt'
+  };
+
+  export type EventSubscriptionScalarFieldEnum = (typeof EventSubscriptionScalarFieldEnum)[keyof typeof EventSubscriptionScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -3351,7 +4645,8 @@ export namespace Prisma {
     email?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
     createdAt?: DateTimeFilter<"User"> | Date | string
-    events?: EventListRelationFilter
+    ownedEvents?: EventListRelationFilter
+    eventSubscriptions?: EventSubscriptionListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -3360,7 +4655,8 @@ export namespace Prisma {
     email?: SortOrder
     password?: SortOrder
     createdAt?: SortOrder
-    events?: EventOrderByRelationAggregateInput
+    ownedEvents?: EventOrderByRelationAggregateInput
+    eventSubscriptions?: EventSubscriptionOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -3372,7 +4668,8 @@ export namespace Prisma {
     name?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
     createdAt?: DateTimeFilter<"User"> | Date | string
-    events?: EventListRelationFilter
+    ownedEvents?: EventListRelationFilter
+    eventSubscriptions?: EventSubscriptionListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -3409,8 +4706,9 @@ export namespace Prisma {
     dateStart?: DateTimeFilter<"Event"> | Date | string
     dateEnd?: DateTimeFilter<"Event"> | Date | string
     createdAt?: DateTimeFilter<"Event"> | Date | string
-    userId?: IntFilter<"Event"> | number
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    ownerId?: IntFilter<"Event"> | number
+    owner?: XOR<UserScalarRelationFilter, UserWhereInput>
+    subscribers?: EventSubscriptionListRelationFilter
   }
 
   export type EventOrderByWithRelationInput = {
@@ -3420,8 +4718,9 @@ export namespace Prisma {
     dateStart?: SortOrder
     dateEnd?: SortOrder
     createdAt?: SortOrder
-    userId?: SortOrder
-    user?: UserOrderByWithRelationInput
+    ownerId?: SortOrder
+    owner?: UserOrderByWithRelationInput
+    subscribers?: EventSubscriptionOrderByRelationAggregateInput
   }
 
   export type EventWhereUniqueInput = Prisma.AtLeast<{
@@ -3434,8 +4733,9 @@ export namespace Prisma {
     dateStart?: DateTimeFilter<"Event"> | Date | string
     dateEnd?: DateTimeFilter<"Event"> | Date | string
     createdAt?: DateTimeFilter<"Event"> | Date | string
-    userId?: IntFilter<"Event"> | number
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    ownerId?: IntFilter<"Event"> | number
+    owner?: XOR<UserScalarRelationFilter, UserWhereInput>
+    subscribers?: EventSubscriptionListRelationFilter
   }, "id">
 
   export type EventOrderByWithAggregationInput = {
@@ -3445,7 +4745,7 @@ export namespace Prisma {
     dateStart?: SortOrder
     dateEnd?: SortOrder
     createdAt?: SortOrder
-    userId?: SortOrder
+    ownerId?: SortOrder
     _count?: EventCountOrderByAggregateInput
     _avg?: EventAvgOrderByAggregateInput
     _max?: EventMaxOrderByAggregateInput
@@ -3463,7 +4763,63 @@ export namespace Prisma {
     dateStart?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     dateEnd?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"Event"> | Date | string
-    userId?: IntWithAggregatesFilter<"Event"> | number
+    ownerId?: IntWithAggregatesFilter<"Event"> | number
+  }
+
+  export type EventSubscriptionWhereInput = {
+    AND?: EventSubscriptionWhereInput | EventSubscriptionWhereInput[]
+    OR?: EventSubscriptionWhereInput[]
+    NOT?: EventSubscriptionWhereInput | EventSubscriptionWhereInput[]
+    id?: IntFilter<"EventSubscription"> | number
+    userId?: IntFilter<"EventSubscription"> | number
+    eventId?: IntFilter<"EventSubscription"> | number
+    createdAt?: DateTimeFilter<"EventSubscription"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+  }
+
+  export type EventSubscriptionOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    eventId?: SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    event?: EventOrderByWithRelationInput
+  }
+
+  export type EventSubscriptionWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    userId_eventId?: EventSubscriptionUserIdEventIdCompoundUniqueInput
+    AND?: EventSubscriptionWhereInput | EventSubscriptionWhereInput[]
+    OR?: EventSubscriptionWhereInput[]
+    NOT?: EventSubscriptionWhereInput | EventSubscriptionWhereInput[]
+    userId?: IntFilter<"EventSubscription"> | number
+    eventId?: IntFilter<"EventSubscription"> | number
+    createdAt?: DateTimeFilter<"EventSubscription"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+  }, "id" | "userId_eventId">
+
+  export type EventSubscriptionOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    eventId?: SortOrder
+    createdAt?: SortOrder
+    _count?: EventSubscriptionCountOrderByAggregateInput
+    _avg?: EventSubscriptionAvgOrderByAggregateInput
+    _max?: EventSubscriptionMaxOrderByAggregateInput
+    _min?: EventSubscriptionMinOrderByAggregateInput
+    _sum?: EventSubscriptionSumOrderByAggregateInput
+  }
+
+  export type EventSubscriptionScalarWhereWithAggregatesInput = {
+    AND?: EventSubscriptionScalarWhereWithAggregatesInput | EventSubscriptionScalarWhereWithAggregatesInput[]
+    OR?: EventSubscriptionScalarWhereWithAggregatesInput[]
+    NOT?: EventSubscriptionScalarWhereWithAggregatesInput | EventSubscriptionScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"EventSubscription"> | number
+    userId?: IntWithAggregatesFilter<"EventSubscription"> | number
+    eventId?: IntWithAggregatesFilter<"EventSubscription"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"EventSubscription"> | Date | string
   }
 
   export type UserCreateInput = {
@@ -3471,7 +4827,8 @@ export namespace Prisma {
     email: string
     password: string
     createdAt?: Date | string
-    events?: EventCreateNestedManyWithoutUserInput
+    ownedEvents?: EventCreateNestedManyWithoutOwnerInput
+    eventSubscriptions?: EventSubscriptionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -3480,7 +4837,8 @@ export namespace Prisma {
     email: string
     password: string
     createdAt?: Date | string
-    events?: EventUncheckedCreateNestedManyWithoutUserInput
+    ownedEvents?: EventUncheckedCreateNestedManyWithoutOwnerInput
+    eventSubscriptions?: EventSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -3488,7 +4846,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    events?: EventUpdateManyWithoutUserNestedInput
+    ownedEvents?: EventUpdateManyWithoutOwnerNestedInput
+    eventSubscriptions?: EventSubscriptionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -3497,7 +4856,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    events?: EventUncheckedUpdateManyWithoutUserNestedInput
+    ownedEvents?: EventUncheckedUpdateManyWithoutOwnerNestedInput
+    eventSubscriptions?: EventSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -3529,7 +4889,8 @@ export namespace Prisma {
     dateStart: Date | string
     dateEnd: Date | string
     createdAt?: Date | string
-    user: UserCreateNestedOneWithoutEventsInput
+    owner: UserCreateNestedOneWithoutOwnedEventsInput
+    subscribers?: EventSubscriptionCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateInput = {
@@ -3539,7 +4900,8 @@ export namespace Prisma {
     dateStart: Date | string
     dateEnd: Date | string
     createdAt?: Date | string
-    userId: number
+    ownerId: number
+    subscribers?: EventSubscriptionUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventUpdateInput = {
@@ -3548,7 +4910,8 @@ export namespace Prisma {
     dateStart?: DateTimeFieldUpdateOperationsInput | Date | string
     dateEnd?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutEventsNestedInput
+    owner?: UserUpdateOneRequiredWithoutOwnedEventsNestedInput
+    subscribers?: EventSubscriptionUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateInput = {
@@ -3558,7 +4921,8 @@ export namespace Prisma {
     dateStart?: DateTimeFieldUpdateOperationsInput | Date | string
     dateEnd?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: IntFieldUpdateOperationsInput | number
+    ownerId?: IntFieldUpdateOperationsInput | number
+    subscribers?: EventSubscriptionUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventCreateManyInput = {
@@ -3568,7 +4932,7 @@ export namespace Prisma {
     dateStart: Date | string
     dateEnd: Date | string
     createdAt?: Date | string
-    userId: number
+    ownerId: number
   }
 
   export type EventUpdateManyMutationInput = {
@@ -3586,7 +4950,51 @@ export namespace Prisma {
     dateStart?: DateTimeFieldUpdateOperationsInput | Date | string
     dateEnd?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ownerId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type EventSubscriptionCreateInput = {
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutEventSubscriptionsInput
+    event: EventCreateNestedOneWithoutSubscribersInput
+  }
+
+  export type EventSubscriptionUncheckedCreateInput = {
+    id?: number
+    userId: number
+    eventId: number
+    createdAt?: Date | string
+  }
+
+  export type EventSubscriptionUpdateInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutEventSubscriptionsNestedInput
+    event?: EventUpdateOneRequiredWithoutSubscribersNestedInput
+  }
+
+  export type EventSubscriptionUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
+    eventId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventSubscriptionCreateManyInput = {
+    id?: number
+    userId: number
+    eventId: number
+    createdAt?: Date | string
+  }
+
+  export type EventSubscriptionUpdateManyMutationInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventSubscriptionUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    eventId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -3632,7 +5040,17 @@ export namespace Prisma {
     none?: EventWhereInput
   }
 
+  export type EventSubscriptionListRelationFilter = {
+    every?: EventSubscriptionWhereInput
+    some?: EventSubscriptionWhereInput
+    none?: EventSubscriptionWhereInput
+  }
+
   export type EventOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EventSubscriptionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -3748,12 +5166,12 @@ export namespace Prisma {
     dateStart?: SortOrder
     dateEnd?: SortOrder
     createdAt?: SortOrder
-    userId?: SortOrder
+    ownerId?: SortOrder
   }
 
   export type EventAvgOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
+    ownerId?: SortOrder
   }
 
   export type EventMaxOrderByAggregateInput = {
@@ -3763,7 +5181,7 @@ export namespace Prisma {
     dateStart?: SortOrder
     dateEnd?: SortOrder
     createdAt?: SortOrder
-    userId?: SortOrder
+    ownerId?: SortOrder
   }
 
   export type EventMinOrderByAggregateInput = {
@@ -3773,12 +5191,12 @@ export namespace Prisma {
     dateStart?: SortOrder
     dateEnd?: SortOrder
     createdAt?: SortOrder
-    userId?: SortOrder
+    ownerId?: SortOrder
   }
 
   export type EventSumOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
+    ownerId?: SortOrder
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -3799,18 +5217,75 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type EventCreateNestedManyWithoutUserInput = {
-    create?: XOR<EventCreateWithoutUserInput, EventUncheckedCreateWithoutUserInput> | EventCreateWithoutUserInput[] | EventUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: EventCreateOrConnectWithoutUserInput | EventCreateOrConnectWithoutUserInput[]
-    createMany?: EventCreateManyUserInputEnvelope
+  export type EventScalarRelationFilter = {
+    is?: EventWhereInput
+    isNot?: EventWhereInput
+  }
+
+  export type EventSubscriptionUserIdEventIdCompoundUniqueInput = {
+    userId: number
+    eventId: number
+  }
+
+  export type EventSubscriptionCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    eventId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EventSubscriptionAvgOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    eventId?: SortOrder
+  }
+
+  export type EventSubscriptionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    eventId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EventSubscriptionMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    eventId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EventSubscriptionSumOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    eventId?: SortOrder
+  }
+
+  export type EventCreateNestedManyWithoutOwnerInput = {
+    create?: XOR<EventCreateWithoutOwnerInput, EventUncheckedCreateWithoutOwnerInput> | EventCreateWithoutOwnerInput[] | EventUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: EventCreateOrConnectWithoutOwnerInput | EventCreateOrConnectWithoutOwnerInput[]
+    createMany?: EventCreateManyOwnerInputEnvelope
     connect?: EventWhereUniqueInput | EventWhereUniqueInput[]
   }
 
-  export type EventUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<EventCreateWithoutUserInput, EventUncheckedCreateWithoutUserInput> | EventCreateWithoutUserInput[] | EventUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: EventCreateOrConnectWithoutUserInput | EventCreateOrConnectWithoutUserInput[]
-    createMany?: EventCreateManyUserInputEnvelope
+  export type EventSubscriptionCreateNestedManyWithoutUserInput = {
+    create?: XOR<EventSubscriptionCreateWithoutUserInput, EventSubscriptionUncheckedCreateWithoutUserInput> | EventSubscriptionCreateWithoutUserInput[] | EventSubscriptionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EventSubscriptionCreateOrConnectWithoutUserInput | EventSubscriptionCreateOrConnectWithoutUserInput[]
+    createMany?: EventSubscriptionCreateManyUserInputEnvelope
+    connect?: EventSubscriptionWhereUniqueInput | EventSubscriptionWhereUniqueInput[]
+  }
+
+  export type EventUncheckedCreateNestedManyWithoutOwnerInput = {
+    create?: XOR<EventCreateWithoutOwnerInput, EventUncheckedCreateWithoutOwnerInput> | EventCreateWithoutOwnerInput[] | EventUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: EventCreateOrConnectWithoutOwnerInput | EventCreateOrConnectWithoutOwnerInput[]
+    createMany?: EventCreateManyOwnerInputEnvelope
     connect?: EventWhereUniqueInput | EventWhereUniqueInput[]
+  }
+
+  export type EventSubscriptionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<EventSubscriptionCreateWithoutUserInput, EventSubscriptionUncheckedCreateWithoutUserInput> | EventSubscriptionCreateWithoutUserInput[] | EventSubscriptionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EventSubscriptionCreateOrConnectWithoutUserInput | EventSubscriptionCreateOrConnectWithoutUserInput[]
+    createMany?: EventSubscriptionCreateManyUserInputEnvelope
+    connect?: EventSubscriptionWhereUniqueInput | EventSubscriptionWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -3821,18 +5296,32 @@ export namespace Prisma {
     set?: Date | string
   }
 
-  export type EventUpdateManyWithoutUserNestedInput = {
-    create?: XOR<EventCreateWithoutUserInput, EventUncheckedCreateWithoutUserInput> | EventCreateWithoutUserInput[] | EventUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: EventCreateOrConnectWithoutUserInput | EventCreateOrConnectWithoutUserInput[]
-    upsert?: EventUpsertWithWhereUniqueWithoutUserInput | EventUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: EventCreateManyUserInputEnvelope
+  export type EventUpdateManyWithoutOwnerNestedInput = {
+    create?: XOR<EventCreateWithoutOwnerInput, EventUncheckedCreateWithoutOwnerInput> | EventCreateWithoutOwnerInput[] | EventUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: EventCreateOrConnectWithoutOwnerInput | EventCreateOrConnectWithoutOwnerInput[]
+    upsert?: EventUpsertWithWhereUniqueWithoutOwnerInput | EventUpsertWithWhereUniqueWithoutOwnerInput[]
+    createMany?: EventCreateManyOwnerInputEnvelope
     set?: EventWhereUniqueInput | EventWhereUniqueInput[]
     disconnect?: EventWhereUniqueInput | EventWhereUniqueInput[]
     delete?: EventWhereUniqueInput | EventWhereUniqueInput[]
     connect?: EventWhereUniqueInput | EventWhereUniqueInput[]
-    update?: EventUpdateWithWhereUniqueWithoutUserInput | EventUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: EventUpdateManyWithWhereWithoutUserInput | EventUpdateManyWithWhereWithoutUserInput[]
+    update?: EventUpdateWithWhereUniqueWithoutOwnerInput | EventUpdateWithWhereUniqueWithoutOwnerInput[]
+    updateMany?: EventUpdateManyWithWhereWithoutOwnerInput | EventUpdateManyWithWhereWithoutOwnerInput[]
     deleteMany?: EventScalarWhereInput | EventScalarWhereInput[]
+  }
+
+  export type EventSubscriptionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<EventSubscriptionCreateWithoutUserInput, EventSubscriptionUncheckedCreateWithoutUserInput> | EventSubscriptionCreateWithoutUserInput[] | EventSubscriptionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EventSubscriptionCreateOrConnectWithoutUserInput | EventSubscriptionCreateOrConnectWithoutUserInput[]
+    upsert?: EventSubscriptionUpsertWithWhereUniqueWithoutUserInput | EventSubscriptionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: EventSubscriptionCreateManyUserInputEnvelope
+    set?: EventSubscriptionWhereUniqueInput | EventSubscriptionWhereUniqueInput[]
+    disconnect?: EventSubscriptionWhereUniqueInput | EventSubscriptionWhereUniqueInput[]
+    delete?: EventSubscriptionWhereUniqueInput | EventSubscriptionWhereUniqueInput[]
+    connect?: EventSubscriptionWhereUniqueInput | EventSubscriptionWhereUniqueInput[]
+    update?: EventSubscriptionUpdateWithWhereUniqueWithoutUserInput | EventSubscriptionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: EventSubscriptionUpdateManyWithWhereWithoutUserInput | EventSubscriptionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: EventSubscriptionScalarWhereInput | EventSubscriptionScalarWhereInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -3843,36 +5332,120 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type EventUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<EventCreateWithoutUserInput, EventUncheckedCreateWithoutUserInput> | EventCreateWithoutUserInput[] | EventUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: EventCreateOrConnectWithoutUserInput | EventCreateOrConnectWithoutUserInput[]
-    upsert?: EventUpsertWithWhereUniqueWithoutUserInput | EventUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: EventCreateManyUserInputEnvelope
+  export type EventUncheckedUpdateManyWithoutOwnerNestedInput = {
+    create?: XOR<EventCreateWithoutOwnerInput, EventUncheckedCreateWithoutOwnerInput> | EventCreateWithoutOwnerInput[] | EventUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: EventCreateOrConnectWithoutOwnerInput | EventCreateOrConnectWithoutOwnerInput[]
+    upsert?: EventUpsertWithWhereUniqueWithoutOwnerInput | EventUpsertWithWhereUniqueWithoutOwnerInput[]
+    createMany?: EventCreateManyOwnerInputEnvelope
     set?: EventWhereUniqueInput | EventWhereUniqueInput[]
     disconnect?: EventWhereUniqueInput | EventWhereUniqueInput[]
     delete?: EventWhereUniqueInput | EventWhereUniqueInput[]
     connect?: EventWhereUniqueInput | EventWhereUniqueInput[]
-    update?: EventUpdateWithWhereUniqueWithoutUserInput | EventUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: EventUpdateManyWithWhereWithoutUserInput | EventUpdateManyWithWhereWithoutUserInput[]
+    update?: EventUpdateWithWhereUniqueWithoutOwnerInput | EventUpdateWithWhereUniqueWithoutOwnerInput[]
+    updateMany?: EventUpdateManyWithWhereWithoutOwnerInput | EventUpdateManyWithWhereWithoutOwnerInput[]
     deleteMany?: EventScalarWhereInput | EventScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutEventsInput = {
-    create?: XOR<UserCreateWithoutEventsInput, UserUncheckedCreateWithoutEventsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutEventsInput
+  export type EventSubscriptionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<EventSubscriptionCreateWithoutUserInput, EventSubscriptionUncheckedCreateWithoutUserInput> | EventSubscriptionCreateWithoutUserInput[] | EventSubscriptionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EventSubscriptionCreateOrConnectWithoutUserInput | EventSubscriptionCreateOrConnectWithoutUserInput[]
+    upsert?: EventSubscriptionUpsertWithWhereUniqueWithoutUserInput | EventSubscriptionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: EventSubscriptionCreateManyUserInputEnvelope
+    set?: EventSubscriptionWhereUniqueInput | EventSubscriptionWhereUniqueInput[]
+    disconnect?: EventSubscriptionWhereUniqueInput | EventSubscriptionWhereUniqueInput[]
+    delete?: EventSubscriptionWhereUniqueInput | EventSubscriptionWhereUniqueInput[]
+    connect?: EventSubscriptionWhereUniqueInput | EventSubscriptionWhereUniqueInput[]
+    update?: EventSubscriptionUpdateWithWhereUniqueWithoutUserInput | EventSubscriptionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: EventSubscriptionUpdateManyWithWhereWithoutUserInput | EventSubscriptionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: EventSubscriptionScalarWhereInput | EventSubscriptionScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutOwnedEventsInput = {
+    create?: XOR<UserCreateWithoutOwnedEventsInput, UserUncheckedCreateWithoutOwnedEventsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutOwnedEventsInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type EventSubscriptionCreateNestedManyWithoutEventInput = {
+    create?: XOR<EventSubscriptionCreateWithoutEventInput, EventSubscriptionUncheckedCreateWithoutEventInput> | EventSubscriptionCreateWithoutEventInput[] | EventSubscriptionUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventSubscriptionCreateOrConnectWithoutEventInput | EventSubscriptionCreateOrConnectWithoutEventInput[]
+    createMany?: EventSubscriptionCreateManyEventInputEnvelope
+    connect?: EventSubscriptionWhereUniqueInput | EventSubscriptionWhereUniqueInput[]
+  }
+
+  export type EventSubscriptionUncheckedCreateNestedManyWithoutEventInput = {
+    create?: XOR<EventSubscriptionCreateWithoutEventInput, EventSubscriptionUncheckedCreateWithoutEventInput> | EventSubscriptionCreateWithoutEventInput[] | EventSubscriptionUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventSubscriptionCreateOrConnectWithoutEventInput | EventSubscriptionCreateOrConnectWithoutEventInput[]
+    createMany?: EventSubscriptionCreateManyEventInputEnvelope
+    connect?: EventSubscriptionWhereUniqueInput | EventSubscriptionWhereUniqueInput[]
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
   }
 
-  export type UserUpdateOneRequiredWithoutEventsNestedInput = {
-    create?: XOR<UserCreateWithoutEventsInput, UserUncheckedCreateWithoutEventsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutEventsInput
-    upsert?: UserUpsertWithoutEventsInput
+  export type UserUpdateOneRequiredWithoutOwnedEventsNestedInput = {
+    create?: XOR<UserCreateWithoutOwnedEventsInput, UserUncheckedCreateWithoutOwnedEventsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutOwnedEventsInput
+    upsert?: UserUpsertWithoutOwnedEventsInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutEventsInput, UserUpdateWithoutEventsInput>, UserUncheckedUpdateWithoutEventsInput>
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutOwnedEventsInput, UserUpdateWithoutOwnedEventsInput>, UserUncheckedUpdateWithoutOwnedEventsInput>
+  }
+
+  export type EventSubscriptionUpdateManyWithoutEventNestedInput = {
+    create?: XOR<EventSubscriptionCreateWithoutEventInput, EventSubscriptionUncheckedCreateWithoutEventInput> | EventSubscriptionCreateWithoutEventInput[] | EventSubscriptionUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventSubscriptionCreateOrConnectWithoutEventInput | EventSubscriptionCreateOrConnectWithoutEventInput[]
+    upsert?: EventSubscriptionUpsertWithWhereUniqueWithoutEventInput | EventSubscriptionUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: EventSubscriptionCreateManyEventInputEnvelope
+    set?: EventSubscriptionWhereUniqueInput | EventSubscriptionWhereUniqueInput[]
+    disconnect?: EventSubscriptionWhereUniqueInput | EventSubscriptionWhereUniqueInput[]
+    delete?: EventSubscriptionWhereUniqueInput | EventSubscriptionWhereUniqueInput[]
+    connect?: EventSubscriptionWhereUniqueInput | EventSubscriptionWhereUniqueInput[]
+    update?: EventSubscriptionUpdateWithWhereUniqueWithoutEventInput | EventSubscriptionUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: EventSubscriptionUpdateManyWithWhereWithoutEventInput | EventSubscriptionUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: EventSubscriptionScalarWhereInput | EventSubscriptionScalarWhereInput[]
+  }
+
+  export type EventSubscriptionUncheckedUpdateManyWithoutEventNestedInput = {
+    create?: XOR<EventSubscriptionCreateWithoutEventInput, EventSubscriptionUncheckedCreateWithoutEventInput> | EventSubscriptionCreateWithoutEventInput[] | EventSubscriptionUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventSubscriptionCreateOrConnectWithoutEventInput | EventSubscriptionCreateOrConnectWithoutEventInput[]
+    upsert?: EventSubscriptionUpsertWithWhereUniqueWithoutEventInput | EventSubscriptionUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: EventSubscriptionCreateManyEventInputEnvelope
+    set?: EventSubscriptionWhereUniqueInput | EventSubscriptionWhereUniqueInput[]
+    disconnect?: EventSubscriptionWhereUniqueInput | EventSubscriptionWhereUniqueInput[]
+    delete?: EventSubscriptionWhereUniqueInput | EventSubscriptionWhereUniqueInput[]
+    connect?: EventSubscriptionWhereUniqueInput | EventSubscriptionWhereUniqueInput[]
+    update?: EventSubscriptionUpdateWithWhereUniqueWithoutEventInput | EventSubscriptionUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: EventSubscriptionUpdateManyWithWhereWithoutEventInput | EventSubscriptionUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: EventSubscriptionScalarWhereInput | EventSubscriptionScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutEventSubscriptionsInput = {
+    create?: XOR<UserCreateWithoutEventSubscriptionsInput, UserUncheckedCreateWithoutEventSubscriptionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutEventSubscriptionsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EventCreateNestedOneWithoutSubscribersInput = {
+    create?: XOR<EventCreateWithoutSubscribersInput, EventUncheckedCreateWithoutSubscribersInput>
+    connectOrCreate?: EventCreateOrConnectWithoutSubscribersInput
+    connect?: EventWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutEventSubscriptionsNestedInput = {
+    create?: XOR<UserCreateWithoutEventSubscriptionsInput, UserUncheckedCreateWithoutEventSubscriptionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutEventSubscriptionsInput
+    upsert?: UserUpsertWithoutEventSubscriptionsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutEventSubscriptionsInput, UserUpdateWithoutEventSubscriptionsInput>, UserUncheckedUpdateWithoutEventSubscriptionsInput>
+  }
+
+  export type EventUpdateOneRequiredWithoutSubscribersNestedInput = {
+    create?: XOR<EventCreateWithoutSubscribersInput, EventUncheckedCreateWithoutSubscribersInput>
+    connectOrCreate?: EventCreateOrConnectWithoutSubscribersInput
+    upsert?: EventUpsertWithoutSubscribersInput
+    connect?: EventWhereUniqueInput
+    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutSubscribersInput, EventUpdateWithoutSubscribersInput>, EventUncheckedUpdateWithoutSubscribersInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -4011,47 +5584,70 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type EventCreateWithoutUserInput = {
+  export type EventCreateWithoutOwnerInput = {
     title: string
     description?: string | null
     dateStart: Date | string
     dateEnd: Date | string
     createdAt?: Date | string
+    subscribers?: EventSubscriptionCreateNestedManyWithoutEventInput
   }
 
-  export type EventUncheckedCreateWithoutUserInput = {
+  export type EventUncheckedCreateWithoutOwnerInput = {
     id?: number
     title: string
     description?: string | null
     dateStart: Date | string
     dateEnd: Date | string
     createdAt?: Date | string
+    subscribers?: EventSubscriptionUncheckedCreateNestedManyWithoutEventInput
   }
 
-  export type EventCreateOrConnectWithoutUserInput = {
+  export type EventCreateOrConnectWithoutOwnerInput = {
     where: EventWhereUniqueInput
-    create: XOR<EventCreateWithoutUserInput, EventUncheckedCreateWithoutUserInput>
+    create: XOR<EventCreateWithoutOwnerInput, EventUncheckedCreateWithoutOwnerInput>
   }
 
-  export type EventCreateManyUserInputEnvelope = {
-    data: EventCreateManyUserInput | EventCreateManyUserInput[]
+  export type EventCreateManyOwnerInputEnvelope = {
+    data: EventCreateManyOwnerInput | EventCreateManyOwnerInput[]
     skipDuplicates?: boolean
   }
 
-  export type EventUpsertWithWhereUniqueWithoutUserInput = {
-    where: EventWhereUniqueInput
-    update: XOR<EventUpdateWithoutUserInput, EventUncheckedUpdateWithoutUserInput>
-    create: XOR<EventCreateWithoutUserInput, EventUncheckedCreateWithoutUserInput>
+  export type EventSubscriptionCreateWithoutUserInput = {
+    createdAt?: Date | string
+    event: EventCreateNestedOneWithoutSubscribersInput
   }
 
-  export type EventUpdateWithWhereUniqueWithoutUserInput = {
-    where: EventWhereUniqueInput
-    data: XOR<EventUpdateWithoutUserInput, EventUncheckedUpdateWithoutUserInput>
+  export type EventSubscriptionUncheckedCreateWithoutUserInput = {
+    id?: number
+    eventId: number
+    createdAt?: Date | string
   }
 
-  export type EventUpdateManyWithWhereWithoutUserInput = {
+  export type EventSubscriptionCreateOrConnectWithoutUserInput = {
+    where: EventSubscriptionWhereUniqueInput
+    create: XOR<EventSubscriptionCreateWithoutUserInput, EventSubscriptionUncheckedCreateWithoutUserInput>
+  }
+
+  export type EventSubscriptionCreateManyUserInputEnvelope = {
+    data: EventSubscriptionCreateManyUserInput | EventSubscriptionCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EventUpsertWithWhereUniqueWithoutOwnerInput = {
+    where: EventWhereUniqueInput
+    update: XOR<EventUpdateWithoutOwnerInput, EventUncheckedUpdateWithoutOwnerInput>
+    create: XOR<EventCreateWithoutOwnerInput, EventUncheckedCreateWithoutOwnerInput>
+  }
+
+  export type EventUpdateWithWhereUniqueWithoutOwnerInput = {
+    where: EventWhereUniqueInput
+    data: XOR<EventUpdateWithoutOwnerInput, EventUncheckedUpdateWithoutOwnerInput>
+  }
+
+  export type EventUpdateManyWithWhereWithoutOwnerInput = {
     where: EventScalarWhereInput
-    data: XOR<EventUpdateManyMutationInput, EventUncheckedUpdateManyWithoutUserInput>
+    data: XOR<EventUpdateManyMutationInput, EventUncheckedUpdateManyWithoutOwnerInput>
   }
 
   export type EventScalarWhereInput = {
@@ -4064,56 +5660,227 @@ export namespace Prisma {
     dateStart?: DateTimeFilter<"Event"> | Date | string
     dateEnd?: DateTimeFilter<"Event"> | Date | string
     createdAt?: DateTimeFilter<"Event"> | Date | string
-    userId?: IntFilter<"Event"> | number
+    ownerId?: IntFilter<"Event"> | number
   }
 
-  export type UserCreateWithoutEventsInput = {
+  export type EventSubscriptionUpsertWithWhereUniqueWithoutUserInput = {
+    where: EventSubscriptionWhereUniqueInput
+    update: XOR<EventSubscriptionUpdateWithoutUserInput, EventSubscriptionUncheckedUpdateWithoutUserInput>
+    create: XOR<EventSubscriptionCreateWithoutUserInput, EventSubscriptionUncheckedCreateWithoutUserInput>
+  }
+
+  export type EventSubscriptionUpdateWithWhereUniqueWithoutUserInput = {
+    where: EventSubscriptionWhereUniqueInput
+    data: XOR<EventSubscriptionUpdateWithoutUserInput, EventSubscriptionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type EventSubscriptionUpdateManyWithWhereWithoutUserInput = {
+    where: EventSubscriptionScalarWhereInput
+    data: XOR<EventSubscriptionUpdateManyMutationInput, EventSubscriptionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type EventSubscriptionScalarWhereInput = {
+    AND?: EventSubscriptionScalarWhereInput | EventSubscriptionScalarWhereInput[]
+    OR?: EventSubscriptionScalarWhereInput[]
+    NOT?: EventSubscriptionScalarWhereInput | EventSubscriptionScalarWhereInput[]
+    id?: IntFilter<"EventSubscription"> | number
+    userId?: IntFilter<"EventSubscription"> | number
+    eventId?: IntFilter<"EventSubscription"> | number
+    createdAt?: DateTimeFilter<"EventSubscription"> | Date | string
+  }
+
+  export type UserCreateWithoutOwnedEventsInput = {
     name: string
     email: string
     password: string
     createdAt?: Date | string
+    eventSubscriptions?: EventSubscriptionCreateNestedManyWithoutUserInput
   }
 
-  export type UserUncheckedCreateWithoutEventsInput = {
+  export type UserUncheckedCreateWithoutOwnedEventsInput = {
     id?: number
     name: string
     email: string
     password: string
     createdAt?: Date | string
+    eventSubscriptions?: EventSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UserCreateOrConnectWithoutEventsInput = {
+  export type UserCreateOrConnectWithoutOwnedEventsInput = {
     where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutEventsInput, UserUncheckedCreateWithoutEventsInput>
+    create: XOR<UserCreateWithoutOwnedEventsInput, UserUncheckedCreateWithoutOwnedEventsInput>
   }
 
-  export type UserUpsertWithoutEventsInput = {
-    update: XOR<UserUpdateWithoutEventsInput, UserUncheckedUpdateWithoutEventsInput>
-    create: XOR<UserCreateWithoutEventsInput, UserUncheckedCreateWithoutEventsInput>
+  export type EventSubscriptionCreateWithoutEventInput = {
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutEventSubscriptionsInput
+  }
+
+  export type EventSubscriptionUncheckedCreateWithoutEventInput = {
+    id?: number
+    userId: number
+    createdAt?: Date | string
+  }
+
+  export type EventSubscriptionCreateOrConnectWithoutEventInput = {
+    where: EventSubscriptionWhereUniqueInput
+    create: XOR<EventSubscriptionCreateWithoutEventInput, EventSubscriptionUncheckedCreateWithoutEventInput>
+  }
+
+  export type EventSubscriptionCreateManyEventInputEnvelope = {
+    data: EventSubscriptionCreateManyEventInput | EventSubscriptionCreateManyEventInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutOwnedEventsInput = {
+    update: XOR<UserUpdateWithoutOwnedEventsInput, UserUncheckedUpdateWithoutOwnedEventsInput>
+    create: XOR<UserCreateWithoutOwnedEventsInput, UserUncheckedCreateWithoutOwnedEventsInput>
     where?: UserWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutEventsInput = {
+  export type UserUpdateToOneWithWhereWithoutOwnedEventsInput = {
     where?: UserWhereInput
-    data: XOR<UserUpdateWithoutEventsInput, UserUncheckedUpdateWithoutEventsInput>
+    data: XOR<UserUpdateWithoutOwnedEventsInput, UserUncheckedUpdateWithoutOwnedEventsInput>
   }
 
-  export type UserUpdateWithoutEventsInput = {
+  export type UserUpdateWithoutOwnedEventsInput = {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventSubscriptions?: EventSubscriptionUpdateManyWithoutUserNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutEventsInput = {
+  export type UserUncheckedUpdateWithoutOwnedEventsInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventSubscriptions?: EventSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type EventCreateManyUserInput = {
+  export type EventSubscriptionUpsertWithWhereUniqueWithoutEventInput = {
+    where: EventSubscriptionWhereUniqueInput
+    update: XOR<EventSubscriptionUpdateWithoutEventInput, EventSubscriptionUncheckedUpdateWithoutEventInput>
+    create: XOR<EventSubscriptionCreateWithoutEventInput, EventSubscriptionUncheckedCreateWithoutEventInput>
+  }
+
+  export type EventSubscriptionUpdateWithWhereUniqueWithoutEventInput = {
+    where: EventSubscriptionWhereUniqueInput
+    data: XOR<EventSubscriptionUpdateWithoutEventInput, EventSubscriptionUncheckedUpdateWithoutEventInput>
+  }
+
+  export type EventSubscriptionUpdateManyWithWhereWithoutEventInput = {
+    where: EventSubscriptionScalarWhereInput
+    data: XOR<EventSubscriptionUpdateManyMutationInput, EventSubscriptionUncheckedUpdateManyWithoutEventInput>
+  }
+
+  export type UserCreateWithoutEventSubscriptionsInput = {
+    name: string
+    email: string
+    password: string
+    createdAt?: Date | string
+    ownedEvents?: EventCreateNestedManyWithoutOwnerInput
+  }
+
+  export type UserUncheckedCreateWithoutEventSubscriptionsInput = {
+    id?: number
+    name: string
+    email: string
+    password: string
+    createdAt?: Date | string
+    ownedEvents?: EventUncheckedCreateNestedManyWithoutOwnerInput
+  }
+
+  export type UserCreateOrConnectWithoutEventSubscriptionsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutEventSubscriptionsInput, UserUncheckedCreateWithoutEventSubscriptionsInput>
+  }
+
+  export type EventCreateWithoutSubscribersInput = {
+    title: string
+    description?: string | null
+    dateStart: Date | string
+    dateEnd: Date | string
+    createdAt?: Date | string
+    owner: UserCreateNestedOneWithoutOwnedEventsInput
+  }
+
+  export type EventUncheckedCreateWithoutSubscribersInput = {
+    id?: number
+    title: string
+    description?: string | null
+    dateStart: Date | string
+    dateEnd: Date | string
+    createdAt?: Date | string
+    ownerId: number
+  }
+
+  export type EventCreateOrConnectWithoutSubscribersInput = {
+    where: EventWhereUniqueInput
+    create: XOR<EventCreateWithoutSubscribersInput, EventUncheckedCreateWithoutSubscribersInput>
+  }
+
+  export type UserUpsertWithoutEventSubscriptionsInput = {
+    update: XOR<UserUpdateWithoutEventSubscriptionsInput, UserUncheckedUpdateWithoutEventSubscriptionsInput>
+    create: XOR<UserCreateWithoutEventSubscriptionsInput, UserUncheckedCreateWithoutEventSubscriptionsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutEventSubscriptionsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutEventSubscriptionsInput, UserUncheckedUpdateWithoutEventSubscriptionsInput>
+  }
+
+  export type UserUpdateWithoutEventSubscriptionsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ownedEvents?: EventUpdateManyWithoutOwnerNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutEventSubscriptionsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ownedEvents?: EventUncheckedUpdateManyWithoutOwnerNestedInput
+  }
+
+  export type EventUpsertWithoutSubscribersInput = {
+    update: XOR<EventUpdateWithoutSubscribersInput, EventUncheckedUpdateWithoutSubscribersInput>
+    create: XOR<EventCreateWithoutSubscribersInput, EventUncheckedCreateWithoutSubscribersInput>
+    where?: EventWhereInput
+  }
+
+  export type EventUpdateToOneWithWhereWithoutSubscribersInput = {
+    where?: EventWhereInput
+    data: XOR<EventUpdateWithoutSubscribersInput, EventUncheckedUpdateWithoutSubscribersInput>
+  }
+
+  export type EventUpdateWithoutSubscribersInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dateStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    owner?: UserUpdateOneRequiredWithoutOwnedEventsNestedInput
+  }
+
+  export type EventUncheckedUpdateWithoutSubscribersInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dateStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ownerId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type EventCreateManyOwnerInput = {
     id?: number
     title: string
     description?: string | null
@@ -4122,15 +5889,32 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
-  export type EventUpdateWithoutUserInput = {
+  export type EventSubscriptionCreateManyUserInput = {
+    id?: number
+    eventId: number
+    createdAt?: Date | string
+  }
+
+  export type EventUpdateWithoutOwnerInput = {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     dateStart?: DateTimeFieldUpdateOperationsInput | Date | string
     dateEnd?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscribers?: EventSubscriptionUpdateManyWithoutEventNestedInput
   }
 
-  export type EventUncheckedUpdateWithoutUserInput = {
+  export type EventUncheckedUpdateWithoutOwnerInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    dateStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscribers?: EventSubscriptionUncheckedUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventUncheckedUpdateManyWithoutOwnerInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -4139,12 +5923,43 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type EventUncheckedUpdateManyWithoutUserInput = {
+  export type EventSubscriptionUpdateWithoutUserInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutSubscribersNestedInput
+  }
+
+  export type EventSubscriptionUncheckedUpdateWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    dateStart?: DateTimeFieldUpdateOperationsInput | Date | string
-    dateEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventSubscriptionUncheckedUpdateManyWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    eventId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventSubscriptionCreateManyEventInput = {
+    id?: number
+    userId: number
+    createdAt?: Date | string
+  }
+
+  export type EventSubscriptionUpdateWithoutEventInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutEventSubscriptionsNestedInput
+  }
+
+  export type EventSubscriptionUncheckedUpdateWithoutEventInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventSubscriptionUncheckedUpdateManyWithoutEventInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

@@ -1,44 +1,48 @@
 import prisma from '../db/client'
-import { Prisma } from '../generated/prisma'
 
 export class EventService {
-  async findAll(query?: {
+  async findAll(filters?: {
     userId?: number
     search?: string
     fromDate?: Date
     toDate?: Date
   }) {
-    const where: Prisma.EventWhereInput = {}
+    const where: any = {}
 
-    if (query?.userId) {
-      where.userId = query.userId
+    if (filters?.userId) {
+      where.ownerId = filters.userId
     }
 
-    if (query?.search) {
+    if (filters?.search) {
       where.OR = [
-        { title: { contains: query.search, mode: 'insensitive' } },
-        { description: { contains: query.search, mode: 'insensitive' } }
+        { title: { contains: filters.search, mode: 'insensitive' } },
+        { description: { contains: filters.search, mode: 'insensitive' } }
       ]
     }
 
-    if (query?.fromDate || query?.toDate) {
-      // Find events that overlap with the given date range
-      // An event overlaps if:
-      // - Event starts before the range ends AND
-      // - Event ends after the range starts
-      where.AND = [
-        ...(query.fromDate ? [{ dateEnd: { gte: query.fromDate } }] : []),
-        ...(query.toDate ? [{ dateStart: { lte: query.toDate } }] : [])
-      ]
+    if (filters?.fromDate) {
+      where.dateStart = { gte: filters.fromDate }
+    }
+
+    if (filters?.toDate) {
+      where.dateEnd = { lte: filters.toDate }
     }
 
     return prisma.event.findMany({
       where,
       include: {
-        user: true
-      },
-      orderBy: {
-        dateStart: 'asc'
+        owner: {
+          select: {
+            id: true,
+            name: true,
+            email: true
+          }
+        },
+        _count: {
+          select: {
+            subscribers: true
+          }
+        }
       }
     })
   }
@@ -47,7 +51,25 @@ export class EventService {
     const event = await prisma.event.findUnique({
       where: { id },
       include: {
-        user: true
+        owner: {
+          select: {
+            id: true,
+            name: true,
+            email: true
+          }
+        },
+        subscribers: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                createdAt: true
+              }
+            }
+          }
+        }
       }
     })
 
@@ -58,21 +80,33 @@ export class EventService {
     return event
   }
 
-  async create(data: Prisma.EventCreateInput) {
-    // Validate that dateEnd is after dateStart
-    if (data.dateStart && data.dateEnd && data.dateStart > data.dateEnd) {
-      throw new Error('Event end date must be after start date')
-    }
-
+  async create(data: {
+    title: string
+    description?: string
+    dateStart: string
+    dateEnd: string
+    ownerId: number
+  }) {
     return prisma.event.create({
       data,
       include: {
-        user: true
+        owner: {
+          select: {
+            id: true,
+            name: true,
+            email: true
+          }
+        }
       }
     })
   }
 
-  async update(id: number, data: Prisma.EventUpdateInput) {
+  async update(id: number, data: Partial<{
+    title: string
+    description?: string
+    dateStart: string
+    dateEnd: string
+  }>) {
     const event = await prisma.event.findUnique({
       where: { id }
     })
@@ -81,20 +115,17 @@ export class EventService {
       throw new Error('Event not found')
     }
 
-    // Validate date range if both dates are being updated
-    if (
-      typeof data.dateStart !== 'undefined' &&
-      typeof data.dateEnd !== 'undefined' &&
-      data.dateStart > data.dateEnd
-    ) {
-      throw new Error('Event end date must be after start date')
-    }
-
     return prisma.event.update({
       where: { id },
       data,
       include: {
-        user: true
+        owner: {
+          select: {
+            id: true,
+            name: true,
+            email: true
+          }
+        }
       }
     })
   }
@@ -112,4 +143,4 @@ export class EventService {
       where: { id }
     })
   }
-} 
+}
