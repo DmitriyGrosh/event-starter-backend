@@ -177,6 +177,19 @@ exports.Prisma.TicketTransferScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.TagScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.EventTagScalarFieldEnum = {
+  eventId: 'eventId',
+  tagId: 'tagId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -199,7 +212,9 @@ exports.Prisma.ModelName = {
   EventSubscription: 'EventSubscription',
   Ticket: 'Ticket',
   TicketPurchase: 'TicketPurchase',
-  TicketTransfer: 'TicketTransfer'
+  TicketTransfer: 'TicketTransfer',
+  Tag: 'Tag',
+  EventTag: 'EventTag'
 };
 
 /**

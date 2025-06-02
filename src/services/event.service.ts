@@ -6,6 +6,7 @@ export class EventService {
     search?: string
     fromDate?: Date
     toDate?: Date
+    tags?: string[]
   }) {
     const where: any = {}
 
@@ -28,6 +29,18 @@ export class EventService {
       where.dateEnd = { lte: filters.toDate }
     }
 
+    if (filters?.tags && filters.tags.length > 0) {
+      where.tags = {
+        some: {
+          tag: {
+            name: {
+              in: filters.tags.map(tag => tag.toLowerCase())
+            }
+          }
+        }
+      }
+    }
+
     return prisma.event.findMany({
       where,
       include: {
@@ -39,6 +52,11 @@ export class EventService {
           }
         },
         tickets: true,
+        tags: {
+          include: {
+            tag: true
+          }
+        },
         _count: {
           select: {
             subscribers: true
@@ -60,6 +78,11 @@ export class EventService {
           }
         },
         tickets: true,
+        tags: {
+          include: {
+            tag: true
+          }
+        },
         subscribers: {
           include: {
             user: {
@@ -97,24 +120,87 @@ export class EventService {
         quantity: number
       }[]
     }
+    tags?: string[]
   }) {
-    return prisma.event.create({
-      data,
-      include: {
-        owner: {
-          select: {
-            id: true,
-            name: true,
-            email: true
+    return prisma.$transaction(async (tx) => {
+      // Handle tags first if provided
+      let tagIds: number[] = []
+      if (data.tags && data.tags.length > 0) {
+        const lowercaseTags = data.tags.map(tag => tag.toLowerCase())
+
+        // Find existing tags
+        const existingTags = await tx.tag.findMany({
+          where: {
+            name: {
+              in: lowercaseTags
+            }
           }
+        })
+
+        const existingTagNames = existingTags.map(tag => tag.name)
+        const newTagNames = lowercaseTags.filter(tag => !existingTagNames.includes(tag))
+
+        // Create new tags
+        if (newTagNames.length > 0) {
+          await tx.tag.createMany({
+            data: newTagNames.map(name => ({
+              name,
+              description: null
+            })),
+            skipDuplicates: true
+          })
+        }
+
+        // Get all tag IDs
+        const allTags = await tx.tag.findMany({
+          where: {
+            name: {
+              in: lowercaseTags
+            }
+          }
+        })
+        tagIds = allTags.map(tag => tag.id)
+      }
+
+      // Create event
+      const event = await tx.event.create({
+        data: {
+          title: data.title,
+          description: data.description,
+          location: data.location,
+          dateStart: data.dateStart,
+          dateEnd: data.dateEnd,
+          ownerId: data.ownerId,
+          tickets: data.tickets,
+          tags: tagIds.length > 0 ? {
+            create: tagIds.map(tagId => ({
+              tagId
+            }))
+          } : undefined
         },
-        tickets: true,
-        _count: {
-          select: {
-            subscribers: true
+        include: {
+          owner: {
+            select: {
+              id: true,
+              name: true,
+              email: true
+            }
+          },
+          tickets: true,
+          tags: {
+            include: {
+              tag: true
+            }
+          },
+          _count: {
+            select: {
+              subscribers: true
+            }
           }
         }
-      }
+      })
+
+      return event
     })
   }
 
@@ -124,6 +210,7 @@ export class EventService {
     location: string
     dateStart: string
     dateEnd: string
+    tags?: string[]
   }>) {
     const event = await prisma.event.findUnique({
       where: { id }
@@ -133,24 +220,89 @@ export class EventService {
       throw new Error('Event not found')
     }
 
-    return prisma.event.update({
-      where: { id },
-      data,
-      include: {
-        owner: {
-          select: {
-            id: true,
-            name: true,
-            email: true
+    return prisma.$transaction(async (tx) => {
+      // Handle tags first if provided
+      let tagIds: number[] = []
+      if (data.tags && data.tags.length > 0) {
+        const lowercaseTags = data.tags.map(tag => tag.toLowerCase())
+
+        // Find existing tags
+        const existingTags = await tx.tag.findMany({
+          where: {
+            name: {
+              in: lowercaseTags
+            }
           }
+        })
+
+        const existingTagNames = existingTags.map(tag => tag.name)
+        const newTagNames = lowercaseTags.filter(tag => !existingTagNames.includes(tag))
+
+        // Create new tags
+        if (newTagNames.length > 0) {
+          await tx.tag.createMany({
+            data: newTagNames.map(name => ({
+              name,
+              description: null
+            })),
+            skipDuplicates: true
+          })
+        }
+
+        // Get all tag IDs
+        const allTags = await tx.tag.findMany({
+          where: {
+            name: {
+              in: lowercaseTags
+            }
+          }
+        })
+        tagIds = allTags.map(tag => tag.id)
+
+        // Delete existing tag connections
+        await tx.eventTag.deleteMany({
+          where: { eventId: id }
+        })
+      }
+
+      // Update event
+      const updatedEvent = await tx.event.update({
+        where: { id },
+        data: {
+          title: data.title,
+          description: data.description,
+          location: data.location,
+          dateStart: data.dateStart,
+          dateEnd: data.dateEnd,
+          tags: tagIds.length > 0 ? {
+            create: tagIds.map(tagId => ({
+              tagId
+            }))
+          } : undefined
         },
-        tickets: true,
-        _count: {
-          select: {
-            subscribers: true
+        include: {
+          owner: {
+            select: {
+              id: true,
+              name: true,
+              email: true
+            }
+          },
+          tickets: true,
+          tags: {
+            include: {
+              tag: true
+            }
+          },
+          _count: {
+            select: {
+              subscribers: true
+            }
           }
         }
-      }
+      })
+
+      return updatedEvent
     })
   }
 

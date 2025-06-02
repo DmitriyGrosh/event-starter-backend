@@ -8,9 +8,12 @@ async function main() {
 
   // Clean up existing data
   console.log('Cleaning up existing data...')
+  await prisma.ticketTransfer.deleteMany()
   await prisma.ticketPurchase.deleteMany()
   await prisma.ticket.deleteMany()
   await prisma.eventSubscription.deleteMany()
+  await prisma.eventTag.deleteMany()
+  await prisma.tag.deleteMany()
   await prisma.event.deleteMany()
   await prisma.user.deleteMany()
   console.log('Cleanup complete')
@@ -34,6 +37,16 @@ async function main() {
         password
       }
     })
+  ])
+
+  // Create common tags
+  const tags = await Promise.all([
+    prisma.tag.create({ data: { name: 'technology', description: 'Tech-related events' } }),
+    prisma.tag.create({ data: { name: 'workshop', description: 'Hands-on learning events' } }),
+    prisma.tag.create({ data: { name: 'conference', description: 'Large-scale professional events' } }),
+    prisma.tag.create({ data: { name: 'design', description: 'Design-focused events' } }),
+    prisma.tag.create({ data: { name: 'networking', description: 'Social and professional networking events' } }),
+    prisma.tag.create({ data: { name: 'coding', description: 'Programming and development events' } })
   ])
 
   // Create events owned by John
@@ -67,6 +80,13 @@ async function main() {
               quantity: 50
             }
           ]
+        },
+        tags: {
+          create: [
+            { tagId: tags[0].id }, // technology
+            { tagId: tags[2].id }, // conference
+            { tagId: tags[4].id }  // networking
+          ]
         }
       }
     }),
@@ -86,6 +106,13 @@ async function main() {
               price: 149.99,
               quantity: 30
             }
+          ]
+        },
+        tags: {
+          create: [
+            { tagId: tags[0].id }, // technology
+            { tagId: tags[1].id }, // workshop
+            { tagId: tags[5].id }  // coding
           ]
         }
       }
@@ -116,6 +143,13 @@ async function main() {
               price: 75.00,
               quantity: 10
             }
+          ]
+        },
+        tags: {
+          create: [
+            { tagId: tags[3].id }, // design
+            { tagId: tags[1].id }, // workshop
+            { tagId: tags[4].id }  // networking
           ]
         }
       }

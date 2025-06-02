@@ -40,6 +40,7 @@ model Event {
   ownerId     Int       @map("owner_id")
   subscribers EventSubscription[]
   tickets     Ticket[]
+  tags        EventTag[]
 
   @@map("events")
 }
@@ -99,4 +100,25 @@ model TicketTransfer {
   updatedAt     DateTime       @updatedAt @map("updated_at")
 
   @@map("ticket_transfers")
+}
+
+model Tag {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  description String?
+  createdAt   DateTime  @default(now()) @map("created_at")
+  events      EventTag[]
+
+  @@map("tags")
+}
+
+model EventTag {
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId     Int      @map("event_id")
+  tag         Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  tagId       Int      @map("tag_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@id([eventId, tagId])
+  @@map("event_tags")
 }

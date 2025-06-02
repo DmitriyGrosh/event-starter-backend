@@ -43,6 +43,16 @@ export type TicketPurchase = $Result.DefaultSelection<Prisma.$TicketPurchasePayl
  * 
  */
 export type TicketTransfer = $Result.DefaultSelection<Prisma.$TicketTransferPayload>
+/**
+ * Model Tag
+ * 
+ */
+export type Tag = $Result.DefaultSelection<Prisma.$TagPayload>
+/**
+ * Model EventTag
+ * 
+ */
+export type EventTag = $Result.DefaultSelection<Prisma.$EventTagPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -228,6 +238,26 @@ export class PrismaClient<
     * ```
     */
   get ticketTransfer(): Prisma.TicketTransferDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.tag`: Exposes CRUD operations for the **Tag** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Tags
+    * const tags = await prisma.tag.findMany()
+    * ```
+    */
+  get tag(): Prisma.TagDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.eventTag`: Exposes CRUD operations for the **EventTag** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EventTags
+    * const eventTags = await prisma.eventTag.findMany()
+    * ```
+    */
+  get eventTag(): Prisma.EventTagDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -673,7 +703,9 @@ export namespace Prisma {
     EventSubscription: 'EventSubscription',
     Ticket: 'Ticket',
     TicketPurchase: 'TicketPurchase',
-    TicketTransfer: 'TicketTransfer'
+    TicketTransfer: 'TicketTransfer',
+    Tag: 'Tag',
+    EventTag: 'EventTag'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -692,7 +724,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "event" | "eventSubscription" | "ticket" | "ticketPurchase" | "ticketTransfer"
+      modelProps: "user" | "event" | "eventSubscription" | "ticket" | "ticketPurchase" | "ticketTransfer" | "tag" | "eventTag"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1140,6 +1172,154 @@ export namespace Prisma {
           }
         }
       }
+      Tag: {
+        payload: Prisma.$TagPayload<ExtArgs>
+        fields: Prisma.TagFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TagFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TagPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TagFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TagPayload>
+          }
+          findFirst: {
+            args: Prisma.TagFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TagPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TagFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TagPayload>
+          }
+          findMany: {
+            args: Prisma.TagFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TagPayload>[]
+          }
+          create: {
+            args: Prisma.TagCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TagPayload>
+          }
+          createMany: {
+            args: Prisma.TagCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TagCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TagPayload>[]
+          }
+          delete: {
+            args: Prisma.TagDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TagPayload>
+          }
+          update: {
+            args: Prisma.TagUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TagPayload>
+          }
+          deleteMany: {
+            args: Prisma.TagDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TagUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TagUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TagPayload>[]
+          }
+          upsert: {
+            args: Prisma.TagUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TagPayload>
+          }
+          aggregate: {
+            args: Prisma.TagAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTag>
+          }
+          groupBy: {
+            args: Prisma.TagGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TagGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TagCountArgs<ExtArgs>
+            result: $Utils.Optional<TagCountAggregateOutputType> | number
+          }
+        }
+      }
+      EventTag: {
+        payload: Prisma.$EventTagPayload<ExtArgs>
+        fields: Prisma.EventTagFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EventTagFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventTagPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EventTagFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventTagPayload>
+          }
+          findFirst: {
+            args: Prisma.EventTagFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventTagPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EventTagFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventTagPayload>
+          }
+          findMany: {
+            args: Prisma.EventTagFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventTagPayload>[]
+          }
+          create: {
+            args: Prisma.EventTagCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventTagPayload>
+          }
+          createMany: {
+            args: Prisma.EventTagCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EventTagCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventTagPayload>[]
+          }
+          delete: {
+            args: Prisma.EventTagDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventTagPayload>
+          }
+          update: {
+            args: Prisma.EventTagUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventTagPayload>
+          }
+          deleteMany: {
+            args: Prisma.EventTagDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EventTagUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.EventTagUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventTagPayload>[]
+          }
+          upsert: {
+            args: Prisma.EventTagUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventTagPayload>
+          }
+          aggregate: {
+            args: Prisma.EventTagAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEventTag>
+          }
+          groupBy: {
+            args: Prisma.EventTagGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EventTagGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EventTagCountArgs<ExtArgs>
+            result: $Utils.Optional<EventTagCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1230,6 +1410,8 @@ export namespace Prisma {
     ticket?: TicketOmit
     ticketPurchase?: TicketPurchaseOmit
     ticketTransfer?: TicketTransferOmit
+    tag?: TagOmit
+    eventTag?: EventTagOmit
   }
 
   /* Types for Logging */
@@ -1375,11 +1557,13 @@ export namespace Prisma {
   export type EventCountOutputType = {
     subscribers: number
     tickets: number
+    tags: number
   }
 
   export type EventCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     subscribers?: boolean | EventCountOutputTypeCountSubscribersArgs
     tickets?: boolean | EventCountOutputTypeCountTicketsArgs
+    tags?: boolean | EventCountOutputTypeCountTagsArgs
   }
 
   // Custom InputTypes
@@ -1405,6 +1589,13 @@ export namespace Prisma {
    */
   export type EventCountOutputTypeCountTicketsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TicketWhereInput
+  }
+
+  /**
+   * EventCountOutputType without action
+   */
+  export type EventCountOutputTypeCountTagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventTagWhereInput
   }
 
 
@@ -1476,6 +1667,37 @@ export namespace Prisma {
    */
   export type TicketPurchaseCountOutputTypeCountTransfersToArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TicketTransferWhereInput
+  }
+
+
+  /**
+   * Count Type TagCountOutputType
+   */
+
+  export type TagCountOutputType = {
+    events: number
+  }
+
+  export type TagCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    events?: boolean | TagCountOutputTypeCountEventsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * TagCountOutputType without action
+   */
+  export type TagCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TagCountOutputType
+     */
+    select?: TagCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * TagCountOutputType without action
+   */
+  export type TagCountOutputTypeCountEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventTagWhereInput
   }
 
 
@@ -2872,6 +3094,7 @@ export namespace Prisma {
     owner?: boolean | UserDefaultArgs<ExtArgs>
     subscribers?: boolean | Event$subscribersArgs<ExtArgs>
     tickets?: boolean | Event$ticketsArgs<ExtArgs>
+    tags?: boolean | Event$tagsArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
@@ -2915,6 +3138,7 @@ export namespace Prisma {
     owner?: boolean | UserDefaultArgs<ExtArgs>
     subscribers?: boolean | Event$subscribersArgs<ExtArgs>
     tickets?: boolean | Event$ticketsArgs<ExtArgs>
+    tags?: boolean | Event$tagsArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type EventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2930,6 +3154,7 @@ export namespace Prisma {
       owner: Prisma.$UserPayload<ExtArgs>
       subscribers: Prisma.$EventSubscriptionPayload<ExtArgs>[]
       tickets: Prisma.$TicketPayload<ExtArgs>[]
+      tags: Prisma.$EventTagPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -3337,6 +3562,7 @@ export namespace Prisma {
     owner<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     subscribers<T extends Event$subscribersArgs<ExtArgs> = {}>(args?: Subset<T, Event$subscribersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventSubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tickets<T extends Event$ticketsArgs<ExtArgs> = {}>(args?: Subset<T, Event$ticketsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    tags<T extends Event$tagsArgs<ExtArgs> = {}>(args?: Subset<T, Event$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3815,6 +4041,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TicketScalarFieldEnum | TicketScalarFieldEnum[]
+  }
+
+  /**
+   * Event.tags
+   */
+  export type Event$tagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTag
+     */
+    select?: EventTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventTag
+     */
+    omit?: EventTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventTagInclude<ExtArgs> | null
+    where?: EventTagWhereInput
+    orderBy?: EventTagOrderByWithRelationInput | EventTagOrderByWithRelationInput[]
+    cursor?: EventTagWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EventTagScalarFieldEnum | EventTagScalarFieldEnum[]
   }
 
   /**
@@ -8443,6 +8693,2175 @@ export namespace Prisma {
 
 
   /**
+   * Model Tag
+   */
+
+  export type AggregateTag = {
+    _count: TagCountAggregateOutputType | null
+    _avg: TagAvgAggregateOutputType | null
+    _sum: TagSumAggregateOutputType | null
+    _min: TagMinAggregateOutputType | null
+    _max: TagMaxAggregateOutputType | null
+  }
+
+  export type TagAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type TagSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type TagMinAggregateOutputType = {
+    id: number | null
+    name: string | null
+    description: string | null
+    createdAt: Date | null
+  }
+
+  export type TagMaxAggregateOutputType = {
+    id: number | null
+    name: string | null
+    description: string | null
+    createdAt: Date | null
+  }
+
+  export type TagCountAggregateOutputType = {
+    id: number
+    name: number
+    description: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type TagAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type TagSumAggregateInputType = {
+    id?: true
+  }
+
+  export type TagMinAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    createdAt?: true
+  }
+
+  export type TagMaxAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    createdAt?: true
+  }
+
+  export type TagCountAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type TagAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Tag to aggregate.
+     */
+    where?: TagWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tags to fetch.
+     */
+    orderBy?: TagOrderByWithRelationInput | TagOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TagWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tags.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Tags
+    **/
+    _count?: true | TagCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TagAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TagSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TagMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TagMaxAggregateInputType
+  }
+
+  export type GetTagAggregateType<T extends TagAggregateArgs> = {
+        [P in keyof T & keyof AggregateTag]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTag[P]>
+      : GetScalarType<T[P], AggregateTag[P]>
+  }
+
+
+
+
+  export type TagGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TagWhereInput
+    orderBy?: TagOrderByWithAggregationInput | TagOrderByWithAggregationInput[]
+    by: TagScalarFieldEnum[] | TagScalarFieldEnum
+    having?: TagScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TagCountAggregateInputType | true
+    _avg?: TagAvgAggregateInputType
+    _sum?: TagSumAggregateInputType
+    _min?: TagMinAggregateInputType
+    _max?: TagMaxAggregateInputType
+  }
+
+  export type TagGroupByOutputType = {
+    id: number
+    name: string
+    description: string | null
+    createdAt: Date
+    _count: TagCountAggregateOutputType | null
+    _avg: TagAvgAggregateOutputType | null
+    _sum: TagSumAggregateOutputType | null
+    _min: TagMinAggregateOutputType | null
+    _max: TagMaxAggregateOutputType | null
+  }
+
+  type GetTagGroupByPayload<T extends TagGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TagGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TagGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TagGroupByOutputType[P]>
+            : GetScalarType<T[P], TagGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TagSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    createdAt?: boolean
+    events?: boolean | Tag$eventsArgs<ExtArgs>
+    _count?: boolean | TagCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tag"]>
+
+  export type TagSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["tag"]>
+
+  export type TagSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["tag"]>
+
+  export type TagSelectScalar = {
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    createdAt?: boolean
+  }
+
+  export type TagOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "createdAt", ExtArgs["result"]["tag"]>
+  export type TagInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    events?: boolean | Tag$eventsArgs<ExtArgs>
+    _count?: boolean | TagCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type TagIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type TagIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $TagPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Tag"
+    objects: {
+      events: Prisma.$EventTagPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      name: string
+      description: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["tag"]>
+    composites: {}
+  }
+
+  type TagGetPayload<S extends boolean | null | undefined | TagDefaultArgs> = $Result.GetResult<Prisma.$TagPayload, S>
+
+  type TagCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TagFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TagCountAggregateInputType | true
+    }
+
+  export interface TagDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Tag'], meta: { name: 'Tag' } }
+    /**
+     * Find zero or one Tag that matches the filter.
+     * @param {TagFindUniqueArgs} args - Arguments to find a Tag
+     * @example
+     * // Get one Tag
+     * const tag = await prisma.tag.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TagFindUniqueArgs>(args: SelectSubset<T, TagFindUniqueArgs<ExtArgs>>): Prisma__TagClient<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Tag that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TagFindUniqueOrThrowArgs} args - Arguments to find a Tag
+     * @example
+     * // Get one Tag
+     * const tag = await prisma.tag.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TagFindUniqueOrThrowArgs>(args: SelectSubset<T, TagFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TagClient<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Tag that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TagFindFirstArgs} args - Arguments to find a Tag
+     * @example
+     * // Get one Tag
+     * const tag = await prisma.tag.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TagFindFirstArgs>(args?: SelectSubset<T, TagFindFirstArgs<ExtArgs>>): Prisma__TagClient<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Tag that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TagFindFirstOrThrowArgs} args - Arguments to find a Tag
+     * @example
+     * // Get one Tag
+     * const tag = await prisma.tag.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TagFindFirstOrThrowArgs>(args?: SelectSubset<T, TagFindFirstOrThrowArgs<ExtArgs>>): Prisma__TagClient<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Tags that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TagFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Tags
+     * const tags = await prisma.tag.findMany()
+     * 
+     * // Get first 10 Tags
+     * const tags = await prisma.tag.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const tagWithIdOnly = await prisma.tag.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TagFindManyArgs>(args?: SelectSubset<T, TagFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Tag.
+     * @param {TagCreateArgs} args - Arguments to create a Tag.
+     * @example
+     * // Create one Tag
+     * const Tag = await prisma.tag.create({
+     *   data: {
+     *     // ... data to create a Tag
+     *   }
+     * })
+     * 
+     */
+    create<T extends TagCreateArgs>(args: SelectSubset<T, TagCreateArgs<ExtArgs>>): Prisma__TagClient<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Tags.
+     * @param {TagCreateManyArgs} args - Arguments to create many Tags.
+     * @example
+     * // Create many Tags
+     * const tag = await prisma.tag.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TagCreateManyArgs>(args?: SelectSubset<T, TagCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Tags and returns the data saved in the database.
+     * @param {TagCreateManyAndReturnArgs} args - Arguments to create many Tags.
+     * @example
+     * // Create many Tags
+     * const tag = await prisma.tag.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Tags and only return the `id`
+     * const tagWithIdOnly = await prisma.tag.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TagCreateManyAndReturnArgs>(args?: SelectSubset<T, TagCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Tag.
+     * @param {TagDeleteArgs} args - Arguments to delete one Tag.
+     * @example
+     * // Delete one Tag
+     * const Tag = await prisma.tag.delete({
+     *   where: {
+     *     // ... filter to delete one Tag
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TagDeleteArgs>(args: SelectSubset<T, TagDeleteArgs<ExtArgs>>): Prisma__TagClient<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Tag.
+     * @param {TagUpdateArgs} args - Arguments to update one Tag.
+     * @example
+     * // Update one Tag
+     * const tag = await prisma.tag.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TagUpdateArgs>(args: SelectSubset<T, TagUpdateArgs<ExtArgs>>): Prisma__TagClient<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Tags.
+     * @param {TagDeleteManyArgs} args - Arguments to filter Tags to delete.
+     * @example
+     * // Delete a few Tags
+     * const { count } = await prisma.tag.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TagDeleteManyArgs>(args?: SelectSubset<T, TagDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Tags.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TagUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Tags
+     * const tag = await prisma.tag.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TagUpdateManyArgs>(args: SelectSubset<T, TagUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Tags and returns the data updated in the database.
+     * @param {TagUpdateManyAndReturnArgs} args - Arguments to update many Tags.
+     * @example
+     * // Update many Tags
+     * const tag = await prisma.tag.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Tags and only return the `id`
+     * const tagWithIdOnly = await prisma.tag.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TagUpdateManyAndReturnArgs>(args: SelectSubset<T, TagUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Tag.
+     * @param {TagUpsertArgs} args - Arguments to update or create a Tag.
+     * @example
+     * // Update or create a Tag
+     * const tag = await prisma.tag.upsert({
+     *   create: {
+     *     // ... data to create a Tag
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Tag we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TagUpsertArgs>(args: SelectSubset<T, TagUpsertArgs<ExtArgs>>): Prisma__TagClient<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Tags.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TagCountArgs} args - Arguments to filter Tags to count.
+     * @example
+     * // Count the number of Tags
+     * const count = await prisma.tag.count({
+     *   where: {
+     *     // ... the filter for the Tags we want to count
+     *   }
+     * })
+    **/
+    count<T extends TagCountArgs>(
+      args?: Subset<T, TagCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TagCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Tag.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TagAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TagAggregateArgs>(args: Subset<T, TagAggregateArgs>): Prisma.PrismaPromise<GetTagAggregateType<T>>
+
+    /**
+     * Group by Tag.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TagGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TagGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TagGroupByArgs['orderBy'] }
+        : { orderBy?: TagGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TagGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTagGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Tag model
+   */
+  readonly fields: TagFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Tag.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TagClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    events<T extends Tag$eventsArgs<ExtArgs> = {}>(args?: Subset<T, Tag$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Tag model
+   */
+  interface TagFieldRefs {
+    readonly id: FieldRef<"Tag", 'Int'>
+    readonly name: FieldRef<"Tag", 'String'>
+    readonly description: FieldRef<"Tag", 'String'>
+    readonly createdAt: FieldRef<"Tag", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Tag findUnique
+   */
+  export type TagFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tag
+     */
+    select?: TagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tag
+     */
+    omit?: TagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TagInclude<ExtArgs> | null
+    /**
+     * Filter, which Tag to fetch.
+     */
+    where: TagWhereUniqueInput
+  }
+
+  /**
+   * Tag findUniqueOrThrow
+   */
+  export type TagFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tag
+     */
+    select?: TagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tag
+     */
+    omit?: TagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TagInclude<ExtArgs> | null
+    /**
+     * Filter, which Tag to fetch.
+     */
+    where: TagWhereUniqueInput
+  }
+
+  /**
+   * Tag findFirst
+   */
+  export type TagFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tag
+     */
+    select?: TagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tag
+     */
+    omit?: TagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TagInclude<ExtArgs> | null
+    /**
+     * Filter, which Tag to fetch.
+     */
+    where?: TagWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tags to fetch.
+     */
+    orderBy?: TagOrderByWithRelationInput | TagOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Tags.
+     */
+    cursor?: TagWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tags.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Tags.
+     */
+    distinct?: TagScalarFieldEnum | TagScalarFieldEnum[]
+  }
+
+  /**
+   * Tag findFirstOrThrow
+   */
+  export type TagFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tag
+     */
+    select?: TagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tag
+     */
+    omit?: TagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TagInclude<ExtArgs> | null
+    /**
+     * Filter, which Tag to fetch.
+     */
+    where?: TagWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tags to fetch.
+     */
+    orderBy?: TagOrderByWithRelationInput | TagOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Tags.
+     */
+    cursor?: TagWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tags.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Tags.
+     */
+    distinct?: TagScalarFieldEnum | TagScalarFieldEnum[]
+  }
+
+  /**
+   * Tag findMany
+   */
+  export type TagFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tag
+     */
+    select?: TagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tag
+     */
+    omit?: TagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TagInclude<ExtArgs> | null
+    /**
+     * Filter, which Tags to fetch.
+     */
+    where?: TagWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tags to fetch.
+     */
+    orderBy?: TagOrderByWithRelationInput | TagOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Tags.
+     */
+    cursor?: TagWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tags.
+     */
+    skip?: number
+    distinct?: TagScalarFieldEnum | TagScalarFieldEnum[]
+  }
+
+  /**
+   * Tag create
+   */
+  export type TagCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tag
+     */
+    select?: TagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tag
+     */
+    omit?: TagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TagInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Tag.
+     */
+    data: XOR<TagCreateInput, TagUncheckedCreateInput>
+  }
+
+  /**
+   * Tag createMany
+   */
+  export type TagCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Tags.
+     */
+    data: TagCreateManyInput | TagCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Tag createManyAndReturn
+   */
+  export type TagCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tag
+     */
+    select?: TagSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tag
+     */
+    omit?: TagOmit<ExtArgs> | null
+    /**
+     * The data used to create many Tags.
+     */
+    data: TagCreateManyInput | TagCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Tag update
+   */
+  export type TagUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tag
+     */
+    select?: TagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tag
+     */
+    omit?: TagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TagInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Tag.
+     */
+    data: XOR<TagUpdateInput, TagUncheckedUpdateInput>
+    /**
+     * Choose, which Tag to update.
+     */
+    where: TagWhereUniqueInput
+  }
+
+  /**
+   * Tag updateMany
+   */
+  export type TagUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Tags.
+     */
+    data: XOR<TagUpdateManyMutationInput, TagUncheckedUpdateManyInput>
+    /**
+     * Filter which Tags to update
+     */
+    where?: TagWhereInput
+    /**
+     * Limit how many Tags to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Tag updateManyAndReturn
+   */
+  export type TagUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tag
+     */
+    select?: TagSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tag
+     */
+    omit?: TagOmit<ExtArgs> | null
+    /**
+     * The data used to update Tags.
+     */
+    data: XOR<TagUpdateManyMutationInput, TagUncheckedUpdateManyInput>
+    /**
+     * Filter which Tags to update
+     */
+    where?: TagWhereInput
+    /**
+     * Limit how many Tags to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Tag upsert
+   */
+  export type TagUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tag
+     */
+    select?: TagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tag
+     */
+    omit?: TagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TagInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Tag to update in case it exists.
+     */
+    where: TagWhereUniqueInput
+    /**
+     * In case the Tag found by the `where` argument doesn't exist, create a new Tag with this data.
+     */
+    create: XOR<TagCreateInput, TagUncheckedCreateInput>
+    /**
+     * In case the Tag was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TagUpdateInput, TagUncheckedUpdateInput>
+  }
+
+  /**
+   * Tag delete
+   */
+  export type TagDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tag
+     */
+    select?: TagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tag
+     */
+    omit?: TagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TagInclude<ExtArgs> | null
+    /**
+     * Filter which Tag to delete.
+     */
+    where: TagWhereUniqueInput
+  }
+
+  /**
+   * Tag deleteMany
+   */
+  export type TagDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Tags to delete
+     */
+    where?: TagWhereInput
+    /**
+     * Limit how many Tags to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Tag.events
+   */
+  export type Tag$eventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTag
+     */
+    select?: EventTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventTag
+     */
+    omit?: EventTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventTagInclude<ExtArgs> | null
+    where?: EventTagWhereInput
+    orderBy?: EventTagOrderByWithRelationInput | EventTagOrderByWithRelationInput[]
+    cursor?: EventTagWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EventTagScalarFieldEnum | EventTagScalarFieldEnum[]
+  }
+
+  /**
+   * Tag without action
+   */
+  export type TagDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tag
+     */
+    select?: TagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tag
+     */
+    omit?: TagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TagInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EventTag
+   */
+
+  export type AggregateEventTag = {
+    _count: EventTagCountAggregateOutputType | null
+    _avg: EventTagAvgAggregateOutputType | null
+    _sum: EventTagSumAggregateOutputType | null
+    _min: EventTagMinAggregateOutputType | null
+    _max: EventTagMaxAggregateOutputType | null
+  }
+
+  export type EventTagAvgAggregateOutputType = {
+    eventId: number | null
+    tagId: number | null
+  }
+
+  export type EventTagSumAggregateOutputType = {
+    eventId: number | null
+    tagId: number | null
+  }
+
+  export type EventTagMinAggregateOutputType = {
+    eventId: number | null
+    tagId: number | null
+    createdAt: Date | null
+  }
+
+  export type EventTagMaxAggregateOutputType = {
+    eventId: number | null
+    tagId: number | null
+    createdAt: Date | null
+  }
+
+  export type EventTagCountAggregateOutputType = {
+    eventId: number
+    tagId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type EventTagAvgAggregateInputType = {
+    eventId?: true
+    tagId?: true
+  }
+
+  export type EventTagSumAggregateInputType = {
+    eventId?: true
+    tagId?: true
+  }
+
+  export type EventTagMinAggregateInputType = {
+    eventId?: true
+    tagId?: true
+    createdAt?: true
+  }
+
+  export type EventTagMaxAggregateInputType = {
+    eventId?: true
+    tagId?: true
+    createdAt?: true
+  }
+
+  export type EventTagCountAggregateInputType = {
+    eventId?: true
+    tagId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type EventTagAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EventTag to aggregate.
+     */
+    where?: EventTagWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventTags to fetch.
+     */
+    orderBy?: EventTagOrderByWithRelationInput | EventTagOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EventTagWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventTags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventTags.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EventTags
+    **/
+    _count?: true | EventTagCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: EventTagAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EventTagSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EventTagMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EventTagMaxAggregateInputType
+  }
+
+  export type GetEventTagAggregateType<T extends EventTagAggregateArgs> = {
+        [P in keyof T & keyof AggregateEventTag]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEventTag[P]>
+      : GetScalarType<T[P], AggregateEventTag[P]>
+  }
+
+
+
+
+  export type EventTagGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventTagWhereInput
+    orderBy?: EventTagOrderByWithAggregationInput | EventTagOrderByWithAggregationInput[]
+    by: EventTagScalarFieldEnum[] | EventTagScalarFieldEnum
+    having?: EventTagScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EventTagCountAggregateInputType | true
+    _avg?: EventTagAvgAggregateInputType
+    _sum?: EventTagSumAggregateInputType
+    _min?: EventTagMinAggregateInputType
+    _max?: EventTagMaxAggregateInputType
+  }
+
+  export type EventTagGroupByOutputType = {
+    eventId: number
+    tagId: number
+    createdAt: Date
+    _count: EventTagCountAggregateOutputType | null
+    _avg: EventTagAvgAggregateOutputType | null
+    _sum: EventTagSumAggregateOutputType | null
+    _min: EventTagMinAggregateOutputType | null
+    _max: EventTagMaxAggregateOutputType | null
+  }
+
+  type GetEventTagGroupByPayload<T extends EventTagGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EventTagGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EventTagGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EventTagGroupByOutputType[P]>
+            : GetScalarType<T[P], EventTagGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EventTagSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    eventId?: boolean
+    tagId?: boolean
+    createdAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    tag?: boolean | TagDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["eventTag"]>
+
+  export type EventTagSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    eventId?: boolean
+    tagId?: boolean
+    createdAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    tag?: boolean | TagDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["eventTag"]>
+
+  export type EventTagSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    eventId?: boolean
+    tagId?: boolean
+    createdAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    tag?: boolean | TagDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["eventTag"]>
+
+  export type EventTagSelectScalar = {
+    eventId?: boolean
+    tagId?: boolean
+    createdAt?: boolean
+  }
+
+  export type EventTagOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"eventId" | "tagId" | "createdAt", ExtArgs["result"]["eventTag"]>
+  export type EventTagInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    tag?: boolean | TagDefaultArgs<ExtArgs>
+  }
+  export type EventTagIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    tag?: boolean | TagDefaultArgs<ExtArgs>
+  }
+  export type EventTagIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    tag?: boolean | TagDefaultArgs<ExtArgs>
+  }
+
+  export type $EventTagPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EventTag"
+    objects: {
+      event: Prisma.$EventPayload<ExtArgs>
+      tag: Prisma.$TagPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      eventId: number
+      tagId: number
+      createdAt: Date
+    }, ExtArgs["result"]["eventTag"]>
+    composites: {}
+  }
+
+  type EventTagGetPayload<S extends boolean | null | undefined | EventTagDefaultArgs> = $Result.GetResult<Prisma.$EventTagPayload, S>
+
+  type EventTagCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EventTagFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EventTagCountAggregateInputType | true
+    }
+
+  export interface EventTagDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EventTag'], meta: { name: 'EventTag' } }
+    /**
+     * Find zero or one EventTag that matches the filter.
+     * @param {EventTagFindUniqueArgs} args - Arguments to find a EventTag
+     * @example
+     * // Get one EventTag
+     * const eventTag = await prisma.eventTag.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EventTagFindUniqueArgs>(args: SelectSubset<T, EventTagFindUniqueArgs<ExtArgs>>): Prisma__EventTagClient<$Result.GetResult<Prisma.$EventTagPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EventTag that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EventTagFindUniqueOrThrowArgs} args - Arguments to find a EventTag
+     * @example
+     * // Get one EventTag
+     * const eventTag = await prisma.eventTag.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EventTagFindUniqueOrThrowArgs>(args: SelectSubset<T, EventTagFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EventTagClient<$Result.GetResult<Prisma.$EventTagPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EventTag that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventTagFindFirstArgs} args - Arguments to find a EventTag
+     * @example
+     * // Get one EventTag
+     * const eventTag = await prisma.eventTag.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EventTagFindFirstArgs>(args?: SelectSubset<T, EventTagFindFirstArgs<ExtArgs>>): Prisma__EventTagClient<$Result.GetResult<Prisma.$EventTagPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EventTag that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventTagFindFirstOrThrowArgs} args - Arguments to find a EventTag
+     * @example
+     * // Get one EventTag
+     * const eventTag = await prisma.eventTag.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EventTagFindFirstOrThrowArgs>(args?: SelectSubset<T, EventTagFindFirstOrThrowArgs<ExtArgs>>): Prisma__EventTagClient<$Result.GetResult<Prisma.$EventTagPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EventTags that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventTagFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EventTags
+     * const eventTags = await prisma.eventTag.findMany()
+     * 
+     * // Get first 10 EventTags
+     * const eventTags = await prisma.eventTag.findMany({ take: 10 })
+     * 
+     * // Only select the `eventId`
+     * const eventTagWithEventIdOnly = await prisma.eventTag.findMany({ select: { eventId: true } })
+     * 
+     */
+    findMany<T extends EventTagFindManyArgs>(args?: SelectSubset<T, EventTagFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EventTag.
+     * @param {EventTagCreateArgs} args - Arguments to create a EventTag.
+     * @example
+     * // Create one EventTag
+     * const EventTag = await prisma.eventTag.create({
+     *   data: {
+     *     // ... data to create a EventTag
+     *   }
+     * })
+     * 
+     */
+    create<T extends EventTagCreateArgs>(args: SelectSubset<T, EventTagCreateArgs<ExtArgs>>): Prisma__EventTagClient<$Result.GetResult<Prisma.$EventTagPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EventTags.
+     * @param {EventTagCreateManyArgs} args - Arguments to create many EventTags.
+     * @example
+     * // Create many EventTags
+     * const eventTag = await prisma.eventTag.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EventTagCreateManyArgs>(args?: SelectSubset<T, EventTagCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many EventTags and returns the data saved in the database.
+     * @param {EventTagCreateManyAndReturnArgs} args - Arguments to create many EventTags.
+     * @example
+     * // Create many EventTags
+     * const eventTag = await prisma.eventTag.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many EventTags and only return the `eventId`
+     * const eventTagWithEventIdOnly = await prisma.eventTag.createManyAndReturn({
+     *   select: { eventId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EventTagCreateManyAndReturnArgs>(args?: SelectSubset<T, EventTagCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventTagPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a EventTag.
+     * @param {EventTagDeleteArgs} args - Arguments to delete one EventTag.
+     * @example
+     * // Delete one EventTag
+     * const EventTag = await prisma.eventTag.delete({
+     *   where: {
+     *     // ... filter to delete one EventTag
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EventTagDeleteArgs>(args: SelectSubset<T, EventTagDeleteArgs<ExtArgs>>): Prisma__EventTagClient<$Result.GetResult<Prisma.$EventTagPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EventTag.
+     * @param {EventTagUpdateArgs} args - Arguments to update one EventTag.
+     * @example
+     * // Update one EventTag
+     * const eventTag = await prisma.eventTag.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EventTagUpdateArgs>(args: SelectSubset<T, EventTagUpdateArgs<ExtArgs>>): Prisma__EventTagClient<$Result.GetResult<Prisma.$EventTagPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EventTags.
+     * @param {EventTagDeleteManyArgs} args - Arguments to filter EventTags to delete.
+     * @example
+     * // Delete a few EventTags
+     * const { count } = await prisma.eventTag.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EventTagDeleteManyArgs>(args?: SelectSubset<T, EventTagDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EventTags.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventTagUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EventTags
+     * const eventTag = await prisma.eventTag.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EventTagUpdateManyArgs>(args: SelectSubset<T, EventTagUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EventTags and returns the data updated in the database.
+     * @param {EventTagUpdateManyAndReturnArgs} args - Arguments to update many EventTags.
+     * @example
+     * // Update many EventTags
+     * const eventTag = await prisma.eventTag.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more EventTags and only return the `eventId`
+     * const eventTagWithEventIdOnly = await prisma.eventTag.updateManyAndReturn({
+     *   select: { eventId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends EventTagUpdateManyAndReturnArgs>(args: SelectSubset<T, EventTagUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventTagPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one EventTag.
+     * @param {EventTagUpsertArgs} args - Arguments to update or create a EventTag.
+     * @example
+     * // Update or create a EventTag
+     * const eventTag = await prisma.eventTag.upsert({
+     *   create: {
+     *     // ... data to create a EventTag
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EventTag we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EventTagUpsertArgs>(args: SelectSubset<T, EventTagUpsertArgs<ExtArgs>>): Prisma__EventTagClient<$Result.GetResult<Prisma.$EventTagPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EventTags.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventTagCountArgs} args - Arguments to filter EventTags to count.
+     * @example
+     * // Count the number of EventTags
+     * const count = await prisma.eventTag.count({
+     *   where: {
+     *     // ... the filter for the EventTags we want to count
+     *   }
+     * })
+    **/
+    count<T extends EventTagCountArgs>(
+      args?: Subset<T, EventTagCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EventTagCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EventTag.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventTagAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EventTagAggregateArgs>(args: Subset<T, EventTagAggregateArgs>): Prisma.PrismaPromise<GetEventTagAggregateType<T>>
+
+    /**
+     * Group by EventTag.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventTagGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EventTagGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EventTagGroupByArgs['orderBy'] }
+        : { orderBy?: EventTagGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EventTagGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEventTagGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EventTag model
+   */
+  readonly fields: EventTagFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EventTag.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EventTagClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    tag<T extends TagDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TagDefaultArgs<ExtArgs>>): Prisma__TagClient<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EventTag model
+   */
+  interface EventTagFieldRefs {
+    readonly eventId: FieldRef<"EventTag", 'Int'>
+    readonly tagId: FieldRef<"EventTag", 'Int'>
+    readonly createdAt: FieldRef<"EventTag", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EventTag findUnique
+   */
+  export type EventTagFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTag
+     */
+    select?: EventTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventTag
+     */
+    omit?: EventTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventTagInclude<ExtArgs> | null
+    /**
+     * Filter, which EventTag to fetch.
+     */
+    where: EventTagWhereUniqueInput
+  }
+
+  /**
+   * EventTag findUniqueOrThrow
+   */
+  export type EventTagFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTag
+     */
+    select?: EventTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventTag
+     */
+    omit?: EventTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventTagInclude<ExtArgs> | null
+    /**
+     * Filter, which EventTag to fetch.
+     */
+    where: EventTagWhereUniqueInput
+  }
+
+  /**
+   * EventTag findFirst
+   */
+  export type EventTagFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTag
+     */
+    select?: EventTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventTag
+     */
+    omit?: EventTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventTagInclude<ExtArgs> | null
+    /**
+     * Filter, which EventTag to fetch.
+     */
+    where?: EventTagWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventTags to fetch.
+     */
+    orderBy?: EventTagOrderByWithRelationInput | EventTagOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EventTags.
+     */
+    cursor?: EventTagWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventTags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventTags.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EventTags.
+     */
+    distinct?: EventTagScalarFieldEnum | EventTagScalarFieldEnum[]
+  }
+
+  /**
+   * EventTag findFirstOrThrow
+   */
+  export type EventTagFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTag
+     */
+    select?: EventTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventTag
+     */
+    omit?: EventTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventTagInclude<ExtArgs> | null
+    /**
+     * Filter, which EventTag to fetch.
+     */
+    where?: EventTagWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventTags to fetch.
+     */
+    orderBy?: EventTagOrderByWithRelationInput | EventTagOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EventTags.
+     */
+    cursor?: EventTagWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventTags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventTags.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EventTags.
+     */
+    distinct?: EventTagScalarFieldEnum | EventTagScalarFieldEnum[]
+  }
+
+  /**
+   * EventTag findMany
+   */
+  export type EventTagFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTag
+     */
+    select?: EventTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventTag
+     */
+    omit?: EventTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventTagInclude<ExtArgs> | null
+    /**
+     * Filter, which EventTags to fetch.
+     */
+    where?: EventTagWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventTags to fetch.
+     */
+    orderBy?: EventTagOrderByWithRelationInput | EventTagOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EventTags.
+     */
+    cursor?: EventTagWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventTags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventTags.
+     */
+    skip?: number
+    distinct?: EventTagScalarFieldEnum | EventTagScalarFieldEnum[]
+  }
+
+  /**
+   * EventTag create
+   */
+  export type EventTagCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTag
+     */
+    select?: EventTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventTag
+     */
+    omit?: EventTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventTagInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EventTag.
+     */
+    data: XOR<EventTagCreateInput, EventTagUncheckedCreateInput>
+  }
+
+  /**
+   * EventTag createMany
+   */
+  export type EventTagCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EventTags.
+     */
+    data: EventTagCreateManyInput | EventTagCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EventTag createManyAndReturn
+   */
+  export type EventTagCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTag
+     */
+    select?: EventTagSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventTag
+     */
+    omit?: EventTagOmit<ExtArgs> | null
+    /**
+     * The data used to create many EventTags.
+     */
+    data: EventTagCreateManyInput | EventTagCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventTagIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EventTag update
+   */
+  export type EventTagUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTag
+     */
+    select?: EventTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventTag
+     */
+    omit?: EventTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventTagInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EventTag.
+     */
+    data: XOR<EventTagUpdateInput, EventTagUncheckedUpdateInput>
+    /**
+     * Choose, which EventTag to update.
+     */
+    where: EventTagWhereUniqueInput
+  }
+
+  /**
+   * EventTag updateMany
+   */
+  export type EventTagUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EventTags.
+     */
+    data: XOR<EventTagUpdateManyMutationInput, EventTagUncheckedUpdateManyInput>
+    /**
+     * Filter which EventTags to update
+     */
+    where?: EventTagWhereInput
+    /**
+     * Limit how many EventTags to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EventTag updateManyAndReturn
+   */
+  export type EventTagUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTag
+     */
+    select?: EventTagSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventTag
+     */
+    omit?: EventTagOmit<ExtArgs> | null
+    /**
+     * The data used to update EventTags.
+     */
+    data: XOR<EventTagUpdateManyMutationInput, EventTagUncheckedUpdateManyInput>
+    /**
+     * Filter which EventTags to update
+     */
+    where?: EventTagWhereInput
+    /**
+     * Limit how many EventTags to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventTagIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EventTag upsert
+   */
+  export type EventTagUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTag
+     */
+    select?: EventTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventTag
+     */
+    omit?: EventTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventTagInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EventTag to update in case it exists.
+     */
+    where: EventTagWhereUniqueInput
+    /**
+     * In case the EventTag found by the `where` argument doesn't exist, create a new EventTag with this data.
+     */
+    create: XOR<EventTagCreateInput, EventTagUncheckedCreateInput>
+    /**
+     * In case the EventTag was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EventTagUpdateInput, EventTagUncheckedUpdateInput>
+  }
+
+  /**
+   * EventTag delete
+   */
+  export type EventTagDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTag
+     */
+    select?: EventTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventTag
+     */
+    omit?: EventTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventTagInclude<ExtArgs> | null
+    /**
+     * Filter which EventTag to delete.
+     */
+    where: EventTagWhereUniqueInput
+  }
+
+  /**
+   * EventTag deleteMany
+   */
+  export type EventTagDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EventTags to delete
+     */
+    where?: EventTagWhereInput
+    /**
+     * Limit how many EventTags to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EventTag without action
+   */
+  export type EventTagDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventTag
+     */
+    select?: EventTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventTag
+     */
+    omit?: EventTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventTagInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -8529,6 +10948,25 @@ export namespace Prisma {
   };
 
   export type TicketTransferScalarFieldEnum = (typeof TicketTransferScalarFieldEnum)[keyof typeof TicketTransferScalarFieldEnum]
+
+
+  export const TagScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    createdAt: 'createdAt'
+  };
+
+  export type TagScalarFieldEnum = (typeof TagScalarFieldEnum)[keyof typeof TagScalarFieldEnum]
+
+
+  export const EventTagScalarFieldEnum: {
+    eventId: 'eventId',
+    tagId: 'tagId',
+    createdAt: 'createdAt'
+  };
+
+  export type EventTagScalarFieldEnum = (typeof EventTagScalarFieldEnum)[keyof typeof EventTagScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -8711,6 +11149,7 @@ export namespace Prisma {
     owner?: XOR<UserScalarRelationFilter, UserWhereInput>
     subscribers?: EventSubscriptionListRelationFilter
     tickets?: TicketListRelationFilter
+    tags?: EventTagListRelationFilter
   }
 
   export type EventOrderByWithRelationInput = {
@@ -8725,6 +11164,7 @@ export namespace Prisma {
     owner?: UserOrderByWithRelationInput
     subscribers?: EventSubscriptionOrderByRelationAggregateInput
     tickets?: TicketOrderByRelationAggregateInput
+    tags?: EventTagOrderByRelationAggregateInput
   }
 
   export type EventWhereUniqueInput = Prisma.AtLeast<{
@@ -8742,6 +11182,7 @@ export namespace Prisma {
     owner?: XOR<UserScalarRelationFilter, UserWhereInput>
     subscribers?: EventSubscriptionListRelationFilter
     tickets?: TicketListRelationFilter
+    tags?: EventTagListRelationFilter
   }, "id">
 
   export type EventOrderByWithAggregationInput = {
@@ -9051,6 +11492,109 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"TicketTransfer"> | Date | string
   }
 
+  export type TagWhereInput = {
+    AND?: TagWhereInput | TagWhereInput[]
+    OR?: TagWhereInput[]
+    NOT?: TagWhereInput | TagWhereInput[]
+    id?: IntFilter<"Tag"> | number
+    name?: StringFilter<"Tag"> | string
+    description?: StringNullableFilter<"Tag"> | string | null
+    createdAt?: DateTimeFilter<"Tag"> | Date | string
+    events?: EventTagListRelationFilter
+  }
+
+  export type TagOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    events?: EventTagOrderByRelationAggregateInput
+  }
+
+  export type TagWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    name?: string
+    AND?: TagWhereInput | TagWhereInput[]
+    OR?: TagWhereInput[]
+    NOT?: TagWhereInput | TagWhereInput[]
+    description?: StringNullableFilter<"Tag"> | string | null
+    createdAt?: DateTimeFilter<"Tag"> | Date | string
+    events?: EventTagListRelationFilter
+  }, "id" | "name">
+
+  export type TagOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: TagCountOrderByAggregateInput
+    _avg?: TagAvgOrderByAggregateInput
+    _max?: TagMaxOrderByAggregateInput
+    _min?: TagMinOrderByAggregateInput
+    _sum?: TagSumOrderByAggregateInput
+  }
+
+  export type TagScalarWhereWithAggregatesInput = {
+    AND?: TagScalarWhereWithAggregatesInput | TagScalarWhereWithAggregatesInput[]
+    OR?: TagScalarWhereWithAggregatesInput[]
+    NOT?: TagScalarWhereWithAggregatesInput | TagScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Tag"> | number
+    name?: StringWithAggregatesFilter<"Tag"> | string
+    description?: StringNullableWithAggregatesFilter<"Tag"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Tag"> | Date | string
+  }
+
+  export type EventTagWhereInput = {
+    AND?: EventTagWhereInput | EventTagWhereInput[]
+    OR?: EventTagWhereInput[]
+    NOT?: EventTagWhereInput | EventTagWhereInput[]
+    eventId?: IntFilter<"EventTag"> | number
+    tagId?: IntFilter<"EventTag"> | number
+    createdAt?: DateTimeFilter<"EventTag"> | Date | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    tag?: XOR<TagScalarRelationFilter, TagWhereInput>
+  }
+
+  export type EventTagOrderByWithRelationInput = {
+    eventId?: SortOrder
+    tagId?: SortOrder
+    createdAt?: SortOrder
+    event?: EventOrderByWithRelationInput
+    tag?: TagOrderByWithRelationInput
+  }
+
+  export type EventTagWhereUniqueInput = Prisma.AtLeast<{
+    eventId_tagId?: EventTagEventIdTagIdCompoundUniqueInput
+    AND?: EventTagWhereInput | EventTagWhereInput[]
+    OR?: EventTagWhereInput[]
+    NOT?: EventTagWhereInput | EventTagWhereInput[]
+    eventId?: IntFilter<"EventTag"> | number
+    tagId?: IntFilter<"EventTag"> | number
+    createdAt?: DateTimeFilter<"EventTag"> | Date | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    tag?: XOR<TagScalarRelationFilter, TagWhereInput>
+  }, "eventId_tagId">
+
+  export type EventTagOrderByWithAggregationInput = {
+    eventId?: SortOrder
+    tagId?: SortOrder
+    createdAt?: SortOrder
+    _count?: EventTagCountOrderByAggregateInput
+    _avg?: EventTagAvgOrderByAggregateInput
+    _max?: EventTagMaxOrderByAggregateInput
+    _min?: EventTagMinOrderByAggregateInput
+    _sum?: EventTagSumOrderByAggregateInput
+  }
+
+  export type EventTagScalarWhereWithAggregatesInput = {
+    AND?: EventTagScalarWhereWithAggregatesInput | EventTagScalarWhereWithAggregatesInput[]
+    OR?: EventTagScalarWhereWithAggregatesInput[]
+    NOT?: EventTagScalarWhereWithAggregatesInput | EventTagScalarWhereWithAggregatesInput[]
+    eventId?: IntWithAggregatesFilter<"EventTag"> | number
+    tagId?: IntWithAggregatesFilter<"EventTag"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"EventTag"> | Date | string
+  }
+
   export type UserCreateInput = {
     name: string
     email: string
@@ -9126,6 +11670,7 @@ export namespace Prisma {
     owner: UserCreateNestedOneWithoutOwnedEventsInput
     subscribers?: EventSubscriptionCreateNestedManyWithoutEventInput
     tickets?: TicketCreateNestedManyWithoutEventInput
+    tags?: EventTagCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateInput = {
@@ -9139,6 +11684,7 @@ export namespace Prisma {
     ownerId: number
     subscribers?: EventSubscriptionUncheckedCreateNestedManyWithoutEventInput
     tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
+    tags?: EventTagUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventUpdateInput = {
@@ -9151,6 +11697,7 @@ export namespace Prisma {
     owner?: UserUpdateOneRequiredWithoutOwnedEventsNestedInput
     subscribers?: EventSubscriptionUpdateManyWithoutEventNestedInput
     tickets?: TicketUpdateManyWithoutEventNestedInput
+    tags?: EventTagUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateInput = {
@@ -9164,6 +11711,7 @@ export namespace Prisma {
     ownerId?: IntFieldUpdateOperationsInput | number
     subscribers?: EventSubscriptionUncheckedUpdateManyWithoutEventNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
+    tags?: EventTagUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventCreateManyInput = {
@@ -9456,6 +12004,96 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type TagCreateInput = {
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    events?: EventTagCreateNestedManyWithoutTagInput
+  }
+
+  export type TagUncheckedCreateInput = {
+    id?: number
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    events?: EventTagUncheckedCreateNestedManyWithoutTagInput
+  }
+
+  export type TagUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    events?: EventTagUpdateManyWithoutTagNestedInput
+  }
+
+  export type TagUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    events?: EventTagUncheckedUpdateManyWithoutTagNestedInput
+  }
+
+  export type TagCreateManyInput = {
+    id?: number
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+  }
+
+  export type TagUpdateManyMutationInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TagUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventTagCreateInput = {
+    createdAt?: Date | string
+    event: EventCreateNestedOneWithoutTagsInput
+    tag: TagCreateNestedOneWithoutEventsInput
+  }
+
+  export type EventTagUncheckedCreateInput = {
+    eventId: number
+    tagId: number
+    createdAt?: Date | string
+  }
+
+  export type EventTagUpdateInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutTagsNestedInput
+    tag?: TagUpdateOneRequiredWithoutEventsNestedInput
+  }
+
+  export type EventTagUncheckedUpdateInput = {
+    eventId?: IntFieldUpdateOperationsInput | number
+    tagId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventTagCreateManyInput = {
+    eventId: number
+    tagId: number
+    createdAt?: Date | string
+  }
+
+  export type EventTagUpdateManyMutationInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventTagUncheckedUpdateManyInput = {
+    eventId?: IntFieldUpdateOperationsInput | number
+    tagId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -9629,12 +12267,22 @@ export namespace Prisma {
     none?: TicketWhereInput
   }
 
+  export type EventTagListRelationFilter = {
+    every?: EventTagWhereInput
+    some?: EventTagWhereInput
+    none?: EventTagWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
   }
 
   export type TicketOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EventTagOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -9926,6 +12574,73 @@ export namespace Prisma {
     quantity?: SortOrder
   }
 
+  export type TagCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type TagAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type TagMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type TagMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type TagSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type TagScalarRelationFilter = {
+    is?: TagWhereInput
+    isNot?: TagWhereInput
+  }
+
+  export type EventTagEventIdTagIdCompoundUniqueInput = {
+    eventId: number
+    tagId: number
+  }
+
+  export type EventTagCountOrderByAggregateInput = {
+    eventId?: SortOrder
+    tagId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EventTagAvgOrderByAggregateInput = {
+    eventId?: SortOrder
+    tagId?: SortOrder
+  }
+
+  export type EventTagMaxOrderByAggregateInput = {
+    eventId?: SortOrder
+    tagId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EventTagMinOrderByAggregateInput = {
+    eventId?: SortOrder
+    tagId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EventTagSumOrderByAggregateInput = {
+    eventId?: SortOrder
+    tagId?: SortOrder
+  }
+
   export type EventCreateNestedManyWithoutOwnerInput = {
     create?: XOR<EventCreateWithoutOwnerInput, EventUncheckedCreateWithoutOwnerInput> | EventCreateWithoutOwnerInput[] | EventUncheckedCreateWithoutOwnerInput[]
     connectOrCreate?: EventCreateOrConnectWithoutOwnerInput | EventCreateOrConnectWithoutOwnerInput[]
@@ -10088,6 +12803,13 @@ export namespace Prisma {
     connect?: TicketWhereUniqueInput | TicketWhereUniqueInput[]
   }
 
+  export type EventTagCreateNestedManyWithoutEventInput = {
+    create?: XOR<EventTagCreateWithoutEventInput, EventTagUncheckedCreateWithoutEventInput> | EventTagCreateWithoutEventInput[] | EventTagUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventTagCreateOrConnectWithoutEventInput | EventTagCreateOrConnectWithoutEventInput[]
+    createMany?: EventTagCreateManyEventInputEnvelope
+    connect?: EventTagWhereUniqueInput | EventTagWhereUniqueInput[]
+  }
+
   export type EventSubscriptionUncheckedCreateNestedManyWithoutEventInput = {
     create?: XOR<EventSubscriptionCreateWithoutEventInput, EventSubscriptionUncheckedCreateWithoutEventInput> | EventSubscriptionCreateWithoutEventInput[] | EventSubscriptionUncheckedCreateWithoutEventInput[]
     connectOrCreate?: EventSubscriptionCreateOrConnectWithoutEventInput | EventSubscriptionCreateOrConnectWithoutEventInput[]
@@ -10100,6 +12822,13 @@ export namespace Prisma {
     connectOrCreate?: TicketCreateOrConnectWithoutEventInput | TicketCreateOrConnectWithoutEventInput[]
     createMany?: TicketCreateManyEventInputEnvelope
     connect?: TicketWhereUniqueInput | TicketWhereUniqueInput[]
+  }
+
+  export type EventTagUncheckedCreateNestedManyWithoutEventInput = {
+    create?: XOR<EventTagCreateWithoutEventInput, EventTagUncheckedCreateWithoutEventInput> | EventTagCreateWithoutEventInput[] | EventTagUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventTagCreateOrConnectWithoutEventInput | EventTagCreateOrConnectWithoutEventInput[]
+    createMany?: EventTagCreateManyEventInputEnvelope
+    connect?: EventTagWhereUniqueInput | EventTagWhereUniqueInput[]
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -10142,6 +12871,20 @@ export namespace Prisma {
     deleteMany?: TicketScalarWhereInput | TicketScalarWhereInput[]
   }
 
+  export type EventTagUpdateManyWithoutEventNestedInput = {
+    create?: XOR<EventTagCreateWithoutEventInput, EventTagUncheckedCreateWithoutEventInput> | EventTagCreateWithoutEventInput[] | EventTagUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventTagCreateOrConnectWithoutEventInput | EventTagCreateOrConnectWithoutEventInput[]
+    upsert?: EventTagUpsertWithWhereUniqueWithoutEventInput | EventTagUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: EventTagCreateManyEventInputEnvelope
+    set?: EventTagWhereUniqueInput | EventTagWhereUniqueInput[]
+    disconnect?: EventTagWhereUniqueInput | EventTagWhereUniqueInput[]
+    delete?: EventTagWhereUniqueInput | EventTagWhereUniqueInput[]
+    connect?: EventTagWhereUniqueInput | EventTagWhereUniqueInput[]
+    update?: EventTagUpdateWithWhereUniqueWithoutEventInput | EventTagUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: EventTagUpdateManyWithWhereWithoutEventInput | EventTagUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: EventTagScalarWhereInput | EventTagScalarWhereInput[]
+  }
+
   export type EventSubscriptionUncheckedUpdateManyWithoutEventNestedInput = {
     create?: XOR<EventSubscriptionCreateWithoutEventInput, EventSubscriptionUncheckedCreateWithoutEventInput> | EventSubscriptionCreateWithoutEventInput[] | EventSubscriptionUncheckedCreateWithoutEventInput[]
     connectOrCreate?: EventSubscriptionCreateOrConnectWithoutEventInput | EventSubscriptionCreateOrConnectWithoutEventInput[]
@@ -10168,6 +12911,20 @@ export namespace Prisma {
     update?: TicketUpdateWithWhereUniqueWithoutEventInput | TicketUpdateWithWhereUniqueWithoutEventInput[]
     updateMany?: TicketUpdateManyWithWhereWithoutEventInput | TicketUpdateManyWithWhereWithoutEventInput[]
     deleteMany?: TicketScalarWhereInput | TicketScalarWhereInput[]
+  }
+
+  export type EventTagUncheckedUpdateManyWithoutEventNestedInput = {
+    create?: XOR<EventTagCreateWithoutEventInput, EventTagUncheckedCreateWithoutEventInput> | EventTagCreateWithoutEventInput[] | EventTagUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventTagCreateOrConnectWithoutEventInput | EventTagCreateOrConnectWithoutEventInput[]
+    upsert?: EventTagUpsertWithWhereUniqueWithoutEventInput | EventTagUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: EventTagCreateManyEventInputEnvelope
+    set?: EventTagWhereUniqueInput | EventTagWhereUniqueInput[]
+    disconnect?: EventTagWhereUniqueInput | EventTagWhereUniqueInput[]
+    delete?: EventTagWhereUniqueInput | EventTagWhereUniqueInput[]
+    connect?: EventTagWhereUniqueInput | EventTagWhereUniqueInput[]
+    update?: EventTagUpdateWithWhereUniqueWithoutEventInput | EventTagUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: EventTagUpdateManyWithWhereWithoutEventInput | EventTagUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: EventTagScalarWhereInput | EventTagScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutEventSubscriptionsInput = {
@@ -10402,6 +13159,76 @@ export namespace Prisma {
     update?: XOR<XOR<TicketPurchaseUpdateToOneWithWhereWithoutTransfersToInput, TicketPurchaseUpdateWithoutTransfersToInput>, TicketPurchaseUncheckedUpdateWithoutTransfersToInput>
   }
 
+  export type EventTagCreateNestedManyWithoutTagInput = {
+    create?: XOR<EventTagCreateWithoutTagInput, EventTagUncheckedCreateWithoutTagInput> | EventTagCreateWithoutTagInput[] | EventTagUncheckedCreateWithoutTagInput[]
+    connectOrCreate?: EventTagCreateOrConnectWithoutTagInput | EventTagCreateOrConnectWithoutTagInput[]
+    createMany?: EventTagCreateManyTagInputEnvelope
+    connect?: EventTagWhereUniqueInput | EventTagWhereUniqueInput[]
+  }
+
+  export type EventTagUncheckedCreateNestedManyWithoutTagInput = {
+    create?: XOR<EventTagCreateWithoutTagInput, EventTagUncheckedCreateWithoutTagInput> | EventTagCreateWithoutTagInput[] | EventTagUncheckedCreateWithoutTagInput[]
+    connectOrCreate?: EventTagCreateOrConnectWithoutTagInput | EventTagCreateOrConnectWithoutTagInput[]
+    createMany?: EventTagCreateManyTagInputEnvelope
+    connect?: EventTagWhereUniqueInput | EventTagWhereUniqueInput[]
+  }
+
+  export type EventTagUpdateManyWithoutTagNestedInput = {
+    create?: XOR<EventTagCreateWithoutTagInput, EventTagUncheckedCreateWithoutTagInput> | EventTagCreateWithoutTagInput[] | EventTagUncheckedCreateWithoutTagInput[]
+    connectOrCreate?: EventTagCreateOrConnectWithoutTagInput | EventTagCreateOrConnectWithoutTagInput[]
+    upsert?: EventTagUpsertWithWhereUniqueWithoutTagInput | EventTagUpsertWithWhereUniqueWithoutTagInput[]
+    createMany?: EventTagCreateManyTagInputEnvelope
+    set?: EventTagWhereUniqueInput | EventTagWhereUniqueInput[]
+    disconnect?: EventTagWhereUniqueInput | EventTagWhereUniqueInput[]
+    delete?: EventTagWhereUniqueInput | EventTagWhereUniqueInput[]
+    connect?: EventTagWhereUniqueInput | EventTagWhereUniqueInput[]
+    update?: EventTagUpdateWithWhereUniqueWithoutTagInput | EventTagUpdateWithWhereUniqueWithoutTagInput[]
+    updateMany?: EventTagUpdateManyWithWhereWithoutTagInput | EventTagUpdateManyWithWhereWithoutTagInput[]
+    deleteMany?: EventTagScalarWhereInput | EventTagScalarWhereInput[]
+  }
+
+  export type EventTagUncheckedUpdateManyWithoutTagNestedInput = {
+    create?: XOR<EventTagCreateWithoutTagInput, EventTagUncheckedCreateWithoutTagInput> | EventTagCreateWithoutTagInput[] | EventTagUncheckedCreateWithoutTagInput[]
+    connectOrCreate?: EventTagCreateOrConnectWithoutTagInput | EventTagCreateOrConnectWithoutTagInput[]
+    upsert?: EventTagUpsertWithWhereUniqueWithoutTagInput | EventTagUpsertWithWhereUniqueWithoutTagInput[]
+    createMany?: EventTagCreateManyTagInputEnvelope
+    set?: EventTagWhereUniqueInput | EventTagWhereUniqueInput[]
+    disconnect?: EventTagWhereUniqueInput | EventTagWhereUniqueInput[]
+    delete?: EventTagWhereUniqueInput | EventTagWhereUniqueInput[]
+    connect?: EventTagWhereUniqueInput | EventTagWhereUniqueInput[]
+    update?: EventTagUpdateWithWhereUniqueWithoutTagInput | EventTagUpdateWithWhereUniqueWithoutTagInput[]
+    updateMany?: EventTagUpdateManyWithWhereWithoutTagInput | EventTagUpdateManyWithWhereWithoutTagInput[]
+    deleteMany?: EventTagScalarWhereInput | EventTagScalarWhereInput[]
+  }
+
+  export type EventCreateNestedOneWithoutTagsInput = {
+    create?: XOR<EventCreateWithoutTagsInput, EventUncheckedCreateWithoutTagsInput>
+    connectOrCreate?: EventCreateOrConnectWithoutTagsInput
+    connect?: EventWhereUniqueInput
+  }
+
+  export type TagCreateNestedOneWithoutEventsInput = {
+    create?: XOR<TagCreateWithoutEventsInput, TagUncheckedCreateWithoutEventsInput>
+    connectOrCreate?: TagCreateOrConnectWithoutEventsInput
+    connect?: TagWhereUniqueInput
+  }
+
+  export type EventUpdateOneRequiredWithoutTagsNestedInput = {
+    create?: XOR<EventCreateWithoutTagsInput, EventUncheckedCreateWithoutTagsInput>
+    connectOrCreate?: EventCreateOrConnectWithoutTagsInput
+    upsert?: EventUpsertWithoutTagsInput
+    connect?: EventWhereUniqueInput
+    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutTagsInput, EventUpdateWithoutTagsInput>, EventUncheckedUpdateWithoutTagsInput>
+  }
+
+  export type TagUpdateOneRequiredWithoutEventsNestedInput = {
+    create?: XOR<TagCreateWithoutEventsInput, TagUncheckedCreateWithoutEventsInput>
+    connectOrCreate?: TagCreateOrConnectWithoutEventsInput
+    upsert?: TagUpsertWithoutEventsInput
+    connect?: TagWhereUniqueInput
+    update?: XOR<XOR<TagUpdateToOneWithWhereWithoutEventsInput, TagUpdateWithoutEventsInput>, TagUncheckedUpdateWithoutEventsInput>
+  }
+
   export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -10574,6 +13401,7 @@ export namespace Prisma {
     createdAt?: Date | string
     subscribers?: EventSubscriptionCreateNestedManyWithoutEventInput
     tickets?: TicketCreateNestedManyWithoutEventInput
+    tags?: EventTagCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutOwnerInput = {
@@ -10586,6 +13414,7 @@ export namespace Prisma {
     createdAt?: Date | string
     subscribers?: EventSubscriptionUncheckedCreateNestedManyWithoutEventInput
     tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
+    tags?: EventTagUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutOwnerInput = {
@@ -10812,6 +13641,26 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type EventTagCreateWithoutEventInput = {
+    createdAt?: Date | string
+    tag: TagCreateNestedOneWithoutEventsInput
+  }
+
+  export type EventTagUncheckedCreateWithoutEventInput = {
+    tagId: number
+    createdAt?: Date | string
+  }
+
+  export type EventTagCreateOrConnectWithoutEventInput = {
+    where: EventTagWhereUniqueInput
+    create: XOR<EventTagCreateWithoutEventInput, EventTagUncheckedCreateWithoutEventInput>
+  }
+
+  export type EventTagCreateManyEventInputEnvelope = {
+    data: EventTagCreateManyEventInput | EventTagCreateManyEventInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutOwnedEventsInput = {
     update: XOR<UserUpdateWithoutOwnedEventsInput, UserUncheckedUpdateWithoutOwnedEventsInput>
     create: XOR<UserCreateWithoutOwnedEventsInput, UserUncheckedCreateWithoutOwnedEventsInput>
@@ -10887,6 +13736,31 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Ticket"> | Date | string
   }
 
+  export type EventTagUpsertWithWhereUniqueWithoutEventInput = {
+    where: EventTagWhereUniqueInput
+    update: XOR<EventTagUpdateWithoutEventInput, EventTagUncheckedUpdateWithoutEventInput>
+    create: XOR<EventTagCreateWithoutEventInput, EventTagUncheckedCreateWithoutEventInput>
+  }
+
+  export type EventTagUpdateWithWhereUniqueWithoutEventInput = {
+    where: EventTagWhereUniqueInput
+    data: XOR<EventTagUpdateWithoutEventInput, EventTagUncheckedUpdateWithoutEventInput>
+  }
+
+  export type EventTagUpdateManyWithWhereWithoutEventInput = {
+    where: EventTagScalarWhereInput
+    data: XOR<EventTagUpdateManyMutationInput, EventTagUncheckedUpdateManyWithoutEventInput>
+  }
+
+  export type EventTagScalarWhereInput = {
+    AND?: EventTagScalarWhereInput | EventTagScalarWhereInput[]
+    OR?: EventTagScalarWhereInput[]
+    NOT?: EventTagScalarWhereInput | EventTagScalarWhereInput[]
+    eventId?: IntFilter<"EventTag"> | number
+    tagId?: IntFilter<"EventTag"> | number
+    createdAt?: DateTimeFilter<"EventTag"> | Date | string
+  }
+
   export type UserCreateWithoutEventSubscriptionsInput = {
     name: string
     email: string
@@ -10920,6 +13794,7 @@ export namespace Prisma {
     createdAt?: Date | string
     owner: UserCreateNestedOneWithoutOwnedEventsInput
     tickets?: TicketCreateNestedManyWithoutEventInput
+    tags?: EventTagCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutSubscribersInput = {
@@ -10932,6 +13807,7 @@ export namespace Prisma {
     createdAt?: Date | string
     ownerId: number
     tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
+    tags?: EventTagUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutSubscribersInput = {
@@ -10989,6 +13865,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     owner?: UserUpdateOneRequiredWithoutOwnedEventsNestedInput
     tickets?: TicketUpdateManyWithoutEventNestedInput
+    tags?: EventTagUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutSubscribersInput = {
@@ -11001,6 +13878,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ownerId?: IntFieldUpdateOperationsInput | number
     tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
+    tags?: EventTagUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventCreateWithoutTicketsInput = {
@@ -11012,6 +13890,7 @@ export namespace Prisma {
     createdAt?: Date | string
     owner: UserCreateNestedOneWithoutOwnedEventsInput
     subscribers?: EventSubscriptionCreateNestedManyWithoutEventInput
+    tags?: EventTagCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutTicketsInput = {
@@ -11024,6 +13903,7 @@ export namespace Prisma {
     createdAt?: Date | string
     ownerId: number
     subscribers?: EventSubscriptionUncheckedCreateNestedManyWithoutEventInput
+    tags?: EventTagUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutTicketsInput = {
@@ -11084,6 +13964,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     owner?: UserUpdateOneRequiredWithoutOwnedEventsNestedInput
     subscribers?: EventSubscriptionUpdateManyWithoutEventNestedInput
+    tags?: EventTagUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutTicketsInput = {
@@ -11096,6 +13977,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ownerId?: IntFieldUpdateOperationsInput | number
     subscribers?: EventSubscriptionUncheckedUpdateManyWithoutEventNestedInput
+    tags?: EventTagUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type TicketPurchaseUpsertWithWhereUniqueWithoutTicketInput = {
@@ -11445,6 +14327,150 @@ export namespace Prisma {
     transfersFrom?: TicketTransferUncheckedUpdateManyWithoutFromPurchaseNestedInput
   }
 
+  export type EventTagCreateWithoutTagInput = {
+    createdAt?: Date | string
+    event: EventCreateNestedOneWithoutTagsInput
+  }
+
+  export type EventTagUncheckedCreateWithoutTagInput = {
+    eventId: number
+    createdAt?: Date | string
+  }
+
+  export type EventTagCreateOrConnectWithoutTagInput = {
+    where: EventTagWhereUniqueInput
+    create: XOR<EventTagCreateWithoutTagInput, EventTagUncheckedCreateWithoutTagInput>
+  }
+
+  export type EventTagCreateManyTagInputEnvelope = {
+    data: EventTagCreateManyTagInput | EventTagCreateManyTagInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EventTagUpsertWithWhereUniqueWithoutTagInput = {
+    where: EventTagWhereUniqueInput
+    update: XOR<EventTagUpdateWithoutTagInput, EventTagUncheckedUpdateWithoutTagInput>
+    create: XOR<EventTagCreateWithoutTagInput, EventTagUncheckedCreateWithoutTagInput>
+  }
+
+  export type EventTagUpdateWithWhereUniqueWithoutTagInput = {
+    where: EventTagWhereUniqueInput
+    data: XOR<EventTagUpdateWithoutTagInput, EventTagUncheckedUpdateWithoutTagInput>
+  }
+
+  export type EventTagUpdateManyWithWhereWithoutTagInput = {
+    where: EventTagScalarWhereInput
+    data: XOR<EventTagUpdateManyMutationInput, EventTagUncheckedUpdateManyWithoutTagInput>
+  }
+
+  export type EventCreateWithoutTagsInput = {
+    title: string
+    description?: string | null
+    location?: string | null
+    dateStart: Date | string
+    dateEnd: Date | string
+    createdAt?: Date | string
+    owner: UserCreateNestedOneWithoutOwnedEventsInput
+    subscribers?: EventSubscriptionCreateNestedManyWithoutEventInput
+    tickets?: TicketCreateNestedManyWithoutEventInput
+  }
+
+  export type EventUncheckedCreateWithoutTagsInput = {
+    id?: number
+    title: string
+    description?: string | null
+    location?: string | null
+    dateStart: Date | string
+    dateEnd: Date | string
+    createdAt?: Date | string
+    ownerId: number
+    subscribers?: EventSubscriptionUncheckedCreateNestedManyWithoutEventInput
+    tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
+  }
+
+  export type EventCreateOrConnectWithoutTagsInput = {
+    where: EventWhereUniqueInput
+    create: XOR<EventCreateWithoutTagsInput, EventUncheckedCreateWithoutTagsInput>
+  }
+
+  export type TagCreateWithoutEventsInput = {
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+  }
+
+  export type TagUncheckedCreateWithoutEventsInput = {
+    id?: number
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+  }
+
+  export type TagCreateOrConnectWithoutEventsInput = {
+    where: TagWhereUniqueInput
+    create: XOR<TagCreateWithoutEventsInput, TagUncheckedCreateWithoutEventsInput>
+  }
+
+  export type EventUpsertWithoutTagsInput = {
+    update: XOR<EventUpdateWithoutTagsInput, EventUncheckedUpdateWithoutTagsInput>
+    create: XOR<EventCreateWithoutTagsInput, EventUncheckedCreateWithoutTagsInput>
+    where?: EventWhereInput
+  }
+
+  export type EventUpdateToOneWithWhereWithoutTagsInput = {
+    where?: EventWhereInput
+    data: XOR<EventUpdateWithoutTagsInput, EventUncheckedUpdateWithoutTagsInput>
+  }
+
+  export type EventUpdateWithoutTagsInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    dateStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    owner?: UserUpdateOneRequiredWithoutOwnedEventsNestedInput
+    subscribers?: EventSubscriptionUpdateManyWithoutEventNestedInput
+    tickets?: TicketUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventUncheckedUpdateWithoutTagsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    dateStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ownerId?: IntFieldUpdateOperationsInput | number
+    subscribers?: EventSubscriptionUncheckedUpdateManyWithoutEventNestedInput
+    tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
+  }
+
+  export type TagUpsertWithoutEventsInput = {
+    update: XOR<TagUpdateWithoutEventsInput, TagUncheckedUpdateWithoutEventsInput>
+    create: XOR<TagCreateWithoutEventsInput, TagUncheckedCreateWithoutEventsInput>
+    where?: TagWhereInput
+  }
+
+  export type TagUpdateToOneWithWhereWithoutEventsInput = {
+    where?: TagWhereInput
+    data: XOR<TagUpdateWithoutEventsInput, TagUncheckedUpdateWithoutEventsInput>
+  }
+
+  export type TagUpdateWithoutEventsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TagUncheckedUpdateWithoutEventsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type EventCreateManyOwnerInput = {
     id?: number
     title: string
@@ -11480,6 +14506,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subscribers?: EventSubscriptionUpdateManyWithoutEventNestedInput
     tickets?: TicketUpdateManyWithoutEventNestedInput
+    tags?: EventTagUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutOwnerInput = {
@@ -11492,6 +14519,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subscribers?: EventSubscriptionUncheckedUpdateManyWithoutEventNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
+    tags?: EventTagUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateManyWithoutOwnerInput = {
@@ -11569,6 +14597,11 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type EventTagCreateManyEventInput = {
+    tagId: number
+    createdAt?: Date | string
+  }
+
   export type EventSubscriptionUpdateWithoutEventInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutEventSubscriptionsNestedInput
@@ -11611,6 +14644,21 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     quantity?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventTagUpdateWithoutEventInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tag?: TagUpdateOneRequiredWithoutEventsNestedInput
+  }
+
+  export type EventTagUncheckedUpdateWithoutEventInput = {
+    tagId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventTagUncheckedUpdateManyWithoutEventInput = {
+    tagId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -11725,6 +14773,26 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventTagCreateManyTagInput = {
+    eventId: number
+    createdAt?: Date | string
+  }
+
+  export type EventTagUpdateWithoutTagInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutTagsNestedInput
+  }
+
+  export type EventTagUncheckedUpdateWithoutTagInput = {
+    eventId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventTagUncheckedUpdateManyWithoutTagInput = {
+    eventId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 
