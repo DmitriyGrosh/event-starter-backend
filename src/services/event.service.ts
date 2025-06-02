@@ -322,4 +322,57 @@ export class EventService {
       }
     })
   }
+
+  async findAllPaginated(options: {
+    page: number
+    limit: number
+    sortBy: 'dateStart' | 'dateEnd' | 'title' | 'createdAt'
+    order: 'asc' | 'desc'
+  }) {
+    const skip = (options.page - 1) * options.limit
+    const take = options.limit
+
+    const [total, events] = await Promise.all([
+      prisma.event.count(),
+      prisma.event.findMany({
+        skip,
+        take,
+        orderBy: {
+          [options.sortBy]: options.order
+        },
+        include: {
+          owner: {
+            select: {
+              id: true,
+              name: true,
+              email: true
+            }
+          },
+          tickets: true,
+          tags: {
+            include: {
+              tag: true
+            }
+          },
+          _count: {
+            select: {
+              subscribers: true
+            }
+          }
+        }
+      })
+    ])
+
+    const pageCount = Math.ceil(total / options.limit)
+
+    return {
+      events,
+      pagination: {
+        total,
+        page: options.page,
+        pageSize: options.limit,
+        pageCount
+      }
+    }
+  }
 }

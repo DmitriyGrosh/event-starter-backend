@@ -83,12 +83,46 @@ export async function eventController(fastify: FastifyInstance) {
   // Get all events with subscription counts
   fastify.get('/', {
     schema: {
+      querystring: Type.Object({
+        page: Type.Optional(Type.Number({ default: 1, minimum: 1 })),
+        limit: Type.Optional(Type.Number({ default: 10, minimum: 1, maximum: 100 })),
+        sortBy: Type.Optional(Type.Union([
+          Type.Literal('dateStart'),
+          Type.Literal('dateEnd'),
+          Type.Literal('title'),
+          Type.Literal('createdAt')
+        ], { default: 'dateStart' })),
+        order: Type.Optional(Type.Union([
+          Type.Literal('asc'),
+          Type.Literal('desc')
+        ], { default: 'asc' }))
+      }),
       response: {
-        200: Type.Array(Event)
+        200: Type.Object({
+          events: Type.Array(Event),
+          pagination: Type.Object({
+            total: Type.Number(),
+            page: Type.Number(),
+            pageSize: Type.Number(),
+            pageCount: Type.Number()
+          })
+        })
       }
     }
-  }, async () => {
-    return eventService.findAll()
+  }, async (request) => {
+    const { page = 1, limit = 10, sortBy = 'dateStart', order = 'asc' } = request.query as {
+      page?: number
+      limit?: number
+      sortBy?: 'dateStart' | 'dateEnd' | 'title' | 'createdAt'
+      order?: 'asc' | 'desc'
+    }
+
+    return eventService.findAllPaginated({
+      page,
+      limit,
+      sortBy,
+      order
+    })
   })
 
   // Get event by ID with subscribers
@@ -290,3 +324,4 @@ export async function eventController(fastify: FastifyInstance) {
     return subscriptionService.getEventSubscribers(id)
   })
 }
+
