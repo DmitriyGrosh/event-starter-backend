@@ -22,10 +22,14 @@ export class EventService {
     }
 
     if (query?.fromDate || query?.toDate) {
-      where.date = {
-        ...(query.fromDate && { gte: query.fromDate }),
-        ...(query.toDate && { lte: query.toDate })
-      }
+      // Find events that overlap with the given date range
+      // An event overlaps if:
+      // - Event starts before the range ends AND
+      // - Event ends after the range starts
+      where.AND = [
+        ...(query.fromDate ? [{ dateEnd: { gte: query.fromDate } }] : []),
+        ...(query.toDate ? [{ dateStart: { lte: query.toDate } }] : [])
+      ]
     }
 
     return prisma.event.findMany({
@@ -34,7 +38,7 @@ export class EventService {
         user: true
       },
       orderBy: {
-        date: 'asc'
+        dateStart: 'asc'
       }
     })
   }
@@ -55,6 +59,11 @@ export class EventService {
   }
 
   async create(data: Prisma.EventCreateInput) {
+    // Validate that dateEnd is after dateStart
+    if (data.dateStart && data.dateEnd && data.dateStart > data.dateEnd) {
+      throw new Error('Event end date must be after start date')
+    }
+
     return prisma.event.create({
       data,
       include: {
@@ -70,6 +79,15 @@ export class EventService {
 
     if (!event) {
       throw new Error('Event not found')
+    }
+
+    // Validate date range if both dates are being updated
+    if (
+      typeof data.dateStart !== 'undefined' &&
+      typeof data.dateEnd !== 'undefined' &&
+      data.dateStart > data.dateEnd
+    ) {
+      throw new Error('Event end date must be after start date')
     }
 
     return prisma.event.update({

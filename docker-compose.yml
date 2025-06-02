@@ -12,11 +12,19 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/event_starter?schema=public
       - PORT=5002
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     volumes:
       - .:/app
       - /app/node_modules
-    command: sh -c "pnpm run db:migrate:deploy && pnpm run dev"
+    command: sh -c "
+      echo 'Waiting for database...' &&
+      sleep 5 &&
+      echo 'Resetting database...' &&
+      pnpm prisma migrate reset --force &&
+      echo 'Starting application...' &&
+      pnpm run dev
+      "
 
   db:
     image: postgres:16-alpine

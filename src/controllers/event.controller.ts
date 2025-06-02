@@ -10,7 +10,8 @@ export async function eventController(fastify: FastifyInstance) {
     id: Type.Number(),
     title: Type.String(),
     description: Type.Optional(Type.String()),
-    date: Type.String(),
+    dateStart: Type.String(),
+    dateEnd: Type.String(),
     userId: Type.Number(),
     createdAt: Type.String(),
     user: Type.Object({
@@ -24,7 +25,8 @@ export async function eventController(fastify: FastifyInstance) {
   const CreateEventBody = Type.Object({
     title: Type.String(),
     description: Type.Optional(Type.String()),
-    date: Type.String(),
+    dateStart: Type.String(),
+    dateEnd: Type.String(),
     userId: Type.Number()
   })
 
@@ -93,14 +95,16 @@ export async function eventController(fastify: FastifyInstance) {
     const data = request.body as {
       title: string
       description?: string
-      date: string
+      dateStart: string
+      dateEnd: string
       userId: number
     }
 
     const eventData: Prisma.EventCreateInput = {
       title: data.title,
       description: data.description,
-      date: new Date(data.date),
+      dateStart: new Date(data.dateStart),
+      dateEnd: new Date(data.dateEnd),
       user: {
         connect: { id: data.userId }
       }
@@ -130,14 +134,16 @@ export async function eventController(fastify: FastifyInstance) {
     const data = request.body as Partial<{
       title: string
       description?: string
-      date: string
+      dateStart: string
+      dateEnd: string
       userId: number
     }>
 
     const eventData: Prisma.EventUpdateInput = {
       ...(data.title && { title: data.title }),
       ...(data.description !== undefined && { description: data.description }),
-      ...(data.date && { date: new Date(data.date) }),
+      ...(data.dateStart && { dateStart: new Date(data.dateStart) }),
+      ...(data.dateEnd && { dateEnd: new Date(data.dateEnd) }),
       ...(data.userId && {
         user: {
           connect: { id: data.userId }

@@ -36,7 +36,8 @@ async function main() {
       data: {
         title: 'Tech Conference 2024',
         description: 'Annual technology conference featuring the latest innovations',
-        date: new Date(now.getFullYear(), now.getMonth() + 1, 15), // Next month
+        dateStart: new Date(now.getFullYear(), now.getMonth() + 1, 15, 9, 0), // Next month, 9 AM
+        dateEnd: new Date(now.getFullYear(), now.getMonth() + 1, 17, 18, 0), // Next month, 6 PM (3-day conference)
         userId: users[0].id,
       },
     }),
@@ -44,7 +45,8 @@ async function main() {
       data: {
         title: 'Community Meetup',
         description: 'Monthly community gathering to discuss local initiatives',
-        date: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 7), // Next week
+        dateStart: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 7, 14, 0), // Next week, 2 PM
+        dateEnd: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 7, 16, 0), // Next week, 4 PM
         userId: users[1].id,
       },
     }),
@@ -52,7 +54,8 @@ async function main() {
       data: {
         title: 'Workshop: Web Development',
         description: 'Hands-on workshop covering modern web development practices',
-        date: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 14), // Two weeks from now
+        dateStart: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 14, 10, 0), // Two weeks from now, 10 AM
+        dateEnd: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 14, 17, 0), // Two weeks from now, 5 PM
         userId: users[0].id,
       },
     }),
@@ -60,7 +63,8 @@ async function main() {
       data: {
         title: 'Networking Event',
         description: 'Evening of networking and relationship building',
-        date: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 21), // Three weeks from now
+        dateStart: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 21, 18, 0), // Three weeks from now, 6 PM
+        dateEnd: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 21, 21, 0), // Three weeks from now, 9 PM
         userId: users[2].id,
       },
     }),
@@ -68,7 +72,8 @@ async function main() {
       data: {
         title: 'Charity Fundraiser',
         description: 'Annual fundraising event for local charities',
-        date: new Date(now.getFullYear(), now.getMonth() + 2, 1), // Two months from now
+        dateStart: new Date(now.getFullYear(), now.getMonth() + 2, 1, 17, 0), // Two months from now, 5 PM
+        dateEnd: new Date(now.getFullYear(), now.getMonth() + 2, 1, 23, 0), // Two months from now, 11 PM
         userId: users[1].id,
       },
     }),

@@ -15,7 +15,8 @@ export async function userController(fastify: FastifyInstance) {
       id: Type.Number(),
       title: Type.String(),
       description: Type.Optional(Type.String()),
-      date: Type.String(),
+      dateStart: Type.String(),
+      dateEnd: Type.String(),
       userId: Type.Number(),
       createdAt: Type.String()
     }))

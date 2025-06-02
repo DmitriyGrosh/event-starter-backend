@@ -29,7 +29,8 @@ model Event {
   id          Int      @id @default(autoincrement())
   title       String
   description String?
-  date        DateTime
+  dateStart   DateTime @map("date_start")
+  dateEnd     DateTime @map("date_end")
   createdAt   DateTime @default(now()) @map("created_at")
   user        User     @relation(fields: [userId], references: [id])
   userId      Int      @map("user_id")
