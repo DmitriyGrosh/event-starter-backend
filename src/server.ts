@@ -3,6 +3,8 @@ import fastifyCors from '@fastify/cors'
 import fastifyJwt from '@fastify/jwt'
 import fastifyRateLimit from '@fastify/rate-limit'
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
+import fastifySwagger from '@fastify/swagger'
+import fastifySwaggerUi from '@fastify/swagger-ui'
 import { userController } from './controllers/user.controller'
 import { eventController } from './controllers/event.controller'
 import { authController } from './controllers/auth.controller'
@@ -42,6 +44,49 @@ const fastify = Fastify({
 // Register plugins
 await fastify.register(fastifyCors, {
 	origin: true
+})
+
+// Add Swagger documentation
+await fastify.register(fastifySwagger, {
+	openapi: {
+		info: {
+			title: 'Event Management API',
+			description: 'API for managing events, tickets, and user registrations',
+			version: '1.0.0'
+		},
+		servers: [{
+			url: 'http://localhost:5002',
+			description: 'Development server'
+		}],
+		components: {
+			securitySchemes: {
+				bearerAuth: {
+					type: 'http',
+					scheme: 'bearer',
+					bearerFormat: 'JWT'
+				}
+			}
+		}
+	}
+})
+
+// Add Swagger UI
+await fastify.register(fastifySwaggerUi, {
+	routePrefix: '/docs',
+	uiConfig: {
+		docExpansion: 'list',
+		deepLinking: false
+	},
+	uiHooks: {
+		onRequest: function (_request, _reply, next) {
+			next()
+		},
+		preHandler: function (_request,_reply, next) {
+			next()
+		}
+	},
+	staticCSP: true,
+	transformStaticCSP: (header) => header
 })
 
 // Add rate limiting
@@ -93,6 +138,7 @@ const start = async () => {
 		const port = process.env.PORT ? parseInt(process.env.PORT) : 5001
 		await fastify.listen({ port, host: '0.0.0.0' })
 		fastify.log.info(`Server listening on http://localhost:${port}`)
+		fastify.log.info(`API Documentation available at http://localhost:${port}/docs`)
 	} catch (err) {
 		fastify.log.error(err)
 		process.exit(1)
