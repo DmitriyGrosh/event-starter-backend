@@ -132,6 +132,7 @@ exports.Prisma.EventScalarFieldEnum = {
   id: 'id',
   title: 'title',
   description: 'description',
+  location: 'location',
   dateStart: 'dateStart',
   dateEnd: 'dateEnd',
   createdAt: 'createdAt',
@@ -143,6 +144,27 @@ exports.Prisma.EventSubscriptionScalarFieldEnum = {
   userId: 'userId',
   eventId: 'eventId',
   createdAt: 'createdAt'
+};
+
+exports.Prisma.TicketScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  price: 'price',
+  quantity: 'quantity',
+  eventId: 'eventId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.TicketPurchaseScalarFieldEnum = {
+  id: 'id',
+  quantity: 'quantity',
+  totalPaid: 'totalPaid',
+  status: 'status',
+  ticketId: 'ticketId',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -164,7 +186,9 @@ exports.Prisma.NullsOrder = {
 exports.Prisma.ModelName = {
   User: 'User',
   Event: 'Event',
-  EventSubscription: 'EventSubscription'
+  EventSubscription: 'EventSubscription',
+  Ticket: 'Ticket',
+  TicketPurchase: 'TicketPurchase'
 };
 
 /**

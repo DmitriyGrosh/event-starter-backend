@@ -23,6 +23,7 @@ model User {
   createdAt          DateTime            @default(now()) @map("created_at")
   ownedEvents        Event[]             @relation("EventOwner")
   eventSubscriptions EventSubscription[]
+  ticketPurchases    TicketPurchase[]
 
   @@map("users")
 }
@@ -31,12 +32,14 @@ model Event {
   id          Int                 @id @default(autoincrement())
   title       String
   description String?
+  location    String? // Made optional to handle existing events
   dateStart   DateTime            @map("date_start")
   dateEnd     DateTime            @map("date_end")
   createdAt   DateTime            @default(now()) @map("created_at")
   owner       User                @relation("EventOwner", fields: [ownerId], references: [id], onDelete: Cascade)
   ownerId     Int                 @map("owner_id")
   subscribers EventSubscription[]
+  tickets     Ticket[]
 
   @@map("events")
 }
@@ -51,4 +54,33 @@ model EventSubscription {
 
   @@unique([userId, eventId])
   @@map("event_subscriptions")
+}
+
+model Ticket {
+  id          Int              @id @default(autoincrement())
+  name        String // e.g., "VIP", "Early Bird", "Regular"
+  description String?
+  price       Decimal          @db.Decimal(10, 2)
+  quantity    Int // Total available tickets of this type
+  event       Event            @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId     Int              @map("event_id")
+  createdAt   DateTime         @default(now()) @map("created_at")
+  purchases   TicketPurchase[]
+
+  @@map("tickets")
+}
+
+model TicketPurchase {
+  id        Int      @id @default(autoincrement())
+  quantity  Int // Number of tickets purchased
+  totalPaid Decimal  @db.Decimal(10, 2)
+  status    String // "PENDING", "COMPLETED", "CANCELLED", "REFUNDED"
+  ticket    Ticket   @relation(fields: [ticketId], references: [id])
+  ticketId  Int      @map("ticket_id")
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int      @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("ticket_purchases")
 }
