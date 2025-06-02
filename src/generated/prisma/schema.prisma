@@ -1,0 +1,38 @@
+// This is your Prisma schema file
+
+generator client {
+  provider               = "prisma-client-js"
+  output                 = "../src/generated/prisma"
+  binaryTargets          = ["native", "linux-musl-arm64-openssl-3.0.x"]
+  runtime                = "nodejs"
+  moduleFormat           = "esm"
+  generatedFileExtension = "ts"
+  importFileExtension    = "ts"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  events    Event[]
+
+  @@map("users")
+}
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  date        DateTime
+  createdAt   DateTime @default(now()) @map("created_at")
+  user        User     @relation(fields: [userId], references: [id])
+  userId      Int      @map("user_id")
+
+  @@map("events")
+}
