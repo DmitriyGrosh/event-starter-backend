@@ -226,10 +226,10 @@ const config = {
       "fromEnvVar": null
     },
     "config": {
-      "runtime": "nodejs",
       "importFileExtension": "ts",
-      "generatedFileExtension": "ts",
       "moduleFormat": "esm",
+      "runtime": "nodejs",
+      "generatedFileExtension": "ts",
       "engineType": "library"
     },
     "binaryTargets": [
@@ -258,6 +258,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {

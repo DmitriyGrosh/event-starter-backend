@@ -1,19 +1,16 @@
 import prisma from '../db/client'
+import { EmailService } from './email.service'
+
+const emailService = new EmailService()
 
 export class TicketService {
-  async buyTicket(userId: number, ticketId: number, quantity: number) {
-    // Start a transaction since we need to update multiple things
+  async purchaseTicket(ticketId: number, userId: number, quantity: number) {
     return prisma.$transaction(async (tx) => {
-      // Get ticket and check availability
+      // Get ticket with event details
       const ticket = await tx.ticket.findUnique({
         where: { id: ticketId },
         include: {
-          event: true,
-          _count: {
-            select: {
-              purchases: true
-            }
-          }
+          event: true
         }
       })
 
@@ -21,34 +18,20 @@ export class TicketService {
         throw new Error('Ticket not found')
       }
 
-      // Calculate total sold tickets
-      const totalSold = await tx.ticketPurchase.aggregate({
-        where: {
-          ticketId,
-          status: 'COMPLETED'
-        },
-        _sum: {
-          quantity: true
-        }
-      })
-
-      const soldCount = totalSold._sum.quantity || 0
-      const availableTickets = ticket.quantity - soldCount
-
-      if (availableTickets < quantity) {
+      if (ticket.quantity < quantity) {
         throw new Error('Not enough tickets available')
       }
 
       // Calculate total price
-      const totalPrice = Number(ticket.price) * quantity
+      const totalPaid = ticket.price.toNumber() * quantity
 
-      // Create the purchase
+      // Create purchase record
       const purchase = await tx.ticketPurchase.create({
         data: {
-          userId,
           ticketId,
+          userId,
           quantity,
-          totalPaid: totalPrice,
+          totalPaid,
           status: 'COMPLETED'
         },
         include: {
@@ -57,61 +40,121 @@ export class TicketService {
               event: true
             }
           },
-          user: {
-            select: {
-              id: true,
-              name: true,
-              email: true
-            }
+          user: true
+        }
+      })
+
+      // Update ticket quantity
+      await tx.ticket.update({
+        where: { id: ticketId },
+        data: {
+          quantity: {
+            decrement: quantity
           }
         }
       })
 
-      // Update the ticket's available quantity
-      await tx.ticket.update({
-        where: { id: ticketId },
-        data: {
-          quantity: availableTickets - quantity
-        }
-      })
+      // Send confirmation email
+      await emailService.sendTicketPurchaseConfirmation(
+        purchase.user,
+        purchase.ticket.event,
+        purchase.ticket,
+        quantity,
+        totalPaid
+      )
 
       return purchase
     })
   }
 
+  async transferTicket(purchaseId: number, fromUserId: number, toUserId: number, quantity: number) {
+    return prisma.$transaction(async (tx) => {
+      // Get the original purchase
+      const purchase = await tx.ticketPurchase.findUnique({
+        where: {
+          id: purchaseId,
+          userId: fromUserId // Ensure the sender owns the tickets
+        },
+        include: {
+          ticket: true
+        }
+      })
+
+      if (!purchase) {
+        throw new Error('Ticket purchase not found')
+      }
+
+      if (purchase.quantity < quantity) {
+        throw new Error('Not enough tickets to transfer')
+      }
+
+      // Calculate price for transferred tickets
+      const pricePerTicket = purchase.totalPaid.toNumber() / purchase.quantity
+      const transferTotalPaid = pricePerTicket * quantity
+
+      // Create new purchase for recipient
+      const toPurchase = await tx.ticketPurchase.create({
+        data: {
+          ticketId: purchase.ticketId,
+          userId: toUserId,
+          quantity,
+          totalPaid: transferTotalPaid,
+          status: 'COMPLETED'
+        }
+      })
+
+      // Update original purchase quantity
+      await tx.ticketPurchase.update({
+        where: { id: purchaseId },
+        data: {
+          quantity: {
+            decrement: quantity
+          },
+          totalPaid: purchase.totalPaid.toNumber() - transferTotalPaid
+        }
+      })
+
+      // Create transfer record
+      const transfer = await tx.ticketTransfer.create({
+        data: {
+          fromPurchaseId: purchaseId,
+          toPurchaseId: toPurchase.id,
+          quantity,
+          status: 'COMPLETED'
+        }
+      })
+
+      return transfer
+    })
+  }
+
   async getUserTickets(userId: number) {
-    console.log('==========>userId', userId);
     return prisma.ticketPurchase.findMany({
       where: {
         userId,
         status: 'COMPLETED'
       },
       include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true
-          }
-        },
         ticket: {
           include: {
-            event: {
-              include: {
-                owner: {
-                  select: {
-                    id: true,
-                    name: true,
-                    email: true
-                  }
-                }
-              }
-            }
+            event: true
           }
         }
+      }
+    })
+  }
+
+  async getEventTickets(eventId: number) {
+    return prisma.ticket.findMany({
+      where: {
+        eventId
       },
-      orderBy: {
-        createdAt: 'desc'
+      include: {
+        _count: {
+          select: {
+            purchases: true
+          }
+        }
       }
     })
   }
@@ -132,7 +175,7 @@ export class TicketService {
       throw new Error('Ticket not found')
     }
 
-    const totalSold = await prisma.ticketPurchase.aggregate({
+    const soldCount = await prisma.ticketPurchase.aggregate({
       where: {
         ticketId,
         status: 'COMPLETED'
@@ -142,14 +185,11 @@ export class TicketService {
       }
     })
 
-    const soldCount = totalSold._sum.quantity || 0
-    const availableCount = ticket.quantity - soldCount
-
     return {
       ticket,
       totalQuantity: ticket.quantity,
-      soldCount,
-      availableCount
+      soldCount: soldCount._sum.quantity || 0,
+      availableCount: ticket.quantity - (soldCount._sum.quantity || 0)
     }
   }
 }

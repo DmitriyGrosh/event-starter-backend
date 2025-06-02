@@ -5,35 +5,51 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - NODE_ENV=${NODE_ENV:-production}
+        - POSTGRES_USER=${POSTGRES_USER}
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+        - POSTGRES_DB=${POSTGRES_DB}
+        - DATABASE_URL=postgresql://${POSTGRES_USER:-user}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-event_db}?schema=public
+        - JWT_SECRET=${JWT_SECRET:-default_jwt_secret}
+        - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-1d}
+        - SMTP_HOST=${SMTP_HOST}
+        - SMTP_PORT=${SMTP_PORT:-587}
+        - SMTP_SECURE=${SMTP_SECURE:-false}
+        - SMTP_USER=${SMTP_USER}
+        - SMTP_PASS=${SMTP_PASS}
+        - SMTP_FROM=${SMTP_FROM}
     ports:
       - "5002:5002"
     environment:
-      - NODE_ENV=development
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/event_starter?schema=public
+      - NODE_ENV=${NODE_ENV:-production}
       - PORT=5002
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-user}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-event_db}?schema=public
+      - JWT_SECRET=${JWT_SECRET:-default_jwt_secret}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-1d}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_SECURE=${SMTP_SECURE:-false}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - SMTP_FROM=${SMTP_FROM}
     depends_on:
       db:
         condition: service_healthy
-    volumes:
-      - .:/app
-      - /app/node_modules
-    command: sh -c "
-      echo 'Waiting for database...' &&
-      sleep 5 &&
-      echo 'Resetting database...' &&
-      pnpm prisma migrate reset --force &&
-      echo 'Starting application...' &&
-      pnpm run dev
-      "
+    networks:
+      - app-network
 
   db:
     image: postgres:16-alpine
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=event_starter
+      - POSTGRES_USER=${POSTGRES_USER:-user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password}
+      - POSTGRES_DB=${POSTGRES_DB:-event_db}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -41,6 +57,12 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - app-network
 
 volumes:
   postgres_data:
+
+networks:
+  app-network:
+    driver: bridge

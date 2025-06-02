@@ -38,7 +38,7 @@ RUN pnpm install --prod
 # Copy prisma files (needed for migrations)
 COPY prisma ./prisma/
 
-# Copy wait-for-it script
+# Copy wait-for-it script and make it executable
 COPY wait-for-it.sh ./
 RUN chmod +x wait-for-it.sh
 
@@ -49,10 +49,6 @@ COPY --from=builder /app/src/generated ./src/generated
 
 # Expose the port the app runs on
 EXPOSE 5002
-
-# Set environment variables
-ENV NODE_ENV=production
-ENV PORT=5002
 
 # Command to run the application
 CMD ["./wait-for-it.sh", "db", "node --experimental-specifier-resolution=node dist/server.js"]

@@ -112,7 +112,7 @@ export async function ticketController(fastify: FastifyInstance) {
     const { quantity } = request.body as { quantity: number }
     const { userId } = request.user as { userId: number }
 
-    return ticketService.buyTicket(userId, id, quantity)
+    return ticketService.purchaseTicket(id, userId, quantity)
   })
 
   // Get user's tickets

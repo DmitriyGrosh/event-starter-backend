@@ -10,7 +10,7 @@ import { eventController } from './controllers/event.controller'
 import { authController } from './controllers/auth.controller'
 import { errorHandler } from './middleware/error-handler'
 import { authenticate } from './middleware/auth'
-import { ticketController } from "@/controllers/ticket.controller";
+import { ticketController } from "./controllers/ticket.controller"
 import { tagController } from "./controllers/tag.controller"
 import { publicEventController } from './controllers/public-event.controller'
 import { notificationController } from './controllers/notification.controller'
@@ -141,6 +141,7 @@ fastify.register(async (fastify) => {
 // Start server
 const start = async () => {
 	try {
+		console.log('==========>process.env', process.env);
 		const port = process.env.PORT ? parseInt(process.env.PORT) : 5001
 		await fastify.listen({ port, host: '0.0.0.0' })
 		fastify.log.info(`Server listening on http://localhost:${port}`)

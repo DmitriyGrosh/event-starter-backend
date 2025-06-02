@@ -12,5 +12,11 @@ until nc -z "$host" 5432; do
   sleep 1
 done
 
-echo "PostgreSQL is ready, executing command..."
+echo "PostgreSQL is ready, running migrations..."
+npx prisma migrate deploy
+
+echo "Running Prisma generate..."
+npx prisma generate
+
+echo "Starting the application..."
 exec $cmd 
