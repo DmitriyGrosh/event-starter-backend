@@ -109,6 +109,14 @@ jobs:
             # Pull the latest image
             docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }}
 
+            # Run database migrations
+            echo "🔄 Running database migrations..."
+            docker run --rm \
+              --env-file .env \
+              --network host \
+              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }} \
+              sh -c "pnpm run db:migrate:deploy"
+
             # Stop and remove existing containers
             docker compose -f docker-compose.prod.yml down
 
