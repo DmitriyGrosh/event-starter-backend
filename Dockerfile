@@ -51,5 +51,5 @@ COPY --from=builder /app/src/generated ./src/generated
 EXPOSE 5002
 
 # Command to run the application
-CMD ["./wait-for-it.sh", "db", "node --experimental-specifier-resolution=node dist/server.js"]
+CMD ["./wait-for-it.sh"]
 
