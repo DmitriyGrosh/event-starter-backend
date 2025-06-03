@@ -77,13 +77,10 @@ jobs:
             
             # Create docker-compose.yml
             cat > docker-compose.yml << EOF
-            version: '3.8'
-
             services:
               app:
+                container_name: event-starter-backend
                 image: \${IMAGE_NAME}
-                ports:
-                  - "5002:5002"
                 environment:
                   - NODE_ENV=production
                   - PORT=5002
@@ -101,8 +98,9 @@ jobs:
                   - SMTP_USER=\${SMTP_USER}
                   - SMTP_PASS=\${SMTP_PASS}
                   - SMTP_FROM=\${SMTP_FROM:-noreply@example.com}
+                ports:
+                  - "5002:5002"
                 restart: unless-stopped
-                network_mode: host
             EOF
 
             # Create .env file
