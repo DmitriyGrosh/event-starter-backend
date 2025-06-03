@@ -64,34 +64,43 @@ jobs:
 
             # Convert repository name to lowercase for Docker
             REPO="${{ github.repository_owner }}/event-starter-backend"
-            REPO_LOWER=$(echo $REPO | tr '[:upper:]' '[:lower:]')
-
+            REPO_LOWER=$(echo "$REPO" | tr '[:upper:]' '[:lower:]')
+            IMAGE_NAME="ghcr.io/$REPO_LOWER:main"
+            
+            echo "Debug: REPO=$REPO"
+            echo "Debug: REPO_LOWER=$REPO_LOWER"
+            echo "Debug: IMAGE_NAME=$IMAGE_NAME"
+            
+            # Export the variables so they're available to docker-compose
+            export REPO_LOWER
+            export IMAGE_NAME
+            
             # Create docker-compose.yml
-            cat > docker-compose.yml << 'EOF'
+            cat > docker-compose.yml << EOF
             version: '3.8'
 
             services:
               app:
-                image: ${{ env.REGISTRY }}/${REPO_LOWER}:main
+                image: \${IMAGE_NAME}
                 ports:
                   - "5002:5002"
                 environment:
                   - NODE_ENV=production
                   - PORT=5002
-                  - POSTGRES_USER=${POSTGRES_USER}
-                  - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-                  - POSTGRES_DB=${POSTGRES_DB:-event_db}
-                  - POSTGRES_HOST=${POSTGRES_HOST:-localhost}
-                  - POSTGRES_PORT=${POSTGRES_PORT:-5432}
-                  - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST:-localhost}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-event_db}?schema=public
-                  - JWT_SECRET=${JWT_SECRET}
-                  - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-7d}
-                  - SMTP_HOST=${SMTP_HOST:-smtp.gmail.com}
-                  - SMTP_PORT=${SMTP_PORT:-587}
-                  - SMTP_SECURE=${SMTP_SECURE:-false}
-                  - SMTP_USER=${SMTP_USER}
-                  - SMTP_PASS=${SMTP_PASS}
-                  - SMTP_FROM=${SMTP_FROM:-noreply@example.com}
+                  - POSTGRES_USER=\${POSTGRES_USER}
+                  - POSTGRES_PASSWORD=\${POSTGRES_PASSWORD}
+                  - POSTGRES_DB=\${POSTGRES_DB:-event_db}
+                  - POSTGRES_HOST=\${POSTGRES_HOST:-localhost}
+                  - POSTGRES_PORT=\${POSTGRES_PORT:-5432}
+                  - DATABASE_URL=postgresql://\${POSTGRES_USER}:\${POSTGRES_PASSWORD}@\${POSTGRES_HOST:-localhost}:\${POSTGRES_PORT:-5432}/\${POSTGRES_DB:-event_db}?schema=public
+                  - JWT_SECRET=\${JWT_SECRET}
+                  - JWT_EXPIRES_IN=\${JWT_EXPIRES_IN:-7d}
+                  - SMTP_HOST=\${SMTP_HOST:-smtp.gmail.com}
+                  - SMTP_PORT=\${SMTP_PORT:-587}
+                  - SMTP_SECURE=\${SMTP_SECURE:-false}
+                  - SMTP_USER=\${SMTP_USER}
+                  - SMTP_PASS=\${SMTP_PASS}
+                  - SMTP_FROM=\${SMTP_FROM:-noreply@example.com}
                 restart: unless-stopped
                 network_mode: host
             EOF
@@ -129,8 +138,9 @@ jobs:
               exit 1
             fi
 
-            # Pull the latest images
-            docker compose pull
+            # Pull the latest image
+            echo "Pulling image: $IMAGE_NAME"
+            docker pull "$IMAGE_NAME"
 
             # Stop and remove old containers
             docker compose down || true
