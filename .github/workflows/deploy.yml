@@ -1,22 +1,23 @@
-name: Deploy to VPS
+name: Build and Deploy to VPS
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
     branches: [ main ]
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  DOCKER_IMAGE_TAG: ${{ github.sha }}
 
 jobs:
-  build-and-deploy:
+  build:
+    name: Build and Push Docker Image
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
+    outputs:
+      image-tag: ${{ steps.meta.outputs.tags }}
+      image-digest: ${{ steps.build.outputs.digest }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -38,11 +39,11 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=branch
-            type=ref,event=pr
-            type=sha
+            type=sha,prefix={{branch}}-
             type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Build and push Docker image
+        id: build
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -52,6 +53,18 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      - name: Image build summary
+        run: |
+          echo "✅ Image built and pushed successfully!"
+          echo "📦 Image tags: ${{ steps.meta.outputs.tags }}"
+          echo "🔖 Image digest: ${{ steps.build.outputs.digest }}"
+
+  deploy:
+    name: Deploy to VPS
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    steps:
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
         with:
@@ -59,69 +72,125 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
+            set -e  # Exit on any error
+            
+            echo "🚀 Starting deployment process..."
+            
             # Create deployment directory if it doesn't exist
             mkdir -p ~/event-starter-backend
-
-            # Navigate to the deployment directory
             cd ~/event-starter-backend
 
             # Clone or update the repository to get the latest docker-compose.prod.yml
             if [ ! -d ".git" ]; then
+              echo "📥 Cloning repository..."
               git clone https://github.com/${{ github.repository }}.git .
             else
+              echo "🔄 Updating repository..."
               git fetch origin
               git reset --hard origin/main
             fi
 
+            # Determine the image tag to use
+            IMAGE_TAG="${{ github.sha }}"
+            FULL_IMAGE_NAME="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main-${IMAGE_TAG}"
+            
+            echo "🏷️ Using image: ${FULL_IMAGE_NAME}"
+
             # Create .env file from GitHub secrets and variables
-            cat > .env << EOF
+            echo "📝 Creating environment configuration..."
+            cat > .env << 'ENV_EOF'
             # Docker Configuration
             DOCKER_IMAGE_NAME=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-            DOCKER_IMAGE_TAG=${{ env.DOCKER_IMAGE_TAG }}
+            DOCKER_IMAGE_TAG=main-${{ github.sha }}
             
             # Database Configuration
             POSTGRES_USER=${{ secrets.POSTGRES_USER }}
             POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
-            POSTGRES_DB=${{ vars.POSTGRES_DB }}
-            POSTGRES_HOST=${{ vars.POSTGRES_HOST }}
-            POSTGRES_PORT=${{ vars.POSTGRES_PORT }}
+            POSTGRES_DB=${{ vars.POSTGRES_DB || 'event_db' }}
+            POSTGRES_HOST=${{ vars.POSTGRES_HOST || 'localhost' }}
+            POSTGRES_PORT=${{ vars.POSTGRES_PORT || '5432' }}
             
             # JWT Configuration
             JWT_SECRET=${{ secrets.JWT_SECRET }}
-            JWT_EXPIRES_IN=${{ vars.JWT_EXPIRES_IN }}
+            JWT_EXPIRES_IN=${{ vars.JWT_EXPIRES_IN || '7d' }}
             
             # SMTP Configuration
-            SMTP_HOST=${{ vars.SMTP_HOST }}
-            SMTP_PORT=${{ vars.SMTP_PORT }}
-            SMTP_SECURE=${{ vars.SMTP_SECURE }}
-            SMTP_USER=${{ secrets.SMTP_USER }}
-            SMTP_PASS=${{ secrets.SMTP_PASS }}
-            SMTP_FROM=${{ vars.SMTP_FROM }}
+            SMTP_HOST=${{ vars.SMTP_HOST || 'smtp.gmail.com' }}
+            SMTP_PORT=${{ vars.SMTP_PORT || '587' }}
+            SMTP_SECURE=${{ vars.SMTP_SECURE || 'false' }}
+            SMTP_USER=${{ secrets.SMTP_USER || '' }}
+            SMTP_PASS=${{ secrets.SMTP_PASS || '' }}
+            SMTP_FROM=${{ vars.SMTP_FROM || 'noreply@example.com' }}
             
             # Server Configuration
             NODE_ENV=production
             PORT=5002
-            EOF
+            ENV_EOF
 
-            # Login to GitHub Container Registry on VPS
-            echo ${{ secrets.GITHUB_TOKEN }} | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
+            # Validate critical environment variables
+            echo "🔍 Validating environment..."
+            if [ -z "${{ secrets.POSTGRES_USER }}" ] || [ -z "${{ secrets.POSTGRES_PASSWORD }}" ]; then
+              echo "❌ Database credentials are missing!"
+              exit 1
+            fi
+            
+            if [ -z "${{ secrets.JWT_SECRET }}" ]; then
+              echo "❌ JWT_SECRET is missing!"
+              exit 1
+            fi
+
+            # Login to GitHub Container Registry
+            echo "🔐 Logging into container registry..."
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
 
             # Pull the latest image
-            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }}
+            echo "📦 Pulling Docker image..."
+            docker pull "${FULL_IMAGE_NAME}"
 
             # Run database migrations
             echo "🔄 Running database migrations..."
             docker run --rm \
               --env-file .env \
               --network host \
-              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }} \
+              "${FULL_IMAGE_NAME}" \
               sh -c "pnpm run db:migrate:deploy"
 
-            # Stop and remove existing containers
-            docker compose -f docker-compose.prod.yml down
+            # Stop existing containers
+            echo "🛑 Stopping existing containers..."
+            docker compose -f docker-compose.prod.yml down || true
 
             # Start new containers
+            echo "🚀 Starting new containers..."
             docker compose -f docker-compose.prod.yml up -d
 
+            # Wait a moment for containers to start
+            sleep 5
+
+            # Verify deployment
+            echo "✅ Verifying deployment..."
+            if docker compose -f docker-compose.prod.yml ps | grep -q "Up"; then
+              echo "✅ Containers are running!"
+              docker compose -f docker-compose.prod.yml ps
+            else
+              echo "❌ Container failed to start!"
+              docker compose -f docker-compose.prod.yml logs app
+              exit 1
+            fi
+
+            # Test backend connectivity
+            echo "🧪 Testing backend connectivity..."
+            if curl -f --max-time 10 http://localhost:5002 > /dev/null 2>&1; then
+              echo "✅ Backend is responding!"
+            else
+              echo "⚠️ Backend might not be ready yet (this could be normal)"
+            fi
+
+            # Show recent logs
+            echo "📋 Recent application logs:"
+            docker compose -f docker-compose.prod.yml logs --tail=10 app
+
             # Clean up old images
-            docker image prune -f 
+            echo "🧹 Cleaning up old images..."
+            docker image prune -f
+
+            echo "🎉 Deployment completed successfully!" 
