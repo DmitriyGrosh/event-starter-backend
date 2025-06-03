@@ -80,14 +80,10 @@ jobs:
             mkdir -p ~/event-starter-backend
             cd ~/event-starter-backend
 
-            # Clone or update the repository to get the latest docker-compose.prod.yml
-            if [ ! -d ".git" ]; then
-              echo "📥 Cloning repository..."
-              git clone https://github.com/${{ github.repository }}.git .
-            else
-              echo "🔄 Updating repository..."
-              git fetch origin
-              git reset --hard origin/main
+            # Install curl if not available (for testing connectivity)
+            if ! command -v curl &> /dev/null; then
+              echo "📦 Installing curl..."
+              apt-get update && apt-get install -y curl
             fi
 
             # Determine the image tag to use
@@ -95,6 +91,37 @@ jobs:
             FULL_IMAGE_NAME="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main-${IMAGE_TAG}"
             
             echo "🏷️ Using image: ${FULL_IMAGE_NAME}"
+
+            # Create docker-compose.prod.yml
+            echo "📝 Creating docker-compose configuration..."
+            cat > docker-compose.prod.yml << 'COMPOSE_EOF'
+            version: '3.8'
+
+            services:
+              app:
+                image: ${DOCKER_IMAGE_NAME:-event-starter-backend}:${DOCKER_IMAGE_TAG:-latest}
+                ports:
+                  - "5002:5002"
+                environment:
+                  - NODE_ENV=production
+                  - PORT=5002
+                  - POSTGRES_USER=${POSTGRES_USER}
+                  - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+                  - POSTGRES_DB=${POSTGRES_DB}
+                  - POSTGRES_HOST=${POSTGRES_HOST:-localhost}
+                  - POSTGRES_PORT=${POSTGRES_PORT:-5432}
+                  - DATABASE_URL=postgresql://${POSTGRES_USER:-user}:${POSTGRES_PASSWORD:-password}@${POSTGRES_HOST:-localhost}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-event_db}?schema=public
+                  - JWT_SECRET=${JWT_SECRET}
+                  - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
+                  - SMTP_HOST=${SMTP_HOST}
+                  - SMTP_PORT=${SMTP_PORT}
+                  - SMTP_SECURE=${SMTP_SECURE}
+                  - SMTP_USER=${SMTP_USER}
+                  - SMTP_PASS=${SMTP_PASS}
+                  - SMTP_FROM=${SMTP_FROM}
+                restart: unless-stopped
+                network_mode: host
+            COMPOSE_EOF
 
             # Create .env file from GitHub secrets and variables
             echo "📝 Creating environment configuration..."
