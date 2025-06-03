@@ -48,6 +48,9 @@ await fastify.register(fastifyCors, {
 	origin: true
 })
 
+// Add health check endpoint
+fastify.get('/health', async () => 'ok')
+
 // Add Swagger documentation
 await fastify.register(fastifySwagger, {
 	openapi: {

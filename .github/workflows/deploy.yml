@@ -87,9 +87,9 @@ jobs:
                   - POSTGRES_USER=\${POSTGRES_USER}
                   - POSTGRES_PASSWORD=\${POSTGRES_PASSWORD}
                   - POSTGRES_DB=\${POSTGRES_DB:-event_db}
-                  - POSTGRES_HOST=\${POSTGRES_HOST:-localhost}
-                  - POSTGRES_PORT=\${POSTGRES_PORT:-5432}
-                  - DATABASE_URL=postgresql://\${POSTGRES_USER}:\${POSTGRES_PASSWORD}@\${POSTGRES_HOST:-localhost}:\${POSTGRES_PORT:-5432}/\${POSTGRES_DB:-event_db}?schema=public
+                  - POSTGRES_HOST=host.docker.internal
+                  - POSTGRES_PORT=5432
+                  - DATABASE_URL=postgresql://\${POSTGRES_USER}:\${POSTGRES_PASSWORD}@host.docker.internal:5432/\${POSTGRES_DB:-event_db}?schema=public
                   - JWT_SECRET=\${JWT_SECRET}
                   - JWT_EXPIRES_IN=\${JWT_EXPIRES_IN:-7d}
                   - SMTP_HOST=\${SMTP_HOST:-smtp.gmail.com}
@@ -101,6 +101,15 @@ jobs:
                 ports:
                   - "5002:5002"
                 restart: unless-stopped
+                extra_hosts:
+                  - "host.docker.internal:host-gateway"
+                networks:
+                  - app-network
+
+            networks:
+              app-network:
+                name: event-starter-frontend_app-network
+                external: true
             EOF
 
             # Create .env file
@@ -109,7 +118,7 @@ jobs:
             POSTGRES_USER=${{ secrets.POSTGRES_USER }}
             POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
             POSTGRES_DB=${{ vars.POSTGRES_DB || 'event_db' }}
-            POSTGRES_HOST=localhost
+            POSTGRES_HOST=host.docker.internal
             POSTGRES_PORT=5432
             
             # JWT Configuration
@@ -125,22 +134,11 @@ jobs:
             SMTP_FROM=${{ vars.SMTP_FROM || 'noreply@example.com' }}
             ENV_EOF
 
-            # Check if PostgreSQL is running locally
-            echo "Checking PostgreSQL connection..."
-            if ! nc -z localhost 5432; then
-              echo "❌ PostgreSQL is not running on localhost:5432"
-              echo "Please ensure PostgreSQL is installed and running on the server"
-              exit 1
-            fi
-            
-            # Validate critical environment variables
-            if [ -z "${{ secrets.POSTGRES_USER }}" ] || [ -z "${{ secrets.POSTGRES_PASSWORD }}" ]; then
-              echo "❌ Database credentials are missing!"
-              exit 1
-            fi
-            
-            if [ -z "${{ secrets.JWT_SECRET }}" ]; then
-              echo "❌ JWT_SECRET is missing!"
+            # Check if PostgreSQL is accessible
+            echo "Checking PostgreSQL connection on host..."
+            if ! nc -z host.docker.internal 5432; then
+              echo "❌ Cannot connect to PostgreSQL on host machine"
+              echo "Please ensure PostgreSQL is running and accessible"
               exit 1
             fi
 
@@ -151,22 +149,31 @@ jobs:
             # Stop and remove old containers
             docker compose down || true
 
-            # Run database migrations
-            docker compose run --rm app sh -c "pnpm run db:migrate:deploy"
-
             # Start the new deployment
             docker compose up -d
 
-            # Wait a moment for services to start
-            sleep 10
+            # Wait for the application to be ready
+            echo "Waiting for application to start..."
+            for i in {1..30}; do
+              if curl -s http://localhost:5002/health >/dev/null; then
+                echo "Application is ready!"
+                break
+              fi
+              echo "Waiting... ($i/30)"
+              sleep 2
+            done
 
-            # Check deployment status
-            echo "=== Deployment Status ==="
+            # Show detailed logs
+            echo "=== Application Logs ==="
+            docker compose logs app
+
+            # Show container status
+            echo "=== Container Status ==="
             docker compose ps
 
-            # Show recent logs
-            echo "=== Application Logs ==="
-            docker compose logs app --tail=20
+            # Test PostgreSQL connection from container
+            echo "=== Testing Database Connection ==="
+            docker compose exec app nc -zv host.docker.internal 5432 || echo "Cannot connect to PostgreSQL"
 
             # Clean up old images
             docker image prune -f 
