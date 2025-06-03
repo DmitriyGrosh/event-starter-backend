@@ -6,7 +6,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository_owner }}/event-starter-backend
 
 jobs:
   build:
@@ -19,6 +18,11 @@ jobs:
       image-tag: ${{ steps.meta.outputs.tags }}
       image-digest: ${{ steps.build.outputs.digest }}
     steps:
+      - name: Set lowercase name
+        run: |
+          USERNAME=$(echo "${{ github.actor }}" | tr '[:upper:]' '[:lower:]')
+          echo "IMAGE_NAME=${USERNAME}/event-starter-backend" >> $GITHUB_ENV
+
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -88,7 +92,8 @@ jobs:
 
             # Determine the image tag to use
             IMAGE_TAG="${{ github.sha }}"
-            FULL_IMAGE_NAME="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main-${IMAGE_TAG}"
+            USERNAME=$(echo "${{ github.actor }}" | tr '[:upper:]' '[:lower:]')
+            FULL_IMAGE_NAME="${{ env.REGISTRY }}/${USERNAME}/event-starter-backend:main-${IMAGE_TAG}"
             
             echo "🏷️ Using image: ${FULL_IMAGE_NAME}"
 
@@ -127,7 +132,8 @@ jobs:
             echo "📝 Creating environment configuration..."
             cat > .env << 'ENV_EOF'
             # Docker Configuration
-            DOCKER_IMAGE_NAME=${{ env.REGISTRY }}/${{ github.repository_owner }}/event-starter-backend
+            USERNAME=$(echo "${{ github.actor }}" | tr '[:upper:]' '[:lower:]')
+            DOCKER_IMAGE_NAME=${{ env.REGISTRY }}/${USERNAME}/event-starter-backend
             DOCKER_IMAGE_TAG=main-${{ github.sha }}
             
             # Database Configuration
