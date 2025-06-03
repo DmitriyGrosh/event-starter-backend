@@ -111,8 +111,8 @@ jobs:
             POSTGRES_USER=${{ secrets.POSTGRES_USER }}
             POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
             POSTGRES_DB=${{ vars.POSTGRES_DB || 'event_db' }}
-            POSTGRES_HOST=${{ vars.POSTGRES_HOST || 'localhost' }}
-            POSTGRES_PORT=${{ vars.POSTGRES_PORT || '5432' }}
+            POSTGRES_HOST=localhost
+            POSTGRES_PORT=5432
             
             # JWT Configuration
             JWT_SECRET=${{ secrets.JWT_SECRET }}
@@ -127,6 +127,14 @@ jobs:
             SMTP_FROM=${{ vars.SMTP_FROM || 'noreply@example.com' }}
             ENV_EOF
 
+            # Check if PostgreSQL is running locally
+            echo "Checking PostgreSQL connection..."
+            if ! nc -z localhost 5432; then
+              echo "❌ PostgreSQL is not running on localhost:5432"
+              echo "Please ensure PostgreSQL is installed and running on the server"
+              exit 1
+            fi
+            
             # Validate critical environment variables
             if [ -z "${{ secrets.POSTGRES_USER }}" ] || [ -z "${{ secrets.POSTGRES_PASSWORD }}" ]; then
               echo "❌ Database credentials are missing!"
