@@ -6,7 +6,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: ${{ github.repository_owner }}/event-starter-backend
 
 jobs:
   build:
@@ -127,7 +127,7 @@ jobs:
             echo "📝 Creating environment configuration..."
             cat > .env << 'ENV_EOF'
             # Docker Configuration
-            DOCKER_IMAGE_NAME=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+            DOCKER_IMAGE_NAME=${{ env.REGISTRY }}/${{ github.repository_owner }}/event-starter-backend
             DOCKER_IMAGE_TAG=main-${{ github.sha }}
             
             # Database Configuration
