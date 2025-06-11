@@ -58,6 +58,7 @@ async function main() {
         location: "San Francisco Convention Center",
         dateStart: new Date('2024-03-15T09:00:00Z'),
         dateEnd: new Date('2024-03-17T18:00:00Z'),
+        price: 299.99,
         ownerId: users[0].id,
         tickets: {
           create: [
@@ -97,6 +98,7 @@ async function main() {
         location: "Tech Hub Downtown",
         dateStart: new Date('2024-04-01T10:00:00Z'),
         dateEnd: new Date('2024-04-01T17:00:00Z'),
+        price: 149.99,
         ownerId: users[0].id,
         tickets: {
           create: [
@@ -128,6 +130,7 @@ async function main() {
         location: "Creative Space Co-working",
         dateStart: new Date('2024-03-20T14:00:00Z'),
         dateEnd: new Date('2024-03-20T17:00:00Z'),
+        price: 25.00,
         ownerId: users[1].id,
         tickets: {
           create: [

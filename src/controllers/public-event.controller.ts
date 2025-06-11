@@ -20,6 +20,7 @@ export async function publicEventController(fastify: FastifyInstance) {
     title: Type.String(),
     description: Type.Optional(Type.String()),
     location: Type.String(),
+	  price: Type.Number(),
     dateStart: Type.String(),
     dateEnd: Type.String(),
     ownerId: Type.Number(),
@@ -53,7 +54,11 @@ export async function publicEventController(fastify: FastifyInstance) {
         order: Type.Optional(Type.Union([
           Type.Literal('asc'),
           Type.Literal('desc')
-        ], { default: 'asc' }))
+        ], { default: 'asc' })),
+        search: Type.Optional(Type.String()),
+        fromDate: Type.Optional(Type.String({ format: 'date-time' })),
+        toDate: Type.Optional(Type.String({ format: 'date-time' })),
+        tags: Type.Optional(Type.Array(Type.String()))
       }),
       response: {
         200: Type.Object({
@@ -68,18 +73,37 @@ export async function publicEventController(fastify: FastifyInstance) {
       }
     }
   }, async (request) => {
-    const { page = 1, limit = 10, sortBy = 'dateStart', order = 'asc' } = request.query as {
+    const { 
+      page = 1, 
+      limit = 10, 
+      sortBy = 'dateStart', 
+      order = 'asc',
+      search,
+      fromDate,
+      toDate,
+      tags
+    } = request.query as {
       page?: number
       limit?: number
       sortBy?: 'dateStart' | 'dateEnd' | 'title' | 'createdAt'
       order?: 'asc' | 'desc'
+      search?: string
+      fromDate?: string
+      toDate?: string
+      tags?: string[]
     }
 
     return eventService.findAllPaginated({
       page,
       limit,
       sortBy,
-      order
+      order,
+      filters: {
+        search,
+        fromDate: fromDate ? new Date(fromDate) : undefined,
+        toDate: toDate ? new Date(toDate) : undefined,
+        tags
+      }
     })
   })
 

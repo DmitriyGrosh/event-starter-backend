@@ -111,6 +111,7 @@ export class EventService {
     location: string
     dateStart: string
     dateEnd: string
+    price: number
     ownerId: number
     tickets: {
       create: {
@@ -170,6 +171,7 @@ export class EventService {
           location: data.location,
           dateStart: data.dateStart,
           dateEnd: data.dateEnd,
+          price: data.price,
           ownerId: data.ownerId,
           tickets: data.tickets,
           tags: tagIds.length > 0 ? {
@@ -210,6 +212,7 @@ export class EventService {
     location: string
     dateStart: string
     dateEnd: string
+    price?: number
     tags?: string[]
   }>) {
     const event = await prisma.event.findUnique({
@@ -274,6 +277,7 @@ export class EventService {
           location: data.location,
           dateStart: data.dateStart,
           dateEnd: data.dateEnd,
+          price: data.price,
           tags: tagIds.length > 0 ? {
             create: tagIds.map(tagId => ({
               tagId
@@ -328,18 +332,45 @@ export class EventService {
     limit: number
     sortBy: 'dateStart' | 'dateEnd' | 'title' | 'createdAt'
     order: 'asc' | 'desc'
+    filters?: {
+      search?: string
+      fromDate?: Date
+      toDate?: Date
+      tags?: string[]
+    }
   }) {
-    const skip = (options.page - 1) * options.limit
-    const take = options.limit
+    const where: any = {}
 
-    const [total, events] = await Promise.all([
-      prisma.event.count(),
+    if (options.filters?.search) {
+      where.OR = [
+        { title: { contains: options.filters.search, mode: 'insensitive' } },
+        { description: { contains: options.filters.search, mode: 'insensitive' } }
+      ]
+    }
+
+    if (options.filters?.fromDate) {
+      where.dateStart = { gte: options.filters.fromDate }
+    }
+
+    if (options.filters?.toDate) {
+      where.dateEnd = { lte: options.filters.toDate }
+    }
+
+    if (options.filters?.tags && options.filters.tags.length > 0) {
+      where.tags = {
+        some: {
+          tag: {
+            name: {
+              in: options.filters.tags.map(tag => tag.toLowerCase())
+            }
+          }
+        }
+      }
+    }
+
+    const [events, total] = await Promise.all([
       prisma.event.findMany({
-        skip,
-        take,
-        orderBy: {
-          [options.sortBy]: options.order
-        },
+        where,
         include: {
           owner: {
             select: {
@@ -359,11 +390,15 @@ export class EventService {
               subscribers: true
             }
           }
+        },
+        skip: (options.page - 1) * options.limit,
+        take: options.limit,
+        orderBy: {
+          [options.sortBy]: options.order
         }
-      })
+      }),
+      prisma.event.count({ where })
     ])
-
-    const pageCount = Math.ceil(total / options.limit)
 
     return {
       events,
@@ -371,7 +406,7 @@ export class EventService {
         total,
         page: options.page,
         pageSize: options.limit,
-        pageCount
+        pageCount: Math.ceil(total / options.limit)
       }
     }
   }

@@ -36,6 +36,7 @@ model Event {
   location    String?   // Made optional to handle existing events
   dateStart   DateTime  @map("date_start")
   dateEnd     DateTime  @map("date_end")
+  price       Decimal   @db.Decimal(10, 2) @default(0)
   createdAt   DateTime  @default(now()) @map("created_at")
   owner       User      @relation("EventOwner", fields: [ownerId], references: [id], onDelete: Cascade)
   ownerId     Int       @map("owner_id")

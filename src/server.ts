@@ -1,3 +1,6 @@
+import { config } from 'dotenv'
+config()
+
 import Fastify from 'fastify'
 import fastifyCors from '@fastify/cors'
 import fastifyJwt from '@fastify/jwt'
@@ -60,7 +63,7 @@ await fastify.register(fastifySwagger, {
 			version: '1.0.0'
 		},
 		servers: [{
-			url: 'http://localhost:5002',
+			url: `http://localhost:${process.env.PORT}`,
 			description: 'Development server'
 		}],
 		components: {
@@ -145,7 +148,7 @@ fastify.register(async (fastify) => {
 const start = async () => {
 	try {
 		console.log('==========>process.env', process.env);
-		const port = process.env.PORT ? parseInt(process.env.PORT) : 5001
+		const port = parseInt(process.env.PORT ?? "5000")
 		await fastify.listen({ port, host: '0.0.0.0' })
 		fastify.log.info(`Server listening on http://localhost:${port}`)
 		fastify.log.info(`API Documentation available at http://localhost:${port}/docs`)

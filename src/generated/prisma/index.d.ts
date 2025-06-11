@@ -3007,11 +3007,13 @@ export namespace Prisma {
 
   export type EventAvgAggregateOutputType = {
     id: number | null
+    price: Decimal | null
     ownerId: number | null
   }
 
   export type EventSumAggregateOutputType = {
     id: number | null
+    price: Decimal | null
     ownerId: number | null
   }
 
@@ -3022,6 +3024,7 @@ export namespace Prisma {
     location: string | null
     dateStart: Date | null
     dateEnd: Date | null
+    price: Decimal | null
     createdAt: Date | null
     ownerId: number | null
   }
@@ -3033,6 +3036,7 @@ export namespace Prisma {
     location: string | null
     dateStart: Date | null
     dateEnd: Date | null
+    price: Decimal | null
     createdAt: Date | null
     ownerId: number | null
   }
@@ -3044,6 +3048,7 @@ export namespace Prisma {
     location: number
     dateStart: number
     dateEnd: number
+    price: number
     createdAt: number
     ownerId: number
     _all: number
@@ -3052,11 +3057,13 @@ export namespace Prisma {
 
   export type EventAvgAggregateInputType = {
     id?: true
+    price?: true
     ownerId?: true
   }
 
   export type EventSumAggregateInputType = {
     id?: true
+    price?: true
     ownerId?: true
   }
 
@@ -3067,6 +3074,7 @@ export namespace Prisma {
     location?: true
     dateStart?: true
     dateEnd?: true
+    price?: true
     createdAt?: true
     ownerId?: true
   }
@@ -3078,6 +3086,7 @@ export namespace Prisma {
     location?: true
     dateStart?: true
     dateEnd?: true
+    price?: true
     createdAt?: true
     ownerId?: true
   }
@@ -3089,6 +3098,7 @@ export namespace Prisma {
     location?: true
     dateStart?: true
     dateEnd?: true
+    price?: true
     createdAt?: true
     ownerId?: true
     _all?: true
@@ -3187,6 +3197,7 @@ export namespace Prisma {
     location: string | null
     dateStart: Date
     dateEnd: Date
+    price: Decimal
     createdAt: Date
     ownerId: number
     _count: EventCountAggregateOutputType | null
@@ -3217,6 +3228,7 @@ export namespace Prisma {
     location?: boolean
     dateStart?: boolean
     dateEnd?: boolean
+    price?: boolean
     createdAt?: boolean
     ownerId?: boolean
     owner?: boolean | UserDefaultArgs<ExtArgs>
@@ -3233,6 +3245,7 @@ export namespace Prisma {
     location?: boolean
     dateStart?: boolean
     dateEnd?: boolean
+    price?: boolean
     createdAt?: boolean
     ownerId?: boolean
     owner?: boolean | UserDefaultArgs<ExtArgs>
@@ -3245,6 +3258,7 @@ export namespace Prisma {
     location?: boolean
     dateStart?: boolean
     dateEnd?: boolean
+    price?: boolean
     createdAt?: boolean
     ownerId?: boolean
     owner?: boolean | UserDefaultArgs<ExtArgs>
@@ -3257,11 +3271,12 @@ export namespace Prisma {
     location?: boolean
     dateStart?: boolean
     dateEnd?: boolean
+    price?: boolean
     createdAt?: boolean
     ownerId?: boolean
   }
 
-  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "location" | "dateStart" | "dateEnd" | "createdAt" | "ownerId", ExtArgs["result"]["event"]>
+  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "location" | "dateStart" | "dateEnd" | "price" | "createdAt" | "ownerId", ExtArgs["result"]["event"]>
   export type EventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     owner?: boolean | UserDefaultArgs<ExtArgs>
     subscribers?: boolean | Event$subscribersArgs<ExtArgs>
@@ -3291,6 +3306,7 @@ export namespace Prisma {
       location: string | null
       dateStart: Date
       dateEnd: Date
+      price: Prisma.Decimal
       createdAt: Date
       ownerId: number
     }, ExtArgs["result"]["event"]>
@@ -3726,6 +3742,7 @@ export namespace Prisma {
     readonly location: FieldRef<"Event", 'String'>
     readonly dateStart: FieldRef<"Event", 'DateTime'>
     readonly dateEnd: FieldRef<"Event", 'DateTime'>
+    readonly price: FieldRef<"Event", 'Decimal'>
     readonly createdAt: FieldRef<"Event", 'DateTime'>
     readonly ownerId: FieldRef<"Event", 'Int'>
   }
@@ -12152,6 +12169,7 @@ export namespace Prisma {
     location: 'location',
     dateStart: 'dateStart',
     dateEnd: 'dateEnd',
+    price: 'price',
     createdAt: 'createdAt',
     ownerId: 'ownerId'
   };
@@ -12458,6 +12476,7 @@ export namespace Prisma {
     location?: StringNullableFilter<"Event"> | string | null
     dateStart?: DateTimeFilter<"Event"> | Date | string
     dateEnd?: DateTimeFilter<"Event"> | Date | string
+    price?: DecimalFilter<"Event"> | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFilter<"Event"> | Date | string
     ownerId?: IntFilter<"Event"> | number
     owner?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -12473,6 +12492,7 @@ export namespace Prisma {
     location?: SortOrderInput | SortOrder
     dateStart?: SortOrder
     dateEnd?: SortOrder
+    price?: SortOrder
     createdAt?: SortOrder
     ownerId?: SortOrder
     owner?: UserOrderByWithRelationInput
@@ -12491,6 +12511,7 @@ export namespace Prisma {
     location?: StringNullableFilter<"Event"> | string | null
     dateStart?: DateTimeFilter<"Event"> | Date | string
     dateEnd?: DateTimeFilter<"Event"> | Date | string
+    price?: DecimalFilter<"Event"> | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFilter<"Event"> | Date | string
     ownerId?: IntFilter<"Event"> | number
     owner?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -12506,6 +12527,7 @@ export namespace Prisma {
     location?: SortOrderInput | SortOrder
     dateStart?: SortOrder
     dateEnd?: SortOrder
+    price?: SortOrder
     createdAt?: SortOrder
     ownerId?: SortOrder
     _count?: EventCountOrderByAggregateInput
@@ -12525,6 +12547,7 @@ export namespace Prisma {
     location?: StringNullableWithAggregatesFilter<"Event"> | string | null
     dateStart?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     dateEnd?: DateTimeWithAggregatesFilter<"Event"> | Date | string
+    price?: DecimalWithAggregatesFilter<"Event"> | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     ownerId?: IntWithAggregatesFilter<"Event"> | number
   }
@@ -13056,6 +13079,7 @@ export namespace Prisma {
     location?: string | null
     dateStart: Date | string
     dateEnd: Date | string
+    price?: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
     owner: UserCreateNestedOneWithoutOwnedEventsInput
     subscribers?: EventSubscriptionCreateNestedManyWithoutEventInput
@@ -13070,6 +13094,7 @@ export namespace Prisma {
     location?: string | null
     dateStart: Date | string
     dateEnd: Date | string
+    price?: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
     ownerId: number
     subscribers?: EventSubscriptionUncheckedCreateNestedManyWithoutEventInput
@@ -13083,6 +13108,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     dateStart?: DateTimeFieldUpdateOperationsInput | Date | string
     dateEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     owner?: UserUpdateOneRequiredWithoutOwnedEventsNestedInput
     subscribers?: EventSubscriptionUpdateManyWithoutEventNestedInput
@@ -13097,6 +13123,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     dateStart?: DateTimeFieldUpdateOperationsInput | Date | string
     dateEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ownerId?: IntFieldUpdateOperationsInput | number
     subscribers?: EventSubscriptionUncheckedUpdateManyWithoutEventNestedInput
@@ -13111,6 +13138,7 @@ export namespace Prisma {
     location?: string | null
     dateStart: Date | string
     dateEnd: Date | string
+    price?: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
     ownerId: number
   }
@@ -13121,6 +13149,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     dateStart?: DateTimeFieldUpdateOperationsInput | Date | string
     dateEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -13131,6 +13160,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     dateStart?: DateTimeFieldUpdateOperationsInput | Date | string
     dateEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ownerId?: IntFieldUpdateOperationsInput | number
   }
@@ -13729,6 +13759,17 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type DecimalFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+  }
+
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
@@ -13766,12 +13807,14 @@ export namespace Prisma {
     location?: SortOrder
     dateStart?: SortOrder
     dateEnd?: SortOrder
+    price?: SortOrder
     createdAt?: SortOrder
     ownerId?: SortOrder
   }
 
   export type EventAvgOrderByAggregateInput = {
     id?: SortOrder
+    price?: SortOrder
     ownerId?: SortOrder
   }
 
@@ -13782,6 +13825,7 @@ export namespace Prisma {
     location?: SortOrder
     dateStart?: SortOrder
     dateEnd?: SortOrder
+    price?: SortOrder
     createdAt?: SortOrder
     ownerId?: SortOrder
   }
@@ -13793,12 +13837,14 @@ export namespace Prisma {
     location?: SortOrder
     dateStart?: SortOrder
     dateEnd?: SortOrder
+    price?: SortOrder
     createdAt?: SortOrder
     ownerId?: SortOrder
   }
 
   export type EventSumOrderByAggregateInput = {
     id?: SortOrder
+    price?: SortOrder
     ownerId?: SortOrder
   }
 
@@ -13818,6 +13864,22 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedDecimalFilter<$PrismaModel>
+    _sum?: NestedDecimalFilter<$PrismaModel>
+    _min?: NestedDecimalFilter<$PrismaModel>
+    _max?: NestedDecimalFilter<$PrismaModel>
   }
 
   export type EventScalarRelationFilter = {
@@ -13863,17 +13925,6 @@ export namespace Prisma {
     eventId?: SortOrder
   }
 
-  export type DecimalFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
-  }
-
   export type TicketCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -13916,22 +13967,6 @@ export namespace Prisma {
     price?: SortOrder
     quantity?: SortOrder
     eventId?: SortOrder
-  }
-
-  export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedDecimalFilter<$PrismaModel>
-    _sum?: NestedDecimalFilter<$PrismaModel>
-    _min?: NestedDecimalFilter<$PrismaModel>
-    _max?: NestedDecimalFilter<$PrismaModel>
   }
 
   export type TicketScalarRelationFilter = {
@@ -14453,6 +14488,14 @@ export namespace Prisma {
     set?: string | null
   }
 
+  export type DecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
+  }
+
   export type UserUpdateOneRequiredWithoutOwnedEventsNestedInput = {
     create?: XOR<UserCreateWithoutOwnedEventsInput, UserUncheckedCreateWithoutOwnedEventsInput>
     connectOrCreate?: UserCreateOrConnectWithoutOwnedEventsInput
@@ -14591,14 +14634,6 @@ export namespace Prisma {
     connectOrCreate?: TicketPurchaseCreateOrConnectWithoutTicketInput | TicketPurchaseCreateOrConnectWithoutTicketInput[]
     createMany?: TicketPurchaseCreateManyTicketInputEnvelope
     connect?: TicketPurchaseWhereUniqueInput | TicketPurchaseWhereUniqueInput[]
-  }
-
-  export type DecimalFieldUpdateOperationsInput = {
-    set?: Decimal | DecimalJsLike | number | string
-    increment?: Decimal | DecimalJsLike | number | string
-    decrement?: Decimal | DecimalJsLike | number | string
-    multiply?: Decimal | DecimalJsLike | number | string
-    divide?: Decimal | DecimalJsLike | number | string
   }
 
   export type EventUpdateOneRequiredWithoutTicketsNestedInput = {
@@ -14973,6 +15008,17 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type NestedDecimalFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+  }
+
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -14999,17 +15045,6 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedDecimalFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
   }
 
   export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
@@ -15070,6 +15105,7 @@ export namespace Prisma {
     location?: string | null
     dateStart: Date | string
     dateEnd: Date | string
+    price?: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
     subscribers?: EventSubscriptionCreateNestedManyWithoutEventInput
     tickets?: TicketCreateNestedManyWithoutEventInput
@@ -15083,6 +15119,7 @@ export namespace Prisma {
     location?: string | null
     dateStart: Date | string
     dateEnd: Date | string
+    price?: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
     subscribers?: EventSubscriptionUncheckedCreateNestedManyWithoutEventInput
     tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
@@ -15208,6 +15245,7 @@ export namespace Prisma {
     location?: StringNullableFilter<"Event"> | string | null
     dateStart?: DateTimeFilter<"Event"> | Date | string
     dateEnd?: DateTimeFilter<"Event"> | Date | string
+    price?: DecimalFilter<"Event"> | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFilter<"Event"> | Date | string
     ownerId?: IntFilter<"Event"> | number
   }
@@ -15528,6 +15566,7 @@ export namespace Prisma {
     location?: string | null
     dateStart: Date | string
     dateEnd: Date | string
+    price?: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
     owner: UserCreateNestedOneWithoutOwnedEventsInput
     tickets?: TicketCreateNestedManyWithoutEventInput
@@ -15541,6 +15580,7 @@ export namespace Prisma {
     location?: string | null
     dateStart: Date | string
     dateEnd: Date | string
+    price?: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
     ownerId: number
     tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
@@ -15601,6 +15641,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     dateStart?: DateTimeFieldUpdateOperationsInput | Date | string
     dateEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     owner?: UserUpdateOneRequiredWithoutOwnedEventsNestedInput
     tickets?: TicketUpdateManyWithoutEventNestedInput
@@ -15614,6 +15655,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     dateStart?: DateTimeFieldUpdateOperationsInput | Date | string
     dateEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ownerId?: IntFieldUpdateOperationsInput | number
     tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
@@ -15626,6 +15668,7 @@ export namespace Prisma {
     location?: string | null
     dateStart: Date | string
     dateEnd: Date | string
+    price?: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
     owner: UserCreateNestedOneWithoutOwnedEventsInput
     subscribers?: EventSubscriptionCreateNestedManyWithoutEventInput
@@ -15639,6 +15682,7 @@ export namespace Prisma {
     location?: string | null
     dateStart: Date | string
     dateEnd: Date | string
+    price?: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
     ownerId: number
     subscribers?: EventSubscriptionUncheckedCreateNestedManyWithoutEventInput
@@ -15700,6 +15744,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     dateStart?: DateTimeFieldUpdateOperationsInput | Date | string
     dateEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     owner?: UserUpdateOneRequiredWithoutOwnedEventsNestedInput
     subscribers?: EventSubscriptionUpdateManyWithoutEventNestedInput
@@ -15713,6 +15758,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     dateStart?: DateTimeFieldUpdateOperationsInput | Date | string
     dateEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ownerId?: IntFieldUpdateOperationsInput | number
     subscribers?: EventSubscriptionUncheckedUpdateManyWithoutEventNestedInput
@@ -16112,6 +16158,7 @@ export namespace Prisma {
     location?: string | null
     dateStart: Date | string
     dateEnd: Date | string
+    price?: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
     owner: UserCreateNestedOneWithoutOwnedEventsInput
     subscribers?: EventSubscriptionCreateNestedManyWithoutEventInput
@@ -16125,6 +16172,7 @@ export namespace Prisma {
     location?: string | null
     dateStart: Date | string
     dateEnd: Date | string
+    price?: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
     ownerId: number
     subscribers?: EventSubscriptionUncheckedCreateNestedManyWithoutEventInput
@@ -16171,6 +16219,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     dateStart?: DateTimeFieldUpdateOperationsInput | Date | string
     dateEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     owner?: UserUpdateOneRequiredWithoutOwnedEventsNestedInput
     subscribers?: EventSubscriptionUpdateManyWithoutEventNestedInput
@@ -16184,6 +16233,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     dateStart?: DateTimeFieldUpdateOperationsInput | Date | string
     dateEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ownerId?: IntFieldUpdateOperationsInput | number
     subscribers?: EventSubscriptionUncheckedUpdateManyWithoutEventNestedInput
@@ -16279,6 +16329,7 @@ export namespace Prisma {
     location?: string | null
     dateStart: Date | string
     dateEnd: Date | string
+    price?: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
   }
 
@@ -16314,6 +16365,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     dateStart?: DateTimeFieldUpdateOperationsInput | Date | string
     dateEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subscribers?: EventSubscriptionUpdateManyWithoutEventNestedInput
     tickets?: TicketUpdateManyWithoutEventNestedInput
@@ -16327,6 +16379,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     dateStart?: DateTimeFieldUpdateOperationsInput | Date | string
     dateEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subscribers?: EventSubscriptionUncheckedUpdateManyWithoutEventNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
@@ -16340,6 +16393,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     dateStart?: DateTimeFieldUpdateOperationsInput | Date | string
     dateEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
