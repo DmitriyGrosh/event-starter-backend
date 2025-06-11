@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify'
 import { Type } from '@fastify/type-provider-typebox'
 import prisma from '../db/client'
 
-export async function tagController(fastify: FastifyInstance) {
+export async function publicTagController(fastify: FastifyInstance) {
   const Tag = Type.Object({
     id: Type.Number(),
     name: Type.String(),
