@@ -31,6 +31,7 @@ export async function publicEventController(fastify: FastifyInstance) {
       email: Type.String()
     }),
     tickets: Type.Array(Ticket),
+    tags: Type.Optional(Type.Array(Type.String())),
     _count: Type.Optional(Type.Object({
       subscribers: Type.Number()
     }))
@@ -102,7 +103,7 @@ export async function publicEventController(fastify: FastifyInstance) {
       location?: string
     }
 
-    return eventService.findAllPaginated({
+    const result = await eventService.findAllPaginated({
       page,
       limit,
       sortBy,
@@ -117,6 +118,17 @@ export async function publicEventController(fastify: FastifyInstance) {
         location
       }
     })
+
+    // Transform the tags in the response
+    const transformedEvents = result.events.map(event => ({
+      ...event,
+      tags: event.tags?.map(t => t.tag.name) || []
+    }))
+
+    return {
+      events: transformedEvents,
+      pagination: result.pagination
+    }
   })
 
   // Get event by ID
@@ -137,6 +149,12 @@ export async function publicEventController(fastify: FastifyInstance) {
     }
   }, async (request) => {
     const { id } = request.params as { id: number }
-    return eventService.findById(id)
+    const event = await eventService.findById(id)
+    
+    // Transform the tags in the response
+    return {
+      ...event,
+      tags: event.tags?.map(t => t.tag.name) || []
+    }
   })
 } 
