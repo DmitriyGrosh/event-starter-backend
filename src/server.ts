@@ -16,6 +16,7 @@ import { ticketController } from "./controllers/ticket.controller"
 import { publicTagController } from "./controllers/public-tag.controller"
 import { publicEventController } from './controllers/public-event.controller'
 import { notificationController } from './controllers/notification.controller'
+import { eventSubscriptionController } from '@/controllers/event-subscription.controller'
 
 // Type definitions for environment variables
 declare module 'fastify' {
@@ -140,6 +141,7 @@ fastify.register(async (fastify) => {
 	await fastify.register(userController, { prefix: '/api/users' })
 	await fastify.register(ticketController, { prefix: '/api/tickets' })
 	await fastify.register(notificationController, { prefix: '/api/notifications' })
+	await fastify.register(eventSubscriptionController, { prefix: '/api/subscriptions' })
 })
 
 // Start server
