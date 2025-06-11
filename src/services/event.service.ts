@@ -1,71 +1,6 @@
 import prisma from '../db/client'
 
 export class EventService {
-  async findAll(filters?: {
-    userId?: number
-    search?: string
-    fromDate?: Date
-    toDate?: Date
-    tags?: string[]
-  }) {
-    const where: any = {}
-
-    if (filters?.userId) {
-      where.ownerId = filters.userId
-    }
-
-    if (filters?.search) {
-      where.OR = [
-        { title: { contains: filters.search, mode: 'insensitive' } },
-        { description: { contains: filters.search, mode: 'insensitive' } }
-      ]
-    }
-
-    if (filters?.fromDate) {
-      where.dateStart = { gte: filters.fromDate }
-    }
-
-    if (filters?.toDate) {
-      where.dateEnd = { lte: filters.toDate }
-    }
-
-    if (filters?.tags && filters.tags.length > 0) {
-      where.tags = {
-        some: {
-          tag: {
-            name: {
-              in: filters.tags.map(tag => tag.toLowerCase())
-            }
-          }
-        }
-      }
-    }
-
-    return prisma.event.findMany({
-      where,
-      include: {
-        owner: {
-          select: {
-            id: true,
-            name: true,
-            email: true
-          }
-        },
-        tickets: true,
-        tags: {
-          include: {
-            tag: true
-          }
-        },
-        _count: {
-          select: {
-            subscribers: true
-          }
-        }
-      }
-    })
-  }
-
   async findById(id: number) {
     const event = await prisma.event.findUnique({
       where: { id },
@@ -337,6 +272,9 @@ export class EventService {
       fromDate?: Date
       toDate?: Date
       tags?: string[]
+      minPrice?: number
+      maxPrice?: number
+      location?: string
     }
   }) {
     const where: any = {}
@@ -354,6 +292,18 @@ export class EventService {
 
     if (options.filters?.toDate) {
       where.dateEnd = { lte: options.filters.toDate }
+    }
+
+    if (options.filters?.minPrice != null) {
+      where.price = { ...where.price, gte: options.filters.minPrice }
+    }
+
+    if (options.filters?.maxPrice != null) {
+      where.price = { ...where.price, lte: options.filters.maxPrice }
+    }
+
+    if (options.filters?.location) {
+      where.location = { contains: options.filters.location, mode: 'insensitive' }
     }
 
     if (options.filters?.tags && options.filters.tags.length > 0) {

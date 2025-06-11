@@ -58,7 +58,10 @@ export async function publicEventController(fastify: FastifyInstance) {
         search: Type.Optional(Type.String()),
         fromDate: Type.Optional(Type.String({ format: 'date-time' })),
         toDate: Type.Optional(Type.String({ format: 'date-time' })),
-        tags: Type.Optional(Type.Array(Type.String()))
+        tags: Type.Optional(Type.Array(Type.String())),
+        minPrice: Type.Optional(Type.Number()),
+        maxPrice: Type.Optional(Type.Number()),
+        location: Type.Optional(Type.String())
       }),
       response: {
         200: Type.Object({
@@ -81,7 +84,10 @@ export async function publicEventController(fastify: FastifyInstance) {
       search,
       fromDate,
       toDate,
-      tags
+      tags,
+      minPrice,
+      maxPrice,
+      location
     } = request.query as {
       page?: number
       limit?: number
@@ -91,6 +97,9 @@ export async function publicEventController(fastify: FastifyInstance) {
       fromDate?: string
       toDate?: string
       tags?: string[]
+      minPrice?: number
+      maxPrice?: number
+      location?: string
     }
 
     return eventService.findAllPaginated({
@@ -102,7 +111,10 @@ export async function publicEventController(fastify: FastifyInstance) {
         search,
         fromDate: fromDate ? new Date(fromDate) : undefined,
         toDate: toDate ? new Date(toDate) : undefined,
-        tags
+        tags,
+        minPrice: minPrice != null ? Number(minPrice) : undefined,
+        maxPrice: maxPrice != null ? Number(maxPrice) : undefined,
+        location
       }
     })
   })
