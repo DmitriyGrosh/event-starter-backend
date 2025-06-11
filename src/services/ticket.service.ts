@@ -139,7 +139,8 @@ export class TicketService {
           include: {
             event: true
           }
-        }
+        },
+        user: true
       }
     })
   }

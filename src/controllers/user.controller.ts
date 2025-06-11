@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify'
 import { Type } from '@fastify/type-provider-typebox'
-import { UserService } from '../services/user.service'
+import { UserService } from '@/services/user.service'
 
 const userService = new UserService()
 
@@ -21,9 +21,7 @@ export async function userController(fastify: FastifyInstance) {
     email: Type.String(),
     createdAt: Type.String(),
     ownedEvents: Type.Array(Event),
-    subscribedEvents: Type.Array(Type.Object({
-      event: Event
-    }))
+    subscribedEvents: Type.Array(Event)
   })
 
   const CreateUserBody = Type.Object({
@@ -45,7 +43,7 @@ export async function userController(fastify: FastifyInstance) {
     const users = await userService.findAll()
     return users.map(user => ({
       ...user,
-      subscribedEvents: user.eventSubscriptions
+      subscribedEvents: user.eventSubscriptions.map(sub => sub.event)
     }))
   })
 
@@ -68,7 +66,7 @@ export async function userController(fastify: FastifyInstance) {
 
     return {
       ...user,
-      subscribedEvents: user.eventSubscriptions
+      subscribedEvents: user.eventSubscriptions.map(sub => sub.event)
     }
   })
 
@@ -78,9 +76,7 @@ export async function userController(fastify: FastifyInstance) {
       response: {
         200: Type.Object({
           ownedEvents: Type.Array(Event),
-          subscribedEvents: Type.Array(Type.Object({
-            event: Event
-          }))
+          subscribedEvents: Type.Array(Event)
         })
       }
     }
@@ -95,7 +91,7 @@ export async function userController(fastify: FastifyInstance) {
 
     return {
       ownedEvents: user.ownedEvents,
-      subscribedEvents: user.eventSubscriptions
+      subscribedEvents: user.eventSubscriptions.map(sub => sub.event)
     }
   })
 

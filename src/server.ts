@@ -119,7 +119,7 @@ await fastify.register(publicTagController, { prefix: '/api/tags' })
 await fastify.register(async (fastify) => {
 	// Add stricter rate limiting for auth endpoints
 	fastify.addHook('onRequest', fastify.rateLimit({
-		max: 5, // 5 attempts
+		max: 50, // 5 attempts
 		timeWindow: '15 minutes',
 		errorResponseBuilder: () => ({
 			statusCode: 429,
