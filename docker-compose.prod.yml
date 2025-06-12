@@ -21,12 +21,6 @@ services:
       - SMTP_PASS=${SMTP_PASS}
       - SMTP_FROM=${SMTP_FROM}
     restart: unless-stopped
-    networks:
-      - event-starter-shared
 
 volumes:
   pgdata:
-
-networks:
-  event-starter-shared:
-    external: true 
