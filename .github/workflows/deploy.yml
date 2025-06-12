@@ -88,9 +88,9 @@ jobs:
                   - POSTGRES_USER=${POSTGRES_USER}
                   - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
                   - POSTGRES_DB=${POSTGRES_DB:-event_db}
-                  - POSTGRES_HOST=localhost
+                  - POSTGRES_HOST=host.docker.internal
                   - POSTGRES_PORT=5432
-                  - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:5432/${POSTGRES_DB:-event_db}?schema=public
+                  - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@host.docker.internal:5432/${POSTGRES_DB:-event_db}?schema=public
                   - JWT_SECRET=${JWT_SECRET}
                   - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-7d}
                   - SMTP_HOST=${SMTP_HOST:-smtp.gmail.com}
@@ -102,6 +102,8 @@ jobs:
                 ports:
                   - "5002:5002"
                 restart: unless-stopped
+                extra_hosts:
+                  - "host.docker.internal:host-gateway"
             EOF
 
             # Create .env file
@@ -110,7 +112,7 @@ jobs:
             POSTGRES_USER=${{ secrets.POSTGRES_USER }}
             POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
             POSTGRES_DB=${{ vars.POSTGRES_DB || 'event_db' }}
-            POSTGRES_HOST=localhost
+            POSTGRES_HOST=host.docker.internal
             POSTGRES_PORT=5432
             
             # JWT Configuration
