@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   backend:
-    image: ghcr.io/event-starter/back-end:${IMAGE_TAG:-latest}
+    image: ghcr.io/dmitriygrosh/event-starter-backend:${IMAGE_TAG:-latest}
     ports:
       - "5002:5002"
     environment:
