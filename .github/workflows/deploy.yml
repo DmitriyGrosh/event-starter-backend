@@ -48,148 +48,43 @@ jobs:
     if: github.ref == 'refs/heads/main'
 
     steps:
+      - name: Configure environment
+        run: |
+          echo "POSTGRES_HOST=host.docker.internal" >> $GITHUB_ENV
+          echo "POSTGRES_PORT=5432" >> $GITHUB_ENV
+          echo "POSTGRES_DB=${{ vars.POSTGRES_DB }}" >> $GITHUB_ENV
+          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> $GITHUB_ENV
+          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> $GITHUB_ENV
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
+          echo "JWT_EXPIRES_IN=${{ vars.JWT_EXPIRES_IN }}" >> $GITHUB_ENV
+          echo "SMTP_HOST=${{ vars.SMTP_HOST }}" >> $GITHUB_ENV
+          echo "SMTP_PORT=${{ vars.SMTP_PORT }}" >> $GITHUB_ENV
+          echo "SMTP_SECURE=${{ vars.SMTP_SECURE }}" >> $GITHUB_ENV
+          echo "SMTP_USER=${{ secrets.SMTP_USER }}" >> $GITHUB_ENV
+          echo "SMTP_PASS=${{ secrets.SMTP_PASS }}" >> $GITHUB_ENV
+          echo "SMTP_FROM=${{ vars.SMTP_FROM }}" >> $GITHUB_ENV
+
       - name: Deploy to VPS
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          script: |
-            # Create deployment directory
-            mkdir -p ~/event-starter-backend
-            cd ~/event-starter-backend
+        env:
+          DOCKER_HOST: ssh://${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}
+          DOCKER_IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/event-starter-backend
+          DOCKER_IMAGE_TAG: main
+          POSTGRES_HOST: ${{ env.POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ env.POSTGRES_PORT }}
+          POSTGRES_DB: ${{ env.POSTGRES_DB }}
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+          JWT_SECRET: ${{ env.JWT_SECRET }}
+          JWT_EXPIRES_IN: ${{ env.JWT_EXPIRES_IN }}
+          SMTP_HOST: ${{ env.SMTP_HOST }}
+          SMTP_PORT: ${{ env.SMTP_PORT }}
+          SMTP_SECURE: ${{ env.SMTP_SECURE }}
+          SMTP_USER: ${{ env.SMTP_USER }}
+          SMTP_PASS: ${{ env.SMTP_PASS }}
+          SMTP_FROM: ${{ env.SMTP_FROM }}
+        run: |
+          # Login to GitHub Container Registry
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-            # Login to GitHub Container Registry
-            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
-            # Convert repository name to lowercase for Docker
-            REPO="${{ github.repository_owner }}/event-starter-backend"
-            REPO_LOWER=$(echo "$REPO" | tr '[:upper:]' '[:lower:]')
-            IMAGE_NAME="ghcr.io/$REPO_LOWER:main"
-            
-            echo "Debug: REPO=$REPO"
-            echo "Debug: REPO_LOWER=$REPO_LOWER"
-            echo "Debug: IMAGE_NAME=$IMAGE_NAME"
-            
-            # Export the variables so they're available to docker-compose
-            export REPO_LOWER
-            export IMAGE_NAME
-            
-            # Create docker-compose.yml
-            cat > docker-compose.yml << 'EOF'
-            version: '3.8'
-            services:
-              app:
-                container_name: event-starter-backend
-                image: ${IMAGE_NAME}
-                environment:
-                  - NODE_ENV=production
-                  - PORT=5002
-                  - POSTGRES_USER=${POSTGRES_USER}
-                  - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-                  - POSTGRES_DB=${POSTGRES_DB:-event_db}
-                  - POSTGRES_HOST=host.docker.internal
-                  - POSTGRES_PORT=5432
-                  - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@host.docker.internal:5432/${POSTGRES_DB:-event_db}?schema=public
-                  - JWT_SECRET=${JWT_SECRET}
-                  - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-7d}
-                  - SMTP_HOST=${SMTP_HOST:-smtp.gmail.com}
-                  - SMTP_PORT=${SMTP_PORT:-587}
-                  - SMTP_SECURE=${SMTP_SECURE:-false}
-                  - SMTP_USER=${SMTP_USER}
-                  - SMTP_PASS=${SMTP_PASS}
-                  - SMTP_FROM=${SMTP_FROM:-noreply@example.com}
-                ports:
-                  - "5002:5002"
-                restart: unless-stopped
-                extra_hosts:
-                  - "host.docker.internal:host-gateway"
-            EOF
-
-            # Create .env file
-            cat > .env << 'ENV_EOF'
-            # Database Configuration
-            POSTGRES_USER=${{ secrets.POSTGRES_USER }}
-            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
-            POSTGRES_DB=${{ vars.POSTGRES_DB || 'event_db' }}
-            POSTGRES_HOST=host.docker.internal
-            POSTGRES_PORT=5432
-            
-            # JWT Configuration
-            JWT_SECRET=${{ secrets.JWT_SECRET }}
-            JWT_EXPIRES_IN=${{ vars.JWT_EXPIRES_IN || '7d' }}
-            
-            # SMTP Configuration
-            SMTP_HOST=${{ vars.SMTP_HOST || 'smtp.gmail.com' }}
-            SMTP_PORT=${{ vars.SMTP_PORT || '587' }}
-            SMTP_SECURE=${{ vars.SMTP_SECURE || 'false' }}
-            SMTP_USER=${{ secrets.SMTP_USER || '' }}
-            SMTP_PASS=${{ secrets.SMTP_PASS || '' }}
-            SMTP_FROM=${{ vars.SMTP_FROM || 'noreply@example.com' }}
-            ENV_EOF
-
-            # Check if PostgreSQL is accessible
-            echo "Checking PostgreSQL connection on host..."
-            if ! nc -z localhost 5432; then
-              echo "❌ Cannot connect to PostgreSQL on host machine"
-              echo "Please ensure PostgreSQL is running and accessible"
-              exit 1
-            fi
-
-            # Pull the latest image
-            echo "Pulling image: $IMAGE_NAME"
-            docker pull "$IMAGE_NAME"
-
-            # Stop and remove old containers
-            echo "Stopping old containers..."
-            docker compose down || true
-
-            # Remove any existing containers with the same name
-            echo "Removing any existing containers..."
-            docker rm -f event-starter-backend || true
-
-            # Start the new deployment
-            echo "Starting new deployment..."
-            docker compose up -d
-
-            # Check if container is running
-            echo "Checking container status..."
-            docker ps -a | grep event-starter-backend
-
-            # Show container logs immediately
-            echo "=== Initial Container Logs ==="
-            docker compose logs app
-
-            # Wait for the application to be ready
-            echo "Waiting for application to start..."
-            for i in {1..30}; do
-              if curl -s http://localhost:5002/health >/dev/null; then
-                echo "Application is ready!"
-                break
-              fi
-              echo "Waiting... ($i/30)"
-              # Show logs during wait
-              echo "=== Container Logs (Attempt $i) ==="
-              docker compose logs --tail=50 app
-              sleep 2
-            done
-
-            # Show detailed logs
-            echo "=== Final Application Logs ==="
-            docker compose logs app
-
-            # Show container status
-            echo "=== Container Status ==="
-            docker compose ps
-
-            # Test PostgreSQL connection from container
-            echo "=== Testing Database Connection ==="
-            docker compose exec app nc -zv localhost 5432 || echo "Cannot connect to PostgreSQL"
-
-            # Show network information
-            echo "=== Network Information ==="
-            docker network ls
-            docker network inspect bridge
-
-            # Clean up old images
-            docker image prune -f 
+          # Deploy using docker compose
+          docker compose -f docker-compose.prod.yml up -d --wait --remove-orphans 
