@@ -21,3 +21,9 @@ services:
       - SMTP_PASS=${SMTP_PASS}
       - SMTP_FROM=${SMTP_FROM}
     restart: unless-stopped
+    networks:
+      - event-starter-network
+
+networks:
+  event-starter-network:
+    external: true
