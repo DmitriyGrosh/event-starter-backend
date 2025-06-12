@@ -21,7 +21,7 @@ fi
 
 # Test database connectivity
 echo "🔌 Testing database connection..."
-PGPASSWORD="$POSTGRES_PASSWORD" psql -h "${POSTGRES_HOST:-localhost}" -p "${POSTGRES_PORT:-5432}" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "SELECT 'Connection successful!' as status;" > /dev/null 2>&1
+PGPASSWORD="$POSTGRES_PASSWORD" psql -h "${POSTGRES_HOST}" -p "${POSTGRES_PORT}" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "SELECT 'Connection successful!' as status;" > /dev/null 2>&1
 
 if [ $? -eq 0 ]; then
     echo "✅ Database connection successful"
@@ -35,7 +35,7 @@ echo "🚀 Running Prisma migrations..."
 docker run --rm \
     --env-file .env \
     --network host \
-    ${DOCKER_IMAGE_NAME:-event-starter-backend}:${DOCKER_IMAGE_TAG:-latest} \
+    ghcr.io/dmitriygrosh/event-starter-backend:${IMAGE_TAG:-latest} \
     sh -c "pnpm run db:migrate:deploy"
 
 if [ $? -eq 0 ]; then

@@ -3,8 +3,8 @@
 
 set -e
 
-host="${POSTGRES_HOST:-localhost}"
-port="${POSTGRES_PORT:-5432}"
+host="${POSTGRES_HOST}"
+port="${POSTGRES_PORT}"
 
 until nc -z "$host" "$port"; do
   echo "Waiting for PostgreSQL to be ready at $host:$port..."
