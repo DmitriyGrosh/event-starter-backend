@@ -139,10 +139,24 @@ jobs:
             docker pull "$IMAGE_NAME"
 
             # Stop and remove old containers
+            echo "Stopping old containers..."
             docker compose down || true
 
+            # Remove any existing containers with the same name
+            echo "Removing any existing containers..."
+            docker rm -f event-starter-backend || true
+
             # Start the new deployment
+            echo "Starting new deployment..."
             docker compose up -d
+
+            # Check if container is running
+            echo "Checking container status..."
+            docker ps -a | grep event-starter-backend
+
+            # Show container logs immediately
+            echo "=== Initial Container Logs ==="
+            docker compose logs app
 
             # Wait for the application to be ready
             echo "Waiting for application to start..."
@@ -152,11 +166,14 @@ jobs:
                 break
               fi
               echo "Waiting... ($i/30)"
+              # Show logs during wait
+              echo "=== Container Logs (Attempt $i) ==="
+              docker compose logs --tail=50 app
               sleep 2
             done
 
             # Show detailed logs
-            echo "=== Application Logs ==="
+            echo "=== Final Application Logs ==="
             docker compose logs app
 
             # Show container status
@@ -166,6 +183,11 @@ jobs:
             # Test PostgreSQL connection from container
             echo "=== Testing Database Connection ==="
             docker compose exec app nc -zv localhost 5432 || echo "Cannot connect to PostgreSQL"
+
+            # Show network information
+            echo "=== Network Information ==="
+            docker network ls
+            docker network inspect bridge
 
             # Clean up old images
             docker image prune -f 
