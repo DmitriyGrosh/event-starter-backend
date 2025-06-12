@@ -1,6 +1,6 @@
 services:
   backend:
-    image: ghcr.io/dmitriygrosh/event-starter-backend:${IMAGE_TAG:-latest}
+    image: ghcr.io/dmitriygrosh/event-starter-backend:${IMAGE_TAG}
     ports:
       - "5002:5002"
     environment:
@@ -21,6 +21,3 @@ services:
       - SMTP_PASS=${SMTP_PASS}
       - SMTP_FROM=${SMTP_FROM}
     restart: unless-stopped
-
-volumes:
-  pgdata:
