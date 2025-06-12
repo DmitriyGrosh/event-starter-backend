@@ -3,6 +3,9 @@
 
 set -e
 
+env | grep -i postgres
+env | grep -i database
+
 host="${POSTGRES_HOST}"
 port="${POSTGRES_PORT}"
 
