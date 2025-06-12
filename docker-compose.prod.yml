@@ -1,8 +1,8 @@
 version: '3.8'
 
 services:
-  app:
-    image: ${DOCKER_IMAGE_NAME:-event-starter-backend}:${DOCKER_IMAGE_TAG:-latest}
+  backend:
+    image: ghcr.io/event-starter/back-end:${IMAGE_TAG:-latest}
     ports:
       - "5002:5002"
     environment:
