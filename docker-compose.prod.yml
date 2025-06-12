@@ -22,5 +22,4 @@ services:
       - SMTP_USER=${SMTP_USER}
       - SMTP_PASS=${SMTP_PASS}
       - SMTP_FROM=${SMTP_FROM}
-    restart: unless-stopped
-    network_mode: host 
+    restart: unless-stopped 

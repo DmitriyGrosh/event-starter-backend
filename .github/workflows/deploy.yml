@@ -76,32 +76,32 @@ jobs:
             export IMAGE_NAME
             
             # Create docker-compose.yml
-            cat > docker-compose.yml << EOF
+            cat > docker-compose.yml << 'EOF'
+            version: '3.8'
             services:
               app:
                 container_name: event-starter-backend
-                image: \${IMAGE_NAME}
+                image: ${IMAGE_NAME}
                 environment:
                   - NODE_ENV=production
                   - PORT=5002
-                  - POSTGRES_USER=\${POSTGRES_USER}
-                  - POSTGRES_PASSWORD=\${POSTGRES_PASSWORD}
-                  - POSTGRES_DB=\${POSTGRES_DB:-event_db}
+                  - POSTGRES_USER=${POSTGRES_USER}
+                  - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+                  - POSTGRES_DB=${POSTGRES_DB:-event_db}
                   - POSTGRES_HOST=localhost
                   - POSTGRES_PORT=5432
-                  - DATABASE_URL=postgresql://\${POSTGRES_USER}:\${POSTGRES_PASSWORD}@localhost:5432/\${POSTGRES_DB:-event_db}?schema=public
-                  - JWT_SECRET=\${JWT_SECRET}
-                  - JWT_EXPIRES_IN=\${JWT_EXPIRES_IN:-7d}
-                  - SMTP_HOST=\${SMTP_HOST:-smtp.gmail.com}
-                  - SMTP_PORT=\${SMTP_PORT:-587}
-                  - SMTP_SECURE=\${SMTP_SECURE:-false}
-                  - SMTP_USER=\${SMTP_USER}
-                  - SMTP_PASS=\${SMTP_PASS}
-                  - SMTP_FROM=\${SMTP_FROM:-noreply@example.com}
+                  - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:5432/${POSTGRES_DB:-event_db}?schema=public
+                  - JWT_SECRET=${JWT_SECRET}
+                  - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-7d}
+                  - SMTP_HOST=${SMTP_HOST:-smtp.gmail.com}
+                  - SMTP_PORT=${SMTP_PORT:-587}
+                  - SMTP_SECURE=${SMTP_SECURE:-false}
+                  - SMTP_USER=${SMTP_USER}
+                  - SMTP_PASS=${SMTP_PASS}
+                  - SMTP_FROM=${SMTP_FROM:-noreply@example.com}
                 ports:
                   - "5002:5002"
                 restart: unless-stopped
-                network_mode: host
             EOF
 
             # Create .env file
