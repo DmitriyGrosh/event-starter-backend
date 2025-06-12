@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   backend:
     image: ghcr.io/dmitriygrosh/event-starter-backend:${IMAGE_TAG:-latest}
