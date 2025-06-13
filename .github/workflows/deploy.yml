@@ -95,4 +95,10 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
           DOCKER_HOST: ssh://${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}
         run: |
+          # Stop and remove existing containers
+          docker stop event-starter-backend-backend-1 || true
+          docker rm event-starter-backend-backend-1 || true
+          # Remove old images
+          docker images | grep "event-starter-backend" | awk '{print $3}' | xargs -r docker rmi -f
+          # Deploy new version
           docker compose --file docker-compose.prod.yml up --detach --wait --remove-orphans
