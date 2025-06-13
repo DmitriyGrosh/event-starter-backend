@@ -1,5 +1,5 @@
 import { PrismaClient } from '../src/generated/prisma'
-import bcrypt from 'bcrypt'
+import crypto from 'crypto'
 
 const prisma = new PrismaClient()
 
@@ -19,7 +19,7 @@ async function main() {
   console.log('Cleanup complete')
 
   // Hash password for users
-  const password = await bcrypt.hash('password123', 10)
+  const password = crypto.createHash('sha256').update('password123').digest('hex')
 
   // Create users
   const users = await Promise.all([

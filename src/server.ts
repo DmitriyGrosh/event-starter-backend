@@ -16,6 +16,7 @@ import { publicTagController } from "./controllers/public-tag.controller"
 import { publicEventController } from './controllers/public-event.controller'
 import { notificationController } from './controllers/notification.controller'
 import { eventSubscriptionController } from '@/controllers/event-subscription.controller'
+import {eventController} from "@/controllers/event.controller";
 
 // Handle unhandled rejections
 process.on('unhandledRejection', (error) => {
@@ -202,6 +203,7 @@ fastify.register(async (fastify) => {
 	await fastify.register(ticketController, { prefix: '/api/tickets' })
 	await fastify.register(notificationController, { prefix: '/api/notifications' })
 	await fastify.register(eventSubscriptionController, { prefix: '/api/subscriptions' })
+	await fastify.register(eventController, { prefix: '/api/events/manage' })
 })
 
 // Start server
