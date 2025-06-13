@@ -41,24 +41,37 @@ export async function authController(fastify: FastifyInstance) {
         201: AuthResponse,
         400: Type.Object({
           message: Type.String()
+        }),
+        500: Type.Object({
+          message: Type.String()
         })
       }
     }
   }, async (request, reply) => {
-    const data = request.body as {
-      name: string
-      email: string
-      password: string
-    }
+    try {
+      const data = request.body as {
+        name: string
+        email: string
+        password: string
+      }
 
-    const user = await authService.register(data)
-    const token = await reply.jwtSign({ userId: user.id })
+      const user = await authService.register(data)
+      const token = await reply.jwtSign({ userId: user.id })
 
-    reply.code(201)
-    return { 
-      user, 
-      token,
-      expiresIn: TOKEN_EXPIRES_IN
+      reply.code(201)
+      return { 
+        user, 
+        token,
+        expiresIn: TOKEN_EXPIRES_IN
+      }
+    } catch (error) {
+      fastify.log.error(error)
+      if (error instanceof Error) {
+        reply.code(400)
+        return { message: error.message }
+      }
+      reply.code(500)
+      return { message: 'Internal server error' }
     }
   })
 
