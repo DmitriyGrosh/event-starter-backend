@@ -77,6 +77,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Run Database Migrations
+        env:
+          DOCKER_HOST: ssh://${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}
+        run: |
+          docker pull ghcr.io/dmitriygrosh/event-starter-backend:${{ github.sha }}
+          docker run --rm \
+            --network app-network \
+            -e DATABASE_URL=postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@${{ vars.POSTGRES_HOST }}:${{ vars.POSTGRES_PORT }}/${{ vars.POSTGRES_DB }} \
+            ghcr.io/dmitriygrosh/event-starter-backend:${{ github.sha }} \
+            pnpm run db:migrate:deploy
+
       - name: Deploy compose config
         env:
           IMAGE_TAG: ${{ github.sha }}
