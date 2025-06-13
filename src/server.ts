@@ -18,6 +18,24 @@ import { publicEventController } from './controllers/public-event.controller'
 import { notificationController } from './controllers/notification.controller'
 import { eventSubscriptionController } from '@/controllers/event-subscription.controller'
 
+// Handle unhandled rejections
+process.on('unhandledRejection', (error) => {
+	console.error('Unhandled Rejection:', error)
+	// Don't exit the process in production
+	if (process.env.NODE_ENV !== 'production') {
+		process.exit(1)
+	}
+})
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (error) => {
+	console.error('Uncaught Exception:', error)
+	// Don't exit the process in production
+	if (process.env.NODE_ENV !== 'production') {
+		process.exit(1)
+	}
+})
+
 // Type definitions for environment variables
 declare module 'fastify' {
 	interface FastifyInstance {
@@ -43,7 +61,16 @@ declare module '@fastify/jwt' {
 
 // Create fastify instance with TypeBox
 const fastify = Fastify({
-	logger: true
+	logger: {
+		level: process.env.NODE_ENV === 'production' ? 'error' : 'info',
+		transport: process.env.NODE_ENV === 'production' ? undefined : {
+			target: 'pino-pretty',
+			options: {
+				translateTime: 'HH:MM:ss Z',
+				ignore: 'pid,hostname',
+			},
+		},
+	}
 }).withTypeProvider<TypeBoxTypeProvider>()
 
 // Register plugins
@@ -147,9 +174,13 @@ fastify.register(async (fastify) => {
 // Start server
 const start = async () => {
 	try {
-		console.log('==========>process.env', process.env);
+		console.log('==========>process.env', process.env)
 		const port = parseInt(process.env.PORT ?? "5000")
-		await fastify.listen({ port, host: '0.0.0.0' })
+		await fastify.listen({ 
+			port, 
+			host: '0.0.0.0',
+			backlog: 511 // Increase connection backlog
+		})
 		fastify.log.info(`Server listening on http://localhost:${port}`)
 		fastify.log.info(`API Documentation available at http://localhost:${port}/docs`)
 	} catch (err) {
