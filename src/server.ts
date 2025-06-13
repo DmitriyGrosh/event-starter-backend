@@ -62,12 +62,13 @@ declare module '@fastify/jwt' {
 // Create fastify instance with TypeBox
 const fastify = Fastify({
 	logger: {
-		level: process.env.NODE_ENV === 'production' ? 'error' : 'info',
-		transport: process.env.NODE_ENV === 'production' ? undefined : {
+		level: 'info',
+		transport: {
 			target: 'pino-pretty',
 			options: {
 				translateTime: 'HH:MM:ss Z',
 				ignore: 'pid,hostname',
+				colorize: true
 			},
 		},
 	}
@@ -174,15 +175,16 @@ fastify.register(async (fastify) => {
 // Start server
 const start = async () => {
 	try {
-		console.log('==========>process.env', process.env)
+		fastify.log.info('Starting server with environment variables:')
+		fastify.log.info(process.env)
 		const port = parseInt(process.env.PORT ?? "5000")
 		await fastify.listen({ 
 			port, 
 			host: '0.0.0.0',
 			backlog: 511 // Increase connection backlog
 		})
-		fastify.log.info(`Server listening on http://localhost:${port}`)
-		fastify.log.info(`API Documentation available at http://localhost:${port}/docs`)
+		fastify.log.info(`Server listening on http://0.0.0.0:${port}`)
+		fastify.log.info(`API Documentation available at http://0.0.0.0:${port}/docs`)
 	} catch (err) {
 		fastify.log.error(err)
 		process.exit(1)
