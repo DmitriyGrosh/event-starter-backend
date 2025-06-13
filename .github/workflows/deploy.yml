@@ -82,6 +82,8 @@ jobs:
           DOCKER_HOST: ssh://${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}
         run: |
           docker pull ghcr.io/dmitriygrosh/event-starter-backend:${{ github.sha }}
+          # Create network if it doesn't exist
+          docker network create app-network || true
           docker run --rm \
             --network app-network \
             -e DATABASE_URL=postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@${{ vars.POSTGRES_HOST }}:${{ vars.POSTGRES_PORT }}/${{ vars.POSTGRES_DB }} \
