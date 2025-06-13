@@ -10,7 +10,7 @@ services:
         - POSTGRES_USER=${POSTGRES_USER}
         - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
         - POSTGRES_DB=${POSTGRES_DB}
-        - DATABASE_URL=postgresql://${POSTGRES_USER:-user}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-event_db}?schema=public
+        - DATABASE_URL=postgresql://${POSTGRES_USER:-user}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-event_db}
         - JWT_SECRET=${JWT_SECRET:-default_jwt_secret}
         - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-1d}
         - SMTP_HOST=${SMTP_HOST}
@@ -27,7 +27,7 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
-      - DATABASE_URL=postgresql://${POSTGRES_USER:-user}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-event_db}?schema=public
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-user}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-event_db}
       - JWT_SECRET=${JWT_SECRET:-default_jwt_secret}
       - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-1d}
       - SMTP_HOST=${SMTP_HOST}
