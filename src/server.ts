@@ -78,6 +78,17 @@ const fastify = Fastify({
 	}
 }).withTypeProvider<TypeBoxTypeProvider>()
 
+// Add request logging
+fastify.addHook('onRequest', (request, reply, done) => {
+	fastify.log.info({
+		body: request.body,
+		headers: request.headers,
+		url: request.url,
+		method: request.method
+	}, 'Incoming request details')
+	done()
+})
+
 // Register plugins
 await fastify.register(fastifyCors, {
 	origin: true
@@ -142,7 +153,25 @@ await fastify.register(fastifyJwt, {
 })
 
 // Register error handler
-fastify.setErrorHandler(errorHandler)
+fastify.setErrorHandler((error, request, reply) => {
+	fastify.log.error({ err: error }, 'Error occurred')
+	
+	// Handle specific error types
+	if (error instanceof Error) {
+		reply.status(500).send({
+			error: 'Internal Server Error',
+			message: error.message,
+			stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+		})
+		return
+	}
+	
+	// Handle unknown errors
+	reply.status(500).send({
+		error: 'Internal Server Error',
+		message: 'An unexpected error occurred'
+	})
+})
 
 // Register public routes
 await fastify.register(publicEventController, { prefix: '/api/events' })

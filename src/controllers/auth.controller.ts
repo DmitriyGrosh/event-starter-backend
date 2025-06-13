@@ -49,14 +49,25 @@ export async function authController(fastify: FastifyInstance) {
     }
   }, async (request, reply) => {
     try {
+      fastify.log.info('Starting user registration process')
+      
       const data = request.body as {
         name: string
         email: string
         password: string
       }
+      
+      fastify.log.info({ 
+        name: data.name,
+        email: data.email,
+        passwordLength: data.password.length 
+      }, 'Registration data received')
 
       const user = await authService.register(data)
+      fastify.log.info({ userId: user.id }, 'User registered successfully')
+
       const token = await reply.jwtSign({ userId: user.id })
+      fastify.log.info('JWT token generated')
 
       reply.code(201)
       return { 
@@ -65,7 +76,12 @@ export async function authController(fastify: FastifyInstance) {
         expiresIn: TOKEN_EXPIRES_IN
       }
     } catch (error) {
-      fastify.log.error(error)
+      fastify.log.error({ 
+        error,
+        stack: error instanceof Error ? error.stack : undefined,
+        message: error instanceof Error ? error.message : 'Unknown error'
+      }, 'Registration error occurred')
+      
       if (error instanceof Error) {
         reply.code(400)
         return { message: error.message }

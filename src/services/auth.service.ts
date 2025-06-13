@@ -5,16 +5,20 @@ import { Prisma } from '../generated/prisma'
 export class AuthService {
   async register(data: { name: string; email: string; password: string }) {
     try {
+      console.log('Checking for existing user with email:', data.email)
       const existingUser = await prisma.user.findUnique({
         where: { email: data.email }
       })
 
       if (existingUser) {
+        console.log('User already exists with email:', data.email)
         throw new Error('User with this email already exists')
       }
 
+      console.log('Hashing password')
       const hashedPassword = await bcrypt.hash(data.password, 10)
 
+      console.log('Creating new user')
       const user = await prisma.user.create({
         data: {
           ...data,
@@ -22,10 +26,12 @@ export class AuthService {
         }
       })
 
+      console.log('User created successfully with ID:', user.id)
       // Don't send password in response
       const { password, ...userWithoutPassword } = user
       return userWithoutPassword
     } catch (error) {
+      console.error('Registration error:', error)
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         // Handle Prisma-specific errors
         if (error.code === 'P2002') {
