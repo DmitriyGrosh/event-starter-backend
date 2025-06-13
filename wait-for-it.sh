@@ -14,11 +14,6 @@ until nc -z "$host" "$port"; do
   sleep 1
 done
 
-echo "PostgreSQL is ready, running migrations..."
-npx prisma migrate deploy
-
-echo "Running Prisma generate..."
-npx prisma generate
-
+echo "PostgreSQL is ready!"
 echo "Starting the application..."
 exec node --experimental-specifier-resolution=node dist/server.js 
