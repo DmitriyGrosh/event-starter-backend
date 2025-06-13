@@ -18,7 +18,9 @@ RUN pnpm install
 
 COPY . .
 
-RUN pnpm run db:generate
+# Generate Prisma client with all necessary binary targets
+RUN pnpm prisma generate
+
 RUN pnpm run build
 
 FROM node:lts-alpine as runner
