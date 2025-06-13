@@ -1,8 +1,12 @@
-import bcrypt from 'bcrypt'
-import prisma from '../db/client'
 import { Prisma } from '../generated/prisma'
+import prisma from '../db/client'
+import crypto from 'crypto'
 
 export class AuthService {
+  private hashPassword(password: string): string {
+    return crypto.createHash('sha256').update(password).digest('hex')
+  }
+
   async register(data: { name: string; email: string; password: string }) {
     try {
       console.log('Checking for existing user with email:', data.email)
@@ -16,14 +20,8 @@ export class AuthService {
       }
 
       console.log('Hashing password')
-      let hashedPassword: string
-      try {
-        hashedPassword = await bcrypt.hash(data.password, 10)
-        console.log('Password hashed successfully')
-      } catch (hashError) {
-        console.error('Error hashing password:', hashError)
-        throw new Error('Error processing password')
-      }
+      const hashedPassword = this.hashPassword(data.password)
+      console.log('Password hashed successfully')
 
       console.log('Creating new user')
       const user = await prisma.user.create({
@@ -63,7 +61,8 @@ export class AuthService {
         throw new Error('Invalid credentials')
       }
 
-      const isPasswordValid = await bcrypt.compare(password, user.password)
+      const hashedPassword = this.hashPassword(password)
+      const isPasswordValid = hashedPassword === user.password
 
       if (!isPasswordValid) {
         throw new Error('Invalid credentials')
