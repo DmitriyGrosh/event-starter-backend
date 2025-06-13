@@ -10,7 +10,6 @@ import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUi from '@fastify/swagger-ui'
 import { userController } from './controllers/user.controller'
 import { authController } from './controllers/auth.controller'
-import { errorHandler } from './middleware/error-handler'
 import { authenticate } from './middleware/auth'
 import { ticketController } from "./controllers/ticket.controller"
 import { publicTagController } from "./controllers/public-tag.controller"
@@ -79,7 +78,7 @@ const fastify = Fastify({
 }).withTypeProvider<TypeBoxTypeProvider>()
 
 // Add request logging
-fastify.addHook('onRequest', (request, reply, done) => {
+fastify.addHook('onRequest', (request, _reply, done) => {
 	fastify.log.info({
 		body: request.body,
 		headers: request.headers,
@@ -153,9 +152,9 @@ await fastify.register(fastifyJwt, {
 })
 
 // Register error handler
-fastify.setErrorHandler((error, request, reply) => {
+fastify.setErrorHandler((error, _request, reply) => {
 	fastify.log.error({ err: error }, 'Error occurred')
-	
+
 	// Handle specific error types
 	if (error instanceof Error) {
 		reply.status(500).send({
@@ -165,7 +164,7 @@ fastify.setErrorHandler((error, request, reply) => {
 		})
 		return
 	}
-	
+
 	// Handle unknown errors
 	reply.status(500).send({
 		error: 'Internal Server Error',
@@ -211,8 +210,8 @@ const start = async () => {
 		fastify.log.info('Starting server with environment variables:')
 		fastify.log.info(process.env)
 		const port = parseInt(process.env.PORT ?? "5000")
-		await fastify.listen({ 
-			port, 
+		await fastify.listen({
+			port,
 			host: '0.0.0.0',
 			backlog: 511 // Increase connection backlog
 		})
