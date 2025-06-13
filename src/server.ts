@@ -21,6 +21,7 @@ import { eventSubscriptionController } from '@/controllers/event-subscription.co
 // Handle unhandled rejections
 process.on('unhandledRejection', (error) => {
 	console.error('Unhandled Rejection:', error)
+	fastify.log.error({ err: error }, 'Unhandled Rejection')
 	// Don't exit the process in production
 	if (process.env.NODE_ENV !== 'production') {
 		process.exit(1)
@@ -30,6 +31,7 @@ process.on('unhandledRejection', (error) => {
 // Handle uncaught exceptions
 process.on('uncaughtException', (error) => {
 	console.error('Uncaught Exception:', error)
+	fastify.log.error({ err: error }, 'Uncaught Exception')
 	// Don't exit the process in production
 	if (process.env.NODE_ENV !== 'production') {
 		process.exit(1)
@@ -68,7 +70,9 @@ const fastify = Fastify({
 			options: {
 				translateTime: 'HH:MM:ss Z',
 				ignore: 'pid,hostname',
-				colorize: true
+				colorize: true,
+				errorLikeObjectKeys: ['err', 'error'],
+				errorProps: 'message,stack,code,type'
 			},
 		},
 	}
