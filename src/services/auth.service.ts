@@ -16,7 +16,14 @@ export class AuthService {
       }
 
       console.log('Hashing password')
-      const hashedPassword = await bcrypt.hash(data.password, 10)
+      let hashedPassword: string
+      try {
+        hashedPassword = await bcrypt.hash(data.password, 10)
+        console.log('Password hashed successfully')
+      } catch (hashError) {
+        console.error('Error hashing password:', hashError)
+        throw new Error('Error processing password')
+      }
 
       console.log('Creating new user')
       const user = await prisma.user.create({
