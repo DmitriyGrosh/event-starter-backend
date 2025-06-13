@@ -33,6 +33,9 @@ RUN corepack enable && corepack prepare pnpm@8.15.4 --activate
 
 WORKDIR /app
 
+# Create static directory
+RUN mkdir -p static
+
 # Copy package files and install production dependencies
 COPY package.json pnpm-lock.yaml* ./
 RUN pnpm install --prod
