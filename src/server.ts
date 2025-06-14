@@ -8,6 +8,7 @@ import fastifyRateLimit from '@fastify/rate-limit'
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUi from '@fastify/swagger-ui'
+import fastifyMultipart from '@fastify/multipart'
 import { userController } from './controllers/user.controller'
 import { authController } from './controllers/auth.controller'
 import { authenticate } from './middleware/auth'
@@ -16,7 +17,8 @@ import { publicTagController } from "./controllers/public-tag.controller"
 import { publicEventController } from './controllers/public-event.controller'
 import { notificationController } from './controllers/notification.controller'
 import { eventSubscriptionController } from '@/controllers/event-subscription.controller'
-import {eventController} from "@/controllers/event.controller";
+import { eventController } from "@/controllers/event.controller"
+import { storageService } from './services/storage.service'
 
 // Handle unhandled rejections
 process.on('unhandledRejection', (error) => {
@@ -91,7 +93,17 @@ fastify.addHook('onRequest', (request, _reply, done) => {
 
 // Register plugins
 await fastify.register(fastifyCors, {
-	origin: true
+	origin: true,
+	methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+	allowedHeaders: ['Content-Type', 'Authorization'],
+	credentials: true
+})
+
+// Register multipart support
+await fastify.register(fastifyMultipart, {
+	limits: {
+		fileSize: storageService.getMaxFileSize() // 5MB limit
+	}
 })
 
 // Add health check endpoint

@@ -2,6 +2,8 @@ import { FastifyInstance } from 'fastify'
 import { Type } from '@fastify/type-provider-typebox'
 import { EventService } from '../services/event.service'
 import { EventSubscriptionService } from '../services/event-subscription.service'
+import { storageService } from '../services/storage.service'
+import { MultipartFile } from '@fastify/multipart'
 
 const eventService = new EventService()
 const subscriptionService = new EventSubscriptionService()
@@ -22,6 +24,7 @@ export async function eventController(fastify: FastifyInstance) {
 		title: Type.String(),
 		description: Type.Optional(Type.String()),
 		location: Type.String(),
+		imageUrl: Type.Optional(Type.String()),
 		dateStart: Type.String(),
 		dateEnd: Type.String(),
 		ownerId: Type.Number(),
@@ -60,31 +63,53 @@ export async function eventController(fastify: FastifyInstance) {
 		schema: {
 			tags: ['events'],
 			summary: 'Create a new event',
-			description: 'Create a new event with tickets (requires authentication)',
+			description: 'Create a new event with tickets and optional image (requires authentication)',
 			security: [{ bearerAuth: [] }],
-			body: CreateEventBody,
+			consumes: ['multipart/form-data'],
 			response: {
 				201: Event
 			}
 		}
 	}, async (request, reply) => {
 		const { userId } = request.user as { userId: number }
-		const { tickets, ...eventData } = request.body as {
-			title: string
-			description?: string
-			location: string
-			dateStart: string
-			dateEnd: string
-			tickets: {
-				name: string
-				description?: string
-				price: number
-				quantity: number
-			}[]
+
+		// Parse multipart form data
+		const data = await request.file()
+		if (!data) {
+			throw new Error('No form data received')
 		}
 
-		const data = {
-			...eventData,
+		// Read the event data from the form
+		const eventDataField = data.fields.eventData as unknown as { value: string }
+		if (!eventDataField || !eventDataField.value) {
+			throw new Error('Event data is required')
+		}
+
+		let eventData
+		try {
+			eventData = JSON.parse(eventDataField.value)
+		} catch (error) {
+			throw new Error('Invalid event data format')
+		}
+
+		const { tickets, ...eventFields } = eventData
+
+		// Handle image upload if present
+		let imageUrl: string | undefined
+		if (data.fields.image) {
+			const imageFile = data.fields.image as unknown as MultipartFile
+			if (!storageService.isAllowedFileType(imageFile.mimetype)) {
+				throw new Error('Invalid file type. Only JPEG, PNG and WebP images are allowed.')
+			}
+			if (imageFile.file.bytesRead > storageService.getMaxFileSize()) {
+				throw new Error('File size exceeds the maximum limit of 5MB.')
+			}
+			imageUrl = await storageService.uploadFile(await imageFile.toBuffer(), imageFile.mimetype)
+		}
+
+		const createData = {
+			...eventFields,
+			imageUrl: imageUrl,
 			ownerId: userId,
 			price: 0, // Default price for the event
 			tickets: {
@@ -92,7 +117,7 @@ export async function eventController(fastify: FastifyInstance) {
 			}
 		}
 
-		const event = await eventService.create(data)
+		const event = await eventService.create(createData)
 		reply.code(201)
 		return event
 	})

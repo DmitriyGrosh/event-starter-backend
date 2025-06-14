@@ -48,6 +48,7 @@ export class EventService {
     dateEnd: string
     price: number
     ownerId: number
+    imageUrl?: string
     tickets: {
       create: {
         name: string
@@ -58,6 +59,15 @@ export class EventService {
     }
     tags?: string[]
   }) {
+    // Check if user exists
+    const user = await prisma.user.findUnique({
+      where: { id: data.ownerId }
+    })
+
+    if (!user) {
+      throw new Error(`User with ID ${data.ownerId} not found`)
+    }
+
     return prisma.$transaction(async (tx) => {
       // Handle tags first if provided
       let tagIds: number[] = []
@@ -108,6 +118,7 @@ export class EventService {
           dateEnd: data.dateEnd,
           price: data.price,
           ownerId: data.ownerId,
+          imageUrl: data.imageUrl,
           tickets: data.tickets,
           tags: tagIds.length > 0 ? {
             create: tagIds.map(tagId => ({

@@ -68,7 +68,8 @@ const __dirname = dirname(__filename);
       await mkdir(join('dist', 'static'), { recursive: true });
       await copyFile('static/logo.svg', join('dist', 'static', 'logo.svg'));
     } catch (error) {
+      // @ts-ignore
       console.warn('Warning: Could not copy static assets:', error.message);
     }
   }
-}) 
+})

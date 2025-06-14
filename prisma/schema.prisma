@@ -3,7 +3,7 @@
 generator client {
   provider      = "prisma-client-js"
   output        = "../src/generated/prisma"
-  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+  binaryTargets = ["native"]
   runtime                = "nodejs"
   moduleFormat           = "esm"
   generatedFileExtension = "ts"
@@ -34,6 +34,7 @@ model Event {
   title       String
   description String?
   location    String?   // Made optional to handle existing events
+  imageUrl    String?   @map("image_url")// URL to the event image stored in S3
   dateStart   DateTime  @map("date_start")
   dateEnd     DateTime  @map("date_end")
   price       Decimal   @db.Decimal(10, 2) @default(0)
