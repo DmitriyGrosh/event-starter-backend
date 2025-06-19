@@ -64,6 +64,7 @@ jobs:
           echo "SELECTEL_SECRET_KEY=${{ secrets.SELECTEL_SECRET_KEY }}" >> $GITHUB_ENV
           echo "SELECTEL_BUCKET=${{ vars.SELECTEL_BUCKET }}" >> $GITHUB_ENV
           echo "SELECTEL_ENDPOINT=${{ vars.SELECTEL_ENDPOINT }}" >> $GITHUB_ENV
+          echo "SELECTEL_PUBLIC_URL=${{ vars.SELECTEL_PUBLIC_URL }}" >> $GITHUB_ENV
 
       - name: Setup SSH agent
         uses: webfactory/ssh-agent@v0.9.1

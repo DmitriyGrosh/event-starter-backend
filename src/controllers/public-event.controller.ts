@@ -20,6 +20,7 @@ export async function publicEventController(fastify: FastifyInstance) {
     title: Type.String(),
     description: Type.Optional(Type.String()),
     location: Type.String(),
+    imageUrl: Type.Optional(Type.String()),
 	  price: Type.Number(),
     dateStart: Type.String(),
     dateEnd: Type.String(),

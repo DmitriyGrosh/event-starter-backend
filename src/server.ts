@@ -19,6 +19,7 @@ import { notificationController } from './controllers/notification.controller'
 import { eventSubscriptionController } from '@/controllers/event-subscription.controller'
 import { eventController } from "@/controllers/event.controller"
 import { storageService } from './services/storage.service'
+import storageRoutes from './routes/storage.routes'
 
 // Handle unhandled rejections
 process.on('unhandledRejection', (error) => {
@@ -188,6 +189,7 @@ fastify.setErrorHandler((error, _request, reply) => {
 // Register public routes
 await fastify.register(publicEventController, { prefix: '/api/events' })
 await fastify.register(publicTagController, { prefix: '/api/tags' })
+await fastify.register(storageRoutes, { prefix: '/api/storage' })
 
 // Register route modules with rate limiting for auth endpoints
 await fastify.register(async (fastify) => {

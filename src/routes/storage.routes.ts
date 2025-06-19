@@ -1,12 +1,35 @@
 import { FastifyInstance } from 'fastify'
 import { storageService } from '../services/storage.service'
-import multipart from '@fastify/multipart'
 
 export default async function storageRoutes(fastify: FastifyInstance) {
-  // Register multipart support
-  await fastify.register(multipart, {
-    limits: {
-      fileSize: storageService.getMaxFileSize() // 5MB limit
+  // Test storage connection endpoint
+  fastify.get('/test', {
+    schema: {
+      tags: ['storage'],
+      summary: 'Test storage connection',
+      description: 'Test the connection to Selectel storage',
+      response: {
+        200: {
+          type: 'object',
+          properties: {
+            success: { type: 'boolean' },
+            error: { type: 'string' },
+            details: { type: 'object' }
+          }
+        }
+      }
+    }
+  }, async (request, reply) => {
+    try {
+      const result = await storageService.testConnection()
+      return result
+    } catch (error) {
+      console.error('Error testing storage connection:', error)
+      return reply.code(500).send({ 
+        success: false, 
+        error: 'Failed to test storage connection',
+        details: { message: error instanceof Error ? error.message : 'Unknown error' }
+      })
     }
   })
 

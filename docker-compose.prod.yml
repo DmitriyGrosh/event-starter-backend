@@ -24,6 +24,7 @@ services:
       - SELECTEL_SECRET_KEY=${SELECTEL_SECRET_KEY}
       - SELECTEL_BUCKET=${SELECTEL_BUCKET}
       - SELECTEL_ENDPOINT=${SELECTEL_ENDPOINT}
+      - SELECTEL_PUBLIC_URL=${SELECTEL_PUBLIC_URL}
     restart: unless-stopped
     networks:
       - event-starter-network
