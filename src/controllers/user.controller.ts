@@ -12,6 +12,7 @@ export async function userController(fastify: FastifyInstance) {
     dateStart: Type.String(),
     dateEnd: Type.String(),
     ownerId: Type.Number(),
+    imageUrl: Type.Optional(Type.String()),
     createdAt: Type.String()
   })
 

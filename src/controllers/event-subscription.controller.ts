@@ -13,6 +13,7 @@ export async function eventSubscriptionController(fastify: FastifyInstance) {
     dateStart: Type.String(),
     dateEnd: Type.String(),
     ownerId: Type.Number(),
+    imageUrl: Type.Optional(Type.String()),
     createdAt: Type.String()
   })
 
